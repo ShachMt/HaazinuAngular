@@ -1,0 +1,14 @@
+<div>
+    <div class="header">
+        <button (click)="cancel()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+         ?האם אתה בטוח שברצונך למחוק זאת לצמיתות
+    </div>
+    <div mat-dialog-sections [align]="'end'">
+        <button mat-raised-button [mat-dialog-close]="false" (click)="cancel()">לא</button>
+        <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="delete()">כן, אני בטוח</button>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+
+:root {
+  font-size: 20px;
+  box-sizing: inherit;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+p {
+  margin: 0;
+}
+
+p:not(:last-child) {
+  margin-bottom: 1.5em;
+}
+
+body {
+  font: 1em/1.618 Inter, sans-serif;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  min-height: 100vh;
+  padding: 30px;
+  
+  color: #224;
+  background:
+    url(https://source.unsplash.com/E8Ufcyxz514/2400x1823)
+    center / cover no-repeat fixed;
+}
+
+.card {
+  // max-width: 300px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  // max-width: 500px;
+  // height: 300px;
+  padding: 15px;
+
+  border: 1px solid rgba(37, 7, 94, 0.25);
+  border-radius: 20px;
+  // background-color: rgba(231, 229, 238, 0.45);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(15px);
+text-align: center;
+// margin-left: 15%;
+direction: rtl;
+margin-top: -3%;
+}
+#del:hover{
+color:rgb(21 48 141);
+}
+button{
+  color: #446;
+background-color: white;
+border-color: #446;
+text-align: center;
+width: 50%;
+margin-right: 25%;
+border-radius: 0%;
+font-size: medium;
+}
+button:hover{
+  background-color: rgb(21 48 141);
+  color: white;
+}
+p{
+  font-weight: bolder;
+  color: rgb(21 48 141);
+  font-size: 120%;
+}
+#documentation{
+  margin-right:25% ;
+  width: 16%;
+}
+        

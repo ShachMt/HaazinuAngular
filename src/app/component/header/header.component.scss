@@ -1,0 +1,144 @@
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#header {
+  // display: block !important;
+  display: flex;
+  // position: sticky;
+  z-index: 11;
+  top: 0px;
+  left: 0px;
+  direction: rtl;
+  text-align: right;
+  position: sticky;
+  background-color:#073b53e3;
+  //opacity: 0.8  ;
+  justify-content: space-between;
+  align-items: center;
+  // text-align: left;
+  //padding-top: 8px;
+  height: 100px;
+  width: 100%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  // transition: all 0.5s;
+  overflow: hidden;
+  // z-index: 997;   
+  // --bs-gutter-x: 1.5rem;
+  // // --bs-gutter-y: 0;
+  // padding-right: calc(var(--bs-gutter-x) * .5);
+  // padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-right: none;
+  margin-left: 0px;
+  padding: 0px;
+}
+#h1{
+  color: #8E9A39;
+  font-weight:900;
+}
+
+#header .logo h1 {
+  font-size: 28px;
+  color: #f9f8f8;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header__image{
+  width: 150px;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+}
+
+
+.navigation {
+  
+  text-align: right;
+
+}
+
+.nav-link {
+  color: #f6f8f7;
+  font-weight: bold;
+  text-decoration: none;
+ 
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/**
+* Desktop Navigation 
+*/
+.navbar {
+  padding: 0;
+  
+}
+
+.navbar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+  direction:rtl;
+  
+  //text-align: right;
+}
+
+.navbar li {
+  position: relative;
+
+}
+
+.navbar a,
+.navbar a:focus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px 7px 15px;
+  margin-left: 5px;
+  font-size: 14px;
+  color: #fff;
+  white-space: nowrap;
+  transition: 0.3s;
+  border-radius: 50px;
+}
+
+.navbar a i,
+.navbar a:focus i {
+  font-size: 12px;
+  line-height: 0;
+  margin-left: 5px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover>a {
+  background: #8E9A39;
+}
+
+button{
+border: none;
+background-color: #305b6f;
+color: white;
+font-weight: bold;
+direction: rtl;
+margin-top: 0%;
+position: absolute; 
+top: 3%; 
+left: 90%;
+}
+a{
+  cursor: pointer;
+}
+a:hover{
+#faClass{
+    transform: scale(1.2);
+}
+
+}

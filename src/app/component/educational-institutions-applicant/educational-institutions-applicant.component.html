@@ -1,0 +1,281 @@
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+<!-- <h2>{{category.detailsCategory}}</h2> -->
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<!-- <div *ngIf="currentEducation.length>0">
+  <div class="col-md-8 mr-2">
+    <h2>מקומות לימוד שצויינו </h2>
+
+    <table dir="rtl" class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">סוג</th>
+          <th scope="col">שם הישיבה</th>
+          <th scope="col">כיתת לימוד </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currentEducation">
+          <td>{{item.institution?.idCategoryNavigation?.detailsCategory}}</td>
+          <td>{{item.institution?.institutionName}}-{{item.institution?.enotherName}}-{{item.institution?.address?.city}}</td>
+          <td> <button class="btn" style="border-radius: 0%; size: 5%;"><svg style="color: #ffffff;" (click)="openDeleteDialog(item)" xmlns="http://www.w3.org/2000/svg"
+                width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                <path fill-rule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+              </svg> ביטול</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+<!-- </div> -->
+
+
+<!-- <h3 class="header-text">מקום לימודים נוכחי</h3> -->
+<table *ngIf="currentEducation.length>0"  style=" text-align: right;width:60% ;" class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">סוג</th>
+      <th scope="col">שם הישיבה</th>
+      <th scope="col"> כיתת לימוד שלב עזיבה</th>
+      <th scope="col"></th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody *ngIf="currentEducation.length>0">
+    <tr *ngFor="let item of currentEducation">
+      <td>{{item.institution?.idCategoryNavigation?.detailsCategory}}</td>
+      <td>{{item.institution?.institutionName}}-{{item.institution?.enotherName}}-{{item.institution?.address?.city}}
+      </td>
+      <td>{{item.details}}</td>
+      <td>
+        <span> <svg id="b" (click)="deleteCurrentIns(item)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            <path
+              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+            <path fill-rule="evenodd"
+              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+          </svg></span><span>
+          <svg id="b" (click)="updateIns(item)" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+            <path
+              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+          </svg></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button  *ngIf="!isUpdate" style="background-color: white;" (click)="add()"> הוסף מוסד נוסף </button>
+<h2 *ngIf="isUpdate">{{titleU}}</h2>
+<table *ngIf="openNew||currentEducation.length==0||isUpdate" style="text-align: right;width:60% ;" class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">סוג</th>
+      <th scope="col">שם הישיבה</th>
+      <th scope="col"> כיתת לימוד </th>
+      <th scope="col">שלב עזיבה</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tr>
+    <td>
+      <mat-form-field *ngIf="arrCategory.length>0" style="text-align: right;width: auto;">
+        <mat-label> סוג :</mat-label>
+        <mat-select id="chooseCategory" (ngModelChange)="onSelectedValueChangeCategory($event)" name="chooseCategory"
+          [(ngModel)]="chooseCategory">
+          <mat-option *ngFor="let c of arrCategory" style="text-align: right;" [value]="c"><span
+              *ngIf="c.detailsCategory!=null">{{c.detailsCategory}}
+            </span></mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+    <td>
+      <mat-form-field style="text-align: right;width: auto;">
+        <mat-label> שם הישיבה :</mat-label>
+        <mat-select id="selectedValueNameIns" (ngModelChange)="onSelectedValueNameIns($event)"
+          name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns">
+          <mat-option style="text-align: right;"></mat-option>
+          <mat-option [value]=" " style="text-align: right;">אחר</mat-option>
+          <mat-option style="text-align: right;" *ngFor="let item of arrayEducational"
+            [value]="item.institutionName">{{item.institutionName}}
+            -{{item.enotherName}}-{{item.address?.city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </td>
+    <td>
+      <mat-form-field style="text-align: right;width: auto;">
+        <mat-label> כיתת לימוד :</mat-label>
+        <mat-select id="selectedValueClassL" [(ngModel)]="selectedValueClassL" name="selectedValueClassL">
+          <mat-option style="text-align: right;"></mat-option>
+          <mat-option style="text-align: right;" *ngFor="let item of chooseArray"
+            [value]="item.name">{{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+    <td>
+      <mat-form-field style="text-align: right;width: auto;">
+        <mat-label> שלב עזיבה :</mat-label>
+        <mat-select id="chooseTimeLeave" [(ngModel)]="chooseTimeLeave" name="chooseTimeLeave">
+          <mat-option style="text-align: right;"></mat-option>
+          <mat-option style="text-align: right;" *ngFor="let item of chooseArrayLeave"
+            [value]="item.name">{{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="isAnotherInstiton==true">
+  <div class="row ">
+    <div class="col-md-2">
+      <label for="nameAnotherInstiton">
+        שם מוסד לימודים <span class="glyphicon glyphicon-pencil"></span></label>
+    </div>
+    <div class="col-md-3">
+      <input type="text" [(ngModel)]="newEducationalInstitution.institutionName" id="newInstitutionName"
+        name="newInstitutionName" placeholder="שם מוסד לימודים  ">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 ps-1">
+      <label for="nameAnotherInstiton">שם נוסף/ שם הרב המנהל <span
+          class="glyphicon glyphicon-pencil"></span></label>
+    </div>
+
+    <div class="col-md-3">
+      <input type="text" [(ngModel)]="newEducationalInstitution.enotherName" id="newInstitutionAnotherName"
+        name="newInstitutionAnotherName" placeholder="שם נוסף /שם הרב המנהל ">
+    </div>
+
+  </div>
+  <!-- עיר אחרת -->
+  <div class="row">
+    <div class="col-md-2">
+      <label for="nameAnotherCity">עיר <span class="glyphicon glyphicon-pencil"></span></label>
+    </div>
+
+    <div class="col-md-3">
+      <input type="text" [(ngModel)]="newAddress.city" id="nameAnotherCity" name="nameAnotherCity"
+        placeholder="שם עיר ">
+    </div>
+  </div>
+</div>
+
+<button *ngIf="isAnotherInstiton&&!isUpdate" style="background-color: white;" (click)="addAddressCity()">הוסף מוסד לימודים למאגר+
+</button>
+<button *ngIf="openNew&&!isUpdate||currentEducation.length==0" style="background-color: white;" (click)="next()">הוסף +
+</button>
+<button *ngIf="isUpdate" style="background-color: white;" (click)="isUp()">עדכון
+</button>
+
+<!-- <div class="container">
+  <form [formGroup]="form">
+    <div class="row" *ngIf="isAnotherInstiton==false">
+       מוסד לימודים 
+      <div class="col-md-2">
+        <label for="causeReferral"> שם מקום לימודים</label>
+      </div>
+      <div class="col-md-3">
+        <select id="selectedValueNameIns" name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns"
+          (ngModelChange)="onSelectedValueNameIns(selectedValueNameIns)" formControlName="learnPlace" required>
+          <option></option>
+          <option>אחר</option>
+          <option *ngFor="let item of arrayEducational" [value]="item.institutionName">{{item.institutionName}}
+            -{{item.enotherName}}-{{item.address?.city}}
+          </option>
+        </select>
+        <span
+          *ngIf="form.get('learnPlace')?.invalid && (form.get('learnPlace')?.dirty || form.get('learnPlace')?.touched)"
+          style="color:red;">{{getErrorMessageLearnPlace()}}</span>
+      </div>
+    </div>
+    <!- מוסד לימודים אחר --
+    <div *ngIf="isAnotherInstiton==true">
+      <div class="row ">
+        <div class="col-md-2">
+          <label for="nameAnotherInstiton">שם מוסד לימודים <span class="glyphicon glyphicon-pencil"></span></label>
+        </div>
+        <div class="col-md-3">
+          <input type="text" [(ngModel)]="newEducationalInstitution.institutionName" id="newInstitutionName"
+            name="newInstitutionName" placeholder="שם מוסד לימודים  ">
+        </div>
+        <div class="col-md-2 ">
+          <button type="button" class="btn" (click)="isClickReturnList()">חזרה לבחירה מתוך הרשימה הקיימת</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 ps-1">
+          <label for="nameAnotherInstiton">שם נוסף/ שם הרב המנהל <span
+              class="glyphicon glyphicon-pencil"></span></label>
+        </div>
+
+        <div class="col-md-3">
+          <input type="text" [(ngModel)]="newEducationalInstitution.enotherName" id="newInstitutionAnotherName"
+            name="newInstitutionAnotherName" placeholder="שם נוסף /שם הרב המנהל ">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row" *ngIf="notExistCity==true">
+      <div class="col-md-2">
+        <label for="nameAnotherCity">עיר <span class="glyphicon glyphicon-pencil"></span></label>
+      </div>
+
+      <div class="col-md-3">
+        <input type="text" [(ngModel)]="newAddress.city" id="nameAnotherCity" name="nameAnotherCity"
+          placeholder="שם עיר ">       
+        <span
+          *ngIf="form.get('hebrewLetters')?.invalid && (form.get('hebrewLetters')?.dirty || form.get('hebrewLetters')?.touched)"
+          style="color:red;">{{getErrorMessageHebrewLetters()}}
+        </span>
+      </div>
+    </div>
+    <div class="row" *ngIf="chooseArrayLeave && chooseArray">
+      <div *ngIf="isInstitionPast" class="col-md-2 ">
+        <label for="">איזה שנת לימודים עזב/ה?</label>
+      </div>
+      <div *ngIf="!isInstitionPast" class="col-md-2">
+        <label> שנת לימודים</label>
+      </div>
+      <div class="col-md-3">
+        <select id="selectedValueClassL" name="selectedValueClassL" [(ngModel)]="selectedValueClassL"
+          formControlName="year" required>
+          <!-*** (change)="onSelectedValueClassL(selectedValueClassL)" ->
+          <option></option>
+          <option>אחר</option>
+          <option *ngFor="let item of chooseArray" [value]="item.name">{{item.name}}</option>
+        </select>
+        <span *ngIf="form.get('year')?.invalid && (form.get('year')?.dirty || form.get('year')?.touched)"
+          style="color:red;">{{getErrorMessageYear()}}</span>
+      </div>
+
+      <div class="row">
+      </div>
+      <!- זמן עזיבה --
+      <div *ngIf="isInstitionPast" class="col-md-2">
+        <label for="causeReferral"> מתי עזב/ה?</label>
+      </div>
+      <div *ngIf="isInstitionPast" class="col-md-3">
+        <select id="chooseTimeLeave" name="chooseTimeLeave" [(ngModel)]="chooseTimeLeave">
+          <!- ****(change)="onSelectedValueTimeLeave(chooseTimeLeave)" --
+          <option></option>
+          <option *ngFor="let item of chooseArrayLeave" [value]="item.name">{{item.name}}</option>
+        </select>
+      </div>
+
+    </div>
+    <button type="submit" class="btn" (click)="next()">הוספת מקום לימודים נוסף</button>
+  </form>
+</div> -->
+<router-outlet></router-outlet>

@@ -1,0 +1,341 @@
+<app-header></app-header>
+
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button (click)="systemActivity(1)" mat-menu-item>
+    <mat-icon><span class="material-symbols-outlined">
+        person_add
+      </span></mat-icon>
+    <span>הוספת פעיל </span>
+  </button>
+  <button (click)="systemActivity(2)" mat-menu-item>
+    <mat-icon><span class="material-symbols-outlined">
+        edit
+      </span></mat-icon>
+    <span>עדכון פרטי פעיל</span>
+  </button>
+  <button (click)="systemActivity(3)" mat-menu-item>
+    <mat-icon><span class="material-symbols-outlined">
+        person_remove
+      </span></mat-icon>
+    <span> הסרת פעיל</span>
+  </button>
+</mat-menu>
+<div class="row justify-content-center">
+  <div class="col-1"><span (click)="return()" style="cursor:pointer;font-weight: bold;"
+      class="material-symbols-outlined">
+      keyboard_return
+    </span></div>
+  <div  class="col-9">
+    <h2>{{zman}} {{currentEmployees?.idUserNavigation?.firstName}} </h2>
+  </div>
+</div>
+
+<div *ngIf="choose==1" class="container">
+  <!-- <div > -->
+  <div class="formE">
+    <h2>הוספת עובד חדש</h2>
+    <!-- <form  action="/action_page.php"> -->
+    <form [formGroup]="form" (ngSubmit)="addEmployees()">
+      <div class="row">
+        <div class="col-md-2">
+          <label>שם פרטי: </label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="firstName" id="firstName" name="firstName" type="text" [(ngModel)]="newUser.firstName"
+            required />
+          <span *ngIf="
+              form.get('firstName')?.invalid &&
+              (form.get('firstName')?.dirty || form.get('firstName')?.touched)
+            "style="color: red">{{getErrorMessageHebrewLetters()}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>שם משפחה:</label>
+        </div>
+        <div class="col-md-3">
+          <input style="margin-right: 0.2%" formControlName="lastName" id="lastName" name="lastName" type="text"
+            [(ngModel)]="newUser.lastName" required />
+
+          <span *ngIf="
+              form.get('lastName')?.invalid &&
+              (form.get('lastName')?.dirty || form.get('lastName')?.touched)
+            "style="color: red">{{getErrorMessageHebrewLLetters()}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>טלפון :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="mobileNumber" type="text" [(ngModel)]="newUser.phone" required />
+          <span *ngIf="
+              form.get('mobileNumber')?.invalid &&
+              (form.get('mobileNumber')?.dirty ||
+                form.get('mobileNumber')?.touched)
+            " style="color: red">{{ getErrorMessageMobileNumber() }}
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>תפקיד :</label>
+        </div>
+        <div class="col-md-3">
+          <select id="selectedValueJob" name="selectedValueJob" formControlName="selectedValueJob"
+            (change)="onSelectedValueJob()" required>
+            <option *ngFor="let item of arrayJobs" value="{{item.details}}">
+              {{item.details}}
+            </option>
+          </select>
+          <span *ngIf="
+          form.get('selectedValueJob')?.invalid &&
+          (form.get('selectedValueJob')?.dirty ||
+            form.get('selectedValueJob')?.touched)
+        " style="color: red">שדה חובה
+      </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>אימייל :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="email" type="email" id="email" [(ngModel)]="newEmployees.email"
+            placeholder="הכנס אימייל" dir="rtl" name="email" required />
+          <span *ngIf="
+              form.get('email')?.invalid &&
+              (form.get('email')?.dirty || form.get('email')?.touched)
+            " style="color: red">{{ getErrorMessageEmail() }}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>סיסמה :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="passwordV" type="text" id="password1" [(ngModel)]="newEmployees.password"
+            placeholder="הכנס סיסמה" dir="rtl" name="psw" required />
+          <span *ngIf="
+              form.get('passwordV')?.invalid &&
+              (form.get('passwordV')?.dirty || form.get('passwordV')?.touched)
+            " style="color: red">{{ getErrorMessagePassword() }}
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <button [disabled]="form.invalid"class="btn" type="submit" >
+            הוספה
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="choose==2&&isUpdateEmployees">
+  <div class="container">
+    <h2>{{ titleUpdate }}</h2>
+    <form [formGroup]="form1" (ngSubmit)="updateEmployeesI()">
+      <div class="row">
+        <div class="col-md-2">
+          <label>שם פרטי: </label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="firstName" id="firstName" name="firstName" type="text" [(ngModel)]="newUser.firstName"
+             />
+          <span *ngIf="
+            form1.get('firstName')?.invalid &&
+            (form1.get('firstName')?.dirty || form1.get('firstName')?.touched)
+          "style="color: red">{{getErrorMessageHebrewLetters1()}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>שם משפחה:</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="lastName" id="lastName" name="lastName" type="text"
+            [(ngModel)]="newUser.lastName"  />
+          <span *ngIf="
+            form1.get('lastName')?.invalid &&
+            (form1.get('lastName')?.dirty || form1.get('lastName')?.touched)
+          "style="color: red">{{getErrorMessageHebrewLLetters1()}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>טלפון :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="mobileNumber" type="text" [(ngModel)]="newUser.phone"  />
+          <span *ngIf="
+            form1.get('mobileNumber')?.invalid &&
+            (form1.get('mobileNumber')?.dirty ||
+              form1.get('mobileNumber')?.touched)
+          " style="color: red">{{ getErrorMessageMobileNumber1() }}
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>תפקיד :</label>
+        </div>
+        <div class="col-md-3">
+          <select id="selectedValueJob" name="selectedValueJob" [(ngModel)]="valueJob"
+            formControlName="selectedValueJob" (change)="onSelectedValueJob()">
+            <option *ngFor="let item of arrayJobs" value="{{ item.details }}">
+              {{ item.details }}
+            </option>
+          </select>
+          <span *ngIf="
+          form1.get('selectedValueJob')?.invalid &&
+          (form1.get('selectedValueJob')?.dirty ||
+            form1.get('selectedValueJob')?.touched)
+        " style="color: red">שדה חובה</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>אימייל :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="email" type="email" id="email" [(ngModel)]="newEmployees.email"
+            placeholder="הכנס אימייל" dir="rtl" name="email"/>
+          <span *ngIf="
+            form1.get('email')?.invalid &&
+            (form1.get('email')?.dirty || form1.get('email')?.touched)
+          " style="color: red">{{ getErrorMessageEmail1()}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <label>סיסמה :</label>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="passwordV" type="text" id="password1" [(ngModel)]="newEmployees.password"
+            placeholder="הכנס סיסמה" dir="rtl" name="psw"  />
+          <span *ngIf="
+            form1.get('passwordV')?.invalid &&
+            (form1.get('passwordV')?.dirty || form1.get('passwordV')?.touched)
+          " style="color: red">{{ getErrorMessagePassword1() }}
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <button class="btn" type="submit" [disabled]="form1.invalid">
+            עדכון
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div *ngIf="choose==4!isUpdateEmployees" class="row justify-content-center">
+  <div class="col-9 mr-2">
+    <div *ngIf="employeesListI.length==0">
+      לא קיים משתמש נעול במערכת
+    </div>
+    <table *ngIf="employeesListI.length>0" class="table table-hover">
+      <thead>
+        <th>שם פרטי</th>
+        <th>שם משפחה</th>
+        <th>טלפון</th>
+        <th>אימייל</th>
+        <th>סיסמה</th>
+        <th>תפקיד</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of employeesListI" style="cursor: pointer;" (click)="updateLock(item)">
+          <td>{{item.idUserNavigation?.firstName}}</td>
+          <td>{{item.idUserNavigation?.lastName}}</td>
+          <td>{{item.idUserNavigation?.phone}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.password}}</td>
+          <td>{{item.job?.details}}</td>
+          <div *ngIf="upLock"><span> עודכן בהצלחה</span><br>
+            <mat-icon>
+                done
+            </mat-icon></div>
+          <!-- <td class="bt" *ngIf="choose==3">
+            <svg style="color: #8E9A39;" (click)="deleteEmployees(item)" xmlns="http://www.w3.org/2000/svg" width="16"
+              height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path
+                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+              <path fill-rule="evenodd"
+                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+            </svg>
+
+          </td>
+          <td class="bt" *ngIf="choose==2">
+            <svg style="color: #073b53;" (click)="updateEmployees(item)" xmlns="http://www.w3.org/2000/svg" width="16"
+              height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+              <path
+                d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+            </svg>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  <div *ngIf="choose==3||choose==2&&!isUpdateEmployees" class="row justify-content-center">
+    <div class="col-9 mr-2">
+      <table class="table table-hover">
+        <thead>
+          <th>שם פרטי</th>
+          <th>שם משפחה</th>
+          <th>טלפון</th>
+          <th>אימייל</th>
+          <th>סיסמה</th>
+          <th>תפקיד</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of employeesList">
+            <td>{{item.idUserNavigation?.firstName}}</td>
+            <td>{{item.idUserNavigation?.lastName}}</td>
+            <td>{{item.idUserNavigation?.phone}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.password}}</td>
+            <td>{{item.job?.details}}</td>
+            <td class="bt" *ngIf="choose==3">
+              <svg style="color: #8E9A39;" (click)="openDeleteDialog(item)" xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                <path fill-rule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+              </svg>
+
+            </td>
+            <td class="bt" *ngIf="choose==2">
+              <svg style="color: #073b53;" (click)="updateEmployees(item)" xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path
+                  d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+              </svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <button type="button" class="btn btn-outline-success" (click)="newEmployeesI()"><svg xmlns="http://www.w3.org/2000/svg"
+    width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+    <path
+      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+  </svg>הוספת עובד חדש</button>
+<button type="button" class="btn btn-outline-success" (click)="GetAllEmployees()"><svg
+    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
+    viewBox="0 0 16 16">
+    <path
+      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+    <path fill-rule="evenodd"
+      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+  </svg>הסרת/עדכון של עובד קיים </button> -->

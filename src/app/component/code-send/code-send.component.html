@@ -1,0 +1,17 @@
+<div class="container-login100" style="background-image: url( '../../../assets/images/Pickture-art-5.jpg');">
+
+<div 
+class="d-flex justify-content-center align-items-center container">
+    <div class="card py-5 px-3">
+        <h5 class="m-0">קוד אימות</h5><span class="mobile-text">אנא הקלד את הקוד שנשלח אליך למייל  <b class="text-danger">{{email}}</b></span>
+        <div class="d-flex flex-row mt-5">
+            <input type="text"  [(ngModel)]="one" name="one"(keyup)="keytab($event, 1)" maxlength="1" class="form-control" autofocus="">
+            <input type="text"  [(ngModel)]="two" name="two" (keyup)="keytab($event, 1)"maxlength="1" class="form-control">
+            <input type="text"  [(ngModel)]="three" name="three" (keyup)="keytab($event, 1)" maxlength="1" class="form-control">
+            <input type="text"  [(ngModel)]="four" name="four" (keyup)="keytab($event, 1)" maxlength="1" class="form-control"></div>
+        <div class="text-center mt-5"><span class="d-block mobile-text">לא התקבל הקוד</span><span class="font-weight-bold text-danger cursor">שלח שוב</span></div>
+       <br>
+        <input type="button" (click)="verification()" (keyup)="keytab($event, 1)" class="btn btn-danger px-4 validate" value="אימות">
+    </div>
+</div>  
+   

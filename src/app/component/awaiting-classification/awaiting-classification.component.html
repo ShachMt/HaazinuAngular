@@ -1,0 +1,22 @@
+<!-- <h3>פניות הממתינות לסיווג מנהלי</h3>
+<table style="width: 80%;margin-left: 10%;" dir="rtl" class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">דחיפות הפנייה</th>
+        <th scope="col">מספר פנייה</th>
+        <th scope="col">תאריך</th>
+        <th scope="col">שם ממלא</th>
+        <th scope="col">סיבת הפנייה</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of applyListFromIntake;"style="cursor: pointer;" (click)="sivoug(item.id)">
+        <td>{{item.levelUrgency}}</td>
+        <td>{{item.id}}</td>
+        <td>{{item.dateNow|date:'dd/MM/yyyy'}}</td>
+        <td>{{item.employees?.idUserNavigation?.firstName}}</td>
+        <td>{{item.applyCaused?.descreption}}</td>
+      </tr>
+    </tbody>
+  </table> -->

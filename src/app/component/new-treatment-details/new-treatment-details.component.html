@@ -1,0 +1,178 @@
+<div *ngIf="!sivoug&&!IsSec" class="container">
+  <form [formGroup]="form" class="w3-container">
+    <p>הוספת שלב טיפול</p>
+    <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
+    <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
+    <mat-form-field class="taskN" appearance="fill">
+      <mat-label>אופי הארוע</mat-label>
+      <input matInput value="{{currentTreatmentDetails.nextStep?.taskName}}" readonly>
+    </mat-form-field>
+    <br>
+    <span id="title">תיעוד האירוע</span><br>
+    <textarea dir="rtl" style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
+      (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
+      [(ngModel)]="newTreatmentDedails.documentation" required></textarea>
+    <mat-error
+      *ngIf="form.get('hebrewLetters')?.invalid && (form.get('hebrewLetters')?.dirty || form.get('hebrewLetters')?.touched)"
+      style="color:red;">{{getErrorMessageHebrewLetters(form)}}</mat-error>
+    <div *ngIf="isEdkoud">
+      <h3 id="title">ביצוע שלב הבא</h3>
+      <span id="title"> משימה</span><br>
+
+      <mat-form-field style="margin-left: 0.5%;" class="taskN" appearance="fill">
+        <mat-label>בחר משימה </mat-label>
+        <mat-select id="chooseT" name="chooseT" formControlName="selectNextTask"
+          [(ngModel)]="newTreatmentDedails.nextStepId" (ngModelChange)="onSelectedValueChange()">
+          <mat-option>--</mat-option>
+          <mat-option id="taskOp" *ngFor="let item of arrayTasks" [value]="item.id">{{item.taskName}}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="form.get('selectNextTask')?.invalid && (form.get('selectNextTask')?.dirty || form.get('selectNextTask')?.touched)"
+          style="color:red;">{{getErrorSelectNextTask(form)}}</mat-error>
+      </mat-form-field>&nbsp;
+      <mat-form-field *ngIf="isEmplo" class="taskN" appearance="fill">
+        <mat-label>בחר פעיל </mat-label>
+        <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="employeesId"
+          (ngModelChange)="selectIsEmplo()">
+          <mat-option>--</mat-option>
+          <mat-option id="taskOp" *ngFor="let item of arrayEmplo"
+            [value]="item.id">{{item.idUserNavigation?.firstName}}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="form.get('selectNextTaskIsEmplo')?.invalid && (form.get('selectNextTaskIsEmplo')?.dirty || form.get('selectNextTaskIsEmplo')?.touched)"
+          style="color:red;">{{getErrorSelectNextTaskIsEmplo(form)}}</mat-error>
+      </mat-form-field>
+      <br>
+      <div *ngIf="!isEdkoudB">
+        <mat-form-field class="taskN" appearance="fill">
+          <mat-label> שיוך הפנייה </mat-label>
+          <mat-select id="chooseE" name="chooseE" [(ngModel)]="shiyouchPnia"
+            (ngModelChange)="selectIsEmploShiyouchPnia()">
+            <mat-option class="chooseE" [value]="1">מנהל הפניות</mat-option>
+            <mat-option class="chooseE" [value]="2">מטפל</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <span *ngIf="isDetails" id="title">תוכן </span><br>
+      <textarea *ngIf="isDetails" dir="rtl" style=" text-align: right;width: 50%;"
+        formControlName="hebrewLettersDetailsTask" class="text-input" #textarea
+        (input)="resizeTextarea(textarea)"></textarea>
+      <mat-error *ngIf="isDetails&&form.get('hebrewLettersDetailsTask')?.invalid && 
+        (form.get('hebrewLettersDetailsTask')?.dirty || form.get('hebrewLettersDetailsTask')?.touched)"
+        style="color:red;">{{getErrorMessageHebrewLettersDetails(form)}}</mat-error>
+
+      <br>
+
+      <span *ngIf="!isPlace" id="title"> תאריך ביצוע המשימה</span><br>
+      <span *ngIf="isPlace" id="title"> תאריך ושעת ביצוע המשימה</span><br>
+      <mat-form-field style="text-align: right;" *ngIf="isPlace">
+        <mat-label>מקום הפגישה</mat-label>
+        <input style="text-align: right;" matInput id="place" name="place" formControlName="place" [(ngModel)]="place">
+      </mat-form-field>
+      <mat-form-field *ngIf="isPlace" style="margin-right: 0.5%;">
+        <input matInput type="time" id="time" name="time" formControlName="time" [(ngModel)]="selectedTime" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" formControlName="date" (ngModelChange)="validateDate()"
+          [(ngModel)]="newTreatmentDedails.dateTask">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+      </mat-form-field>
+      <mat-error *ngIf="!isOkDate">תאריך לא תקין</mat-error>
+      <mat-error *ngIf="!isOkDateEmp"> שדה חובה </mat-error>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-3 mr-4">
+        <button class="btn btn-secondary" style="width: 110px;" type="submit" (click)="onSubmit()"
+          [disabled]="!form.valid || !isOkDate">עדכון</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-secondary" style="width: 110px ; background-color: #fff; color:#8E9A39 ;" type="submit"
+          (click)="return()">ביטול</button>
+
+      </div>
+    </div>
+  </form>
+</div>
+<div class="container" *ngIf="sivoug&&!IsSec">
+  <form [formGroup]="form1" class="w3-container">
+    <p>הוספת שלב טיפול</p>
+    <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
+    <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
+
+    <mat-form-field class="taskN" appearance="fill">
+      <mat-label>אופי האירוע</mat-label>
+      <input matInput value="סיווג מנהלי" readonly>
+    </mat-form-field>
+    <br>
+    <span id="title">הערה </span><br>
+    <textarea style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
+      (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
+      [(ngModel)]="newTreatmentDedails.documentation" placeholder="חדש" required></textarea>
+    <br>
+    <mat-form-field class="taskN" appearance="fill">
+      <mat-label>בחר פעיל </mat-label>
+      <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="employeesId">
+        <mat-option id="taskOp" *ngFor="let item of arrayEmploI"
+          [value]="item.id">{{item.idUserNavigation?.firstName}}</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="form1.get('selectNextTaskIsEmplo')?.invalid && (form1.get('selectNextTaskIsEmplo')?.dirty || form1.get('selectNextTaskIsEmplo')?.touched)"
+        style="color:red;">{{getErrorSelectNextTaskIsEmplo(form1)}}</mat-error>
+    </mat-form-field>
+    <br>
+    <div class="row">
+      <div class="col-md-3 mr-4">
+        <button type="submit" (click)="onSubmit1()" class="btn btn-secondary" style="width: 110px;"
+          [disabled]="!form1.valid" type="submit">עדכון</button>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" (click)="return()" class="btn btn-secondary"
+          style="width: 110px ; background-color: #fff; color:#8E9A39 ;">ביטול</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="container" *ngIf="IsSec">
+  <form [formGroup]="form2" class="w3-container">
+    <p>הוספת שלב טיפול</p>
+    <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
+    <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
+    <mat-form-field class="taskN" appearance="fill">
+      <mat-label>אופי האירוע</mat-label>
+      <input matInput value="עדכון בפניה" readonly>
+    </mat-form-field>
+    <br>
+    <br>
+    <span id="title">תיעוד האירוע</span><br>
+    <textarea dir="rtl" style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
+      (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
+      [(ngModel)]="newTreatmentDedails.documentation" required></textarea>
+    <mat-error
+      *ngIf="form2.get('hebrewLetters')?.invalid && (form2.get('hebrewLetters')?.dirty || form2.get('hebrewLetters')?.touched)"
+      style="color:red;">{{getErrorMessageHebrewLetters(form2)}}</mat-error>
+
+    <mat-form-field class="taskN" appearance="fill">
+      <mat-label> שיוך הפנייה </mat-label>
+      <mat-select id="chooseE" name="chooseE" [(ngModel)]="shiyouchPnia" formControlName="s"
+        (change)="selectIsEmploShiyouchPnia()">
+        <mat-option class="chooseE" [value]="1">מנהל הפניות</mat-option>
+        <mat-option class="chooseE" [value]="2">מטפל</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <div class="row">
+      <div class="col-md-3 mr-4">
+        <button class="btn btn-secondary" style="width: 110px;" type="submit" [disabled]="!form2.valid"
+          (click)="onSubmit2()">עדכון</button>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-secondary" style="width: 110px ; background-color: #fff; color:#8E9A39 ;"
+          (click)="return()">ביטול</button>
+      </div>
+    </div>
+  </form>
+</div>

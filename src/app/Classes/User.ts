@@ -1,9 +1,9 @@
 
-export class Customer{
-constructor(
-public Id:number,
-public  Phone:string,
-public  FirstName:string,
-public  LastName:string
-){}
+export class User{
+id?:number;
+phone?:string;
+firstName?:string;
+lastName?:string;
+enotherPhone?:string;
+
 }

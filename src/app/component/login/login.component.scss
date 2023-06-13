@@ -1,0 +1,498 @@
+
+#header{
+  display: none;
+}
+#footer{
+  display: none;
+}
+.txt1 {
+ // font-family: Poppins-Regular;
+  font-size: 13px;
+  color: #e5e5e5;
+  line-height: 1.5;
+}
+
+
+/*//////////////////////////////////////////////////////////////////
+[ login ]*/
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-login100 {
+  height: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;  
+}
+
+.container-login100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.65);
+}
+
+.wrap-login100 {
+  width: 390px;
+  border-radius: 10px;
+  overflow: hidden;
+
+  background: transparent;
+}
+
+
+/*------------------------------------------------------------------
+[ Form ]*/
+
+.login100-form {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 5px 0px 35px 0px;
+
+}
+
+.login100-form-logo {
+  font-size: 60px; 
+  color: #333333;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 0 auto;
+  padding: 5px,0,33px,0;
+}
+
+.login100-form-title {
+  font-family: Rubik-Bold;
+  font-size: 28px;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 40px;
+  display: block;
+
+}
+
+#userIcon{
+  color:#8E9A39 ;
+  font-family:FontAwesome;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+//כדי לקבע את האנימציה
+// @keyframes logoAnimation{
+//   0%{
+//   }
+//   100%{
+//   }
+// }
+
+.logo-gif{
+  width: 200px;
+  height: auto;
+  // animation: logoAnimation 2s;
+
+}
+/*------------------------------------------------------------------
+[ Input ]*/
+input {
+  outline: none;//לא עובד, צריך לבטל את המיסגור לאינפוט
+  border: none;
+}
+.wrap-input100 {
+  width: 100%;
+  position: relative;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 29px 0 ;
+}
+.icon{
+  // align-items: left;
+  // direction: ltr;
+  display: flex;
+  position: absolute;
+  top:calc(50%);
+  left: 1.25rem;
+  color:#8E9A39 ;
+  font-family:FontAwesome;
+}
+
+#typeEmailX {
+  border: 0;
+}
+.input100 form-control  {
+  font-family: Ubuntu-Regular;
+  font-size: 20px;
+  // color: #555555;
+  line-height: 1.2;
+  outline: none ;//לא עובד, צריך לבטל את המיסגור לאינפוט
+  // border:none;
+  display: block;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  padding: 0 10px 0 80px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  // position: relative;
+  // flex: 1 1 auto;
+  // width: 80%;
+  // min-width: 0;
+}
+
+/*---------------------------------------------*/ 
+.focus-input100 {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.focus-input100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+
+  background: #086025;
+
+  background: -webkit-linear-gradient(to left, #35a12c, #13640f, #184a1c);
+  background: -o-linear-gradient(to left, #35a12c, #13640f, #184a1c);
+  background: -moz-linear-gradient(to left,#35a12c, #13640f, #184a1c);
+  background: linear-gradient(to left, #35a12c, #13640f, #184a1c);
+}
+
+.focus-input100::after {
+  font-family: Linearicons-Free;
+  font-size: 18px;
+  color: #999999;
+
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 40px;
+  left: 35px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.input100:focus {
+  padding-left: 60px;
+}
+
+.input100:focus + .focus-input100::after {
+  left: 23px;
+  color: #10580c;
+}
+
+.input100:focus + .focus-input100::before {
+  width: 100%;
+}
+
+.has-val.input100 + .focus-input100::after {
+  left: 23px;
+  color: #10580c;
+}
+
+.has-val.input100 + .focus-input100::before {
+  width: 100%;
+}
+
+.has-val.input100 {
+  padding-left: 60px;
+}
+
+#togglePassword1 {
+  margin-left: -80%;
+  cursor: pointer;
+}
+// /*---------------------------------------------*/ 
+// .focus-input100 {
+//   position: absolute;
+//   display: block;
+//   width: 100%;
+//   height: 100%;
+//   top: 0;
+//   left: 0;
+//   pointer-events: none;
+// }
+
+// .focus-input100::before {
+//   content: "";
+//   display: block;
+//   position: absolute;
+//   bottom: -1px;
+//   left: 0;
+//   width: 0;
+//   height: 1px;
+
+//   -webkit-transition: all 0.4s;
+//   -o-transition: all 0.4s;
+//   -moz-transition: all 0.4s;
+//   transition: all 0.4s;
+
+//   background: #086025;
+//   background: -webkit-linear-gradient(left, #35a12c, #13640f, #184a1c);
+//   background: -o-linear-gradient(left, #35a12c, #13640f, #184a1c);
+//   background: -moz-linear-gradient(left,#35a12c, #13640f, #184a1c);
+//   background: linear-gradient(left, #35a12c, #13640f, #184a1c);
+// }
+
+// .focus-input100::after {
+//   font-family: Linearicons-Free;
+//   font-size: 18px;
+//   color: #999999;
+
+//   content: attr(data-placeholder);
+//   display: block;
+//   width: 100%;
+//   position: absolute;
+//   top: 40px;
+//   left: 35px;
+//   -webkit-transition: all 0.4s;
+//   -o-transition: all 0.4s;
+//   -moz-transition: all 0.4s;
+//   transition: all 0.4s;
+// }
+
+// .input100:focus {
+//   padding-left: 60px;
+// }
+
+// .input100:focus + .focus-input100::after {
+//   left: 23px;
+//   color: #10580c;
+// }
+
+// .input100:focus + .focus-input100::before {
+//   width: 100%;
+// }
+
+// .has-val.input100 + .focus-input100::after {
+//   left: 23px;
+//   color: #10580c;
+// }
+
+// .has-val.input100 + .focus-input100::before {
+//   width: 100%;
+// }
+
+// .has-val.input100 {
+//   padding-left: 60px;
+// }
+/*------------------------------------------------------------------
+[ Button ]*/
+.container-login100-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.login100-form-btn {
+  // font-family: Ubuntu-Bold;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  min-width: 160px;
+  height: 42px;
+  border-radius: 21px;
+  background: #073b53;
+  background: -webkit-linear-gradient(left, #35a12c, #13640f, #184a1c);
+  background: -o-linear-gradient(left, #35a12c, #13640f, #184a1c);
+  background: -moz-linear-gradient(left,#35a12c, #13640f, #184a1c);
+  background: linear-gradient(left, #35a12c, #13640f, #184a1c);
+ 
+  position: relative;
+  z-index: 1;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.login100-form-btn::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  border-radius: 21px;
+  
+  top: 0;
+  left: 0;
+  opacity: 0;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.login100-form-btn:hover {
+  background-color: transparent;
+  color:#073b53;
+  background-color: white;
+}
+
+.login100-form-btn:hover:before {
+  opacity: 1;
+}
+
+
+
+/*------------------------------------------------------------------
+[ Alert validate ]*/
+
+.validate-input {
+  position: relative;
+}
+
+.alert-validate::before {
+  content: attr(data-validate);
+  position: absolute;
+  max-width: 70%;
+  background-color: #fff;
+  border: 1px solid #013c29;
+  border-radius: 2px;
+  padding: 4px 25px 4px 10px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 10px;
+  pointer-events: none;
+
+  //font-family: Ubuntu-Bold;
+  color:  #073b53;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: opacity 0.4s;
+  -o-transition: opacity 0.4s;
+  -moz-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+
+.alert-validate::after {
+  content: "\f12a";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color:#013c29;
+
+  display: block;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  right: 15px;
+}
+
+.alert-validate:hover:before {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 992px) {
+  .alert-validate::before {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+#togglePassword12:hover {
+background-color:#086025;
+color: white;
+font-weight: bolder;
+cursor: pointer;
+border-radius: 21px;
+}
+
+    #togglePassword12 {
+      justify-items: center;
+      margin-right: 0.5%;
+      margin-left: 0.5%;
+      border: 1px solid rgb(216, 216, 216);
+        border-radius: 21px;
+
+      }
+
+      .input-group {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        width: 100%;
+      }

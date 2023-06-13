@@ -1,0 +1,40 @@
+// table th{
+//     background-color: rgb(41, 45, 92);
+//     color: white;
+//     text-align: right;
+//   }
+//   .tableNav{
+//     width: 100%;
+//     margin-left: 2.5%;
+//   }
+  .search-hero {
+    max-width: 500px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    margin:auto;
+  }
+  .form-control {
+    box-shadow: 0 10px 40px 0 #B0C1D9;
+    text-align: right;
+
+  }
+  .form-control::placeholder{
+    font-family: FontAwesome;
+  }
+  #del:hover{
+color: green;
+  }
+  .n{
+    overflow-y: auto;
+    height: 53vh;
+  }
+
+//   #relaition{
+//     text-align: left;
+//     margin-bottom:2%;
+//   }
+//   #relaition button{
+//     margin-left: 0.3%;
+//     border-color: green;
+// font-size: 90%;
+//   }

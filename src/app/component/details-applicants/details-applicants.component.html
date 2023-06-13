@@ -1,0 +1,159 @@
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+<button style="font-size: 70%;" (click)="return()" class="btn btn-outline-success">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-escape" viewBox="0 0 16 16">
+    <path d="M8.538 1.02a.5.5 0 1 0-.076.998 6 6 0 1 1-6.445 6.444.5.5 0 0 0-.997.076A7 7 0 1 0 8.538 1.02Z"/>
+    <path d="M7.096 7.828a.5.5 0 0 0 .707-.707L2.707 2.025h2.768a.5.5 0 1 0 0-1H1.5a.5.5 0 0 0-.5.5V5.5a.5.5 0 0 0 1 0V2.732l5.096 5.096Z"/>
+  </svg><br>חזרה לדף הבית</button> -->
+<!-- <p >פירוט  הפנייה:</p> -->
+<form class="example-form" mat-label-position="end">
+  <table class="example-full-width" cellspacing="0">
+    <p style="text-align:right;">זיקה למושא הפנייה:</p>
+    <tr>
+      <td>
+        <mat-form-field style="text-align: right;" class="example-full-width">
+          <mat-label>בחר זיקה למושא הפנייה :</mat-label>
+          <mat-select id="selectedValueR" name="selectedValueR" [(ngModel)]="selectedValueR"
+            (ngModelChange)="onSelectedValueChange($event)" required>
+            <mat-option style="text-align: right;" *ngFor="let r of arrayReferral"
+              [value]="r.id">{{r.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="text-align: right;margin-right: 1%;" *ngIf="isAnotherR==true" class="example-full-width">
+          <mat-label>פירוט הזיקה לבחור:</mat-label>
+          <input matInput id="selectedValueRO" name="selectedValueRO" [(ngModel)]="selectedValueRO"
+            (change)="sendValue(selectedValueRO)">
+        </mat-form-field>
+
+      </td>
+    </tr>
+    <tr>
+
+      <mat-form-field style="text-align: right;" class="example-full-width">
+        <p style="text-align:right;">הופנה על ידי:</p>
+        <input matInput id="referredBy" name="referredBy" [(ngModel)]="newDetailsAsker.referredBy"
+          (change)="sendValueReferredBy()">
+        <!--* *-->
+      </mat-form-field>
+    </tr>
+    <p> האם היה בתהליך טיפולי?</p>
+
+    <mat-radio-group style="margin-bottom:-70%;" id="selectedOptionTipul" name="selectedOptionTipul"
+      [(ngModel)]="selectedOptionTipul" (change)="onChangeTipul(selectedOptionTipul)">
+      <mat-radio-button [color]="color" [value]="true">כן</mat-radio-button>
+      <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
+    </mat-radio-group>
+    <div *ngIf="isTipul==true||currentPatientDetailsByApplyId.isTherapeutic==true">
+      <div> <mat-form-field class="example-full-width">
+          <!-- [formGroup]="form" -->
+          <mat-label>שם פרטי של המטפל:</mat-label>
+          <input matInput id="firstName" name="firstName" [(ngModel)]="userMetapel.firstName"
+            (change)="updateSessiontoTerapist()" required>
+          <!-- formControlName="hebrewLetters" -->
+          <!-- <mat-error *ngIf="form.get('hebrewLetters')?.invalid && (form.get('hebrewLetters')?.dirty || form.get('hebrewLetters')?.touched)"style="color:red;">{{getErrorMessageHebrewLetters()}}</mat-error> -->
+
+        </mat-form-field>
+        <div> <mat-form-field class="example-full-width">
+            <mat-label>שם משפחה של המטפל:</mat-label>
+            <input matInput id="firstName" name="firstName" [(ngModel)]="userMetapel.lastName"
+              (change)="updateSessiontoTerapist()" required>
+            <!-- <mat-error *ngIf="form.get('hebrewLetters')?.invalid && (form.get('hebrewLetters')?.dirty || form.get('hebrewLetters')?.touched)"style="color:red;">{{getErrorMessageHebrewLetters()}}</mat-error> -->
+          </mat-form-field>
+        </div>
+      </div>
+      <br>
+      <div [formGroup]="form"> <mat-form-field class="example-full-width">
+          <mat-label>טלפון :</mat-label>
+          <input matInput formControlName="mobileNumber" id="phone" name="phone" [(ngModel)]="userMetapel.phone"
+            (change)="updateSessiontoTerapist()" required>
+          <mat-error
+            *ngIf="form.get('mobileNumber')?.invalid && (form.get('mobileNumber')?.dirty || form.get('mobileNumber')?.touched)"
+            style="color:red;">{{getErrorMessageMobileNumber()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div> <mat-form-field class="example-full-width">
+          <mat-label>תפקיד :</mat-label>
+          <input matInput formControlName="mobileNumber" id="phone" name="phone"
+            [(ngModel)]="newPatientDetails.datailsJobTerapist" (change)="updateSessiontoTerapist()" required>
+        </mat-form-field>
+      </div>
+      <br>
+      <p> האם נמצא עדיין בתהליך טיפולי?</p>
+
+      <mat-radio-group style="margin-bottom:-70%;" id="selectIsStillTerapist" name="selectIsStillTerapist"
+        [(ngModel)]="selectIsStillTerapist" (change)="onChangeStillTipul(selectIsStillTerapist)">
+        <mat-radio-button [color]="color" [value]="true">כן</mat-radio-button>
+        <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
+      </mat-radio-group>
+      <br>
+      <p> במידת הצורך האם יש אישור שנפנה לאיש מקצוע ?</p>
+
+      <mat-radio-group style="margin-bottom:-70%;" id="isContact" name="isContact"
+        [(ngModel)]="newPatientDetails.isContact" (change)="updateSessionPatientDetails()">
+        <!-- (change)="onChangeIsContact(currentPatientDetailsByApplyId.isContact)" -->
+        <mat-radio-button [color]="color" value="כן">כן</mat-radio-button>
+        <mat-radio-button [color]="color" value="לא">לא</mat-radio-button>
+        <!-- <mat-radio-button [color]="color" value="נעדכן בהמשך">נעדכן בהמשך</mat-radio-button> -->
+      </mat-radio-group>
+      <br>
+
+    </div>
+    <p> האם קיים קשר עם דמות בוגרת ?</p>
+
+    <mat-radio-group style="margin-bottom:-70%;" id="isMatureCharacter" name="isMatureCharacter"
+      [(ngModel)]="selectIsMatureCaracter" (change)="onChangeIsMatureCharacter(selectIsMatureCaracter)">
+      <mat-radio-button [color]="color" value="true">כן</mat-radio-button>
+      <mat-radio-button [color]="color" value="false">לא</mat-radio-button>
+    </mat-radio-group>
+
+    <div *ngIf="isMatureCaracter==true">
+      <P>חונך ומלווה:</P>
+      <div [formGroup]="form"> <mat-form-field class="example-full-width">
+          <mat-label>שם פרטי של החונך:</mat-label>
+          <input matInput id="firstNameC" formControlName="hebrewLettersC" name="firstNameC"
+            [(ngModel)]="userMetapelC.firstName" (change)="updateUserMetapelC()" required>
+          <mat-error
+            *ngIf="form.get('hebrewLettersC')?.invalid && (form.get('hebrewLettersC')?.dirty || form.get('hebrewLettersC')?.touched)"
+            style="color:red;">{{getErrorMessageHebrewLettersC()}}</mat-error>
+
+        </mat-form-field>
+      </div>
+      <mat-form-field class="example-full-width">
+        <mat-label>שם משפחה של החונך:</mat-label>
+        <input matInput id="firstNameC" name="firstNameC" [(ngModel)]="userMetapelC.lastName"
+          (change)="updateUserMetapelC()" required>
+      </mat-form-field>
+      <br>
+
+      <div [formGroup]="form"> <mat-form-field class="example-full-width">
+          <mat-label>טלפון :</mat-label>
+          <input matInput formControlName="mobileNumberC" id="phoneC" name="phoneC" [(ngModel)]="userMetapelC.phone"
+            (change)="updateUserMetapelC()" required>
+          <mat-error
+            *ngIf="form.get('mobileNumberC')?.invalid && (form.get('mobileNumberC')?.dirty || form.get('mobileNumberC')?.touched)"
+            style="color:red;">{{getErrorMessageMobileNumberC()}}</mat-error>
+        </mat-form-field>
+      </div>
+      <br>
+      <div [formGroup]="form"> <mat-form-field class="example-full-width">
+          <mat-label> באיזה מסגרת פגש אותו ? מטעם מי?</mat-label>
+          <input matInput id="matureCharacter" formControlName="hebrewLettersCM" name="matureCharacter"
+            [(ngModel)]="matureCharacter.framwork" required>
+          <mat-error
+            *ngIf="form.get('hebrewLettersCM')?.invalid && (form.get('hebrewLettersCM')?.dirty || form.get('hebrewLettersCM')?.touched)"
+            style="color:red;">{{getErrorMessageHebrewLettersCM()}}</mat-error>
+
+        </mat-form-field>
+      </div>
+      <br>
+      <p> אישור לפנות אליו?</p>
+
+      <mat-radio-group style="margin-bottom:-70%;" id="PermissionContact" name="PermissionContact"
+        [(ngModel)]="permissionContact" (change)="onChangePermissionContact(permissionContact)">
+        <mat-radio-button [color]="color" value="true">כן</mat-radio-button>
+        <mat-radio-button [color]="color" value="false">לא</mat-radio-button>
+      </mat-radio-group>
+      <br>
+    </div>
+  </table>
+</form>

@@ -1,0 +1,134 @@
+
+// table th{
+//   background-color: rgb(41, 45, 92);
+//   color: white;
+//   text-align: right;
+// }
+input{
+  color: black;
+}
+img{
+  margin-right: 25%;
+  width: 50%;
+  }
+.n{
+  overflow-y: auto;
+  height: 53vh;
+}
+#btn{
+  text-align: center;
+  margin-bottom:2%;
+}
+#btn button{
+  margin-left: 0.5%;
+  border-color: green;
+}
+
+.form-control{
+ text-align: right;
+}
+.s{
+  margin-right: 10%;
+  width: 80%;
+ 
+}
+.search-icon1 {
+  position: absolute;
+  top: 52.5%;
+  right: 10%;
+  margin-top: -10px;
+}
+.search-icon2 {
+  position: absolute;
+  top: 52.5%;
+  right: 42%;
+  margin-top: -10px;
+}
+.search-icon3 {
+  position: absolute;
+  top: 52.5%;
+  right: 58%;
+  margin-top: -10px;
+}
+.search-icon4 {
+  position: absolute;
+  top: 52.5%;
+  right: 74%;
+  margin-top: -10px;
+}
+
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .search-icon1 {
+    position: absolute;
+    top: 50.5%;
+    right: 10%;
+    margin-top: -10px;
+  }
+  .search-icon2 {
+    position: absolute;
+    top: 50.5%;
+    right: 54.5%;
+    margin-top: -10px;
+  }
+  .search-icon3 {
+    position: absolute;
+    top: 50.5%;
+    right: 65%;
+    margin-top: -10px;
+  }
+  .search-icon4 {
+    position: absolute;
+    top: 50.5%;
+    right: 78%;
+    margin-top: -10px;
+  }
+}
+
+
+.container {
+  padding-top: 50px;
+  padding-bottom: 10px;
+  color: #405065;
+}
+
+.search-hero {
+  max-width: 500px;
+  padding-bottom: 3px;
+  margin:auto;
+}
+
+.form-control {
+  box-shadow: 0 10px 40px 0 #B0C1D9;
+ 
+}
+.mat-simple-snackbar span {
+  margin: auto;
+  text-align: center;
+}
+.center-snackbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.form-control::placeholder  {
+  font-family: FontAwesome;
+}
+#returnHome{
+  border: none;
+  background-color: white;
+  font-weight: bold;
+  direction: rtl;
+margin-top: 0%;
+position: absolute; 
+color: rgb(21 48 141);
+}
+#returnHome:hover{
+  #faClass{
+      transform: scale(1.2);
+      font-size:24px;
+      color: rgb(21 48 141);
+  }
+}

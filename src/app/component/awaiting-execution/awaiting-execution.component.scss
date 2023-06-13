@@ -1,0 +1,33 @@
+button{
+    margin-left: 2%;
+    border-radius: 5px;
+    border-color: green;
+    }
+    // tr:hover {
+    //     background-color: gray;
+    //   }
+    table th{
+        background-color: rgb(41, 45, 92);
+        color: white;
+        text-align: right;
+        
+      }
+      table{
+        right: 10%;
+      }
+      #returnHome{
+        border: none;
+        background-color: white;
+        font-weight: bold;
+        direction: rtl;
+    margin-top: 0%;
+    position: absolute; 
+    color: rgb(21 48 141);
+    }
+    #returnHome:hover{
+        #faClass{
+            transform: scale(1.2);
+            font-size:24px;
+            color: rgb(21 48 141);
+        }
+    }

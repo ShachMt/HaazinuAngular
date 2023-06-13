@@ -1,0 +1,135 @@
+.container {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  font-family: Heebo-Regular;
+  // border-radius: 5px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow:#919393 0px 0px 15px 0px;
+  border-radius:20px;
+}
+
+ .all-container{
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box  ;
+  margin: 25px;
+}  
+  #row{
+    text-align: right;
+    margin-right: 4%;
+    direction: rtl;
+    margin-bottom: 1%;
+  }
+  input[type=text],[type=email], select, textarea {
+    width: 100%;
+    padding: 10px;
+    // border: 1px solid #000000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+  #cot{
+    text-align: center;
+    direction: rtl;
+}
+.required-label:after {
+  content: '*';
+  position: absolute;
+  margin-right: 5px;
+  color: #ee0000;
+  font-size: 1.5em;
+}
+#tblEmp{
+  text-align: right;
+  direction: rtl;
+  margin-left: 10%;
+  width: 80%;
+}
+// button{
+//     text-align: center;
+//     border-color: white;
+//      font-size: 99%;
+//      background-color: rgb(46, 46, 128); 
+//      color: white;
+// }
+// #cot{
+//     text-align: center;
+//     direction: rtl;
+// }
+// h3{
+//  font-weight: 10%; 
+//  color:rgb(46, 46, 128);
+//  text-align: center;
+// }
+// .formE{
+//     // background-color: white;
+//     width: 50%;
+//     margin-left: 25%;
+//     background-color: rgb(226, 226, 253);
+//     border: 2px solid  rgb(46, 46, 128);
+//     border-radius: 1%;
+// }
+
+  
+//   #row{
+//     text-align: right;
+//     margin-right: 4%;
+//     direction: rtl;
+//     margin-bottom: 1%;
+//   }
+//   span{
+//     font-weight: bold;
+//    color: rgb(46, 46, 128); ;
+//   }
+//   #addEmp{
+//     margin-bottom: 2%;
+//     margin-left: 1%;
+//     width: 20%;
+//     border: 2px;
+   
+//   }
+//   #addEmp:hover{
+//     background-color: white;
+//     color:rgb(161, 161, 248);
+//    transform: scale(1.1);
+//    border-color: rgb(46, 46, 128);
+//       margin-left: 2%;
+//   }
+//   input{
+//    margin-right: 2%;
+//   }
+//   .bt:hover{
+//     color: red;
+//     cursor: pointer;
+//   }
+//   select{
+//     margin-right: 2%;
+//   }
+//   // #tblEmp{
+//   //   text-align: right;
+//   //   direction: rtl;
+//   //   margin-left: 10%;
+//   //   width: 80%;
+//   // }
+//   #returnHome{
+//     border: none;
+//     background-color: white;
+//     font-weight: bold;
+//     direction: rtl;
+// margin-top: -1%;
+// position: absolute; 
+// color: rgb(21 48 141);
+// }
+// #returnHome:hover{
+//     #faClass{
+//         transform: scale(1.2);
+//         font-size:24px;
+//         color: rgb(21 48 141);
+//     }
+// }
+  
