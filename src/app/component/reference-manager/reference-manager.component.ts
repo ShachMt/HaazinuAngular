@@ -275,11 +275,20 @@ export class ReferenceManagerComponent implements OnInit {
 
   }
   addTreatmentDetails(item: any) {
+    
+    this.isPressSivoug=false;
+    if(item.treatment?.statusId==2){
+      this.isPressSivoug=true;
+    }
     if (!this.isPressSivoug && !this.isDelete && (item.treatment?.statusId != 6)) {
       this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id]);
     }
     else if (item.treatment?.statusId == 6 && !this.isDelete) {
       this.myRouter.navigate(['/fillNewApply/' + item.apply?.id]);
+    }
+    else if (item.treatment?.statusId == 2 && !this.isDelete) {
+      this.isPressSivoug=true;
+      this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id + '/' + this.isPressSivoug]);
     }
     else if (item != null) {
       if (!this.isDelete)

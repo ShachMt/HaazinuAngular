@@ -223,7 +223,8 @@ export class NewApplySecreteryComponent implements OnInit {
     this.newApply.dateNow = new Date();
     this.newApply.employeesId = this.currentEmplo.id;
     this.newApply.askerId = this.idUserAsker;
-    this.newApply.applyCausedId = this.currentCauseReferral.id
+    this.newApply.applyCausedId = this.currentCauseReferral.id;
+    this.newApply.isActive=true;
     this.ApplyService.AddApply(this.newApply).subscribe(AddApply => {
       sessionStorage.setItem("applyId", JSON.stringify(AddApply));
       this.idApply = AddApply;

@@ -13,12 +13,8 @@ import { EducationalInstitutionsApplicantComponent } from './component/education
 import { NewApplySecreteryComponent } from './component/new-apply-secretery/new-apply-secretery.component';
 import { InstitutionsCategoryFirstComponent } from './component/institutions-category-first/institutions-category-first.component';
 import { ShowDetailsApplyComponent } from './component/show-details-apply/show-details-apply.component';
-import { AwaitingExecutionComponent } from './component/awaiting-execution/awaiting-execution.component';
-import { NewTratmentDetailsManagerComponent } from './component/new-tratment-details-manager/new-tratment-details-manager.component';
 import { SystemActivityComponent } from './component/system-activity/system-activity.component';
 import { StatusApplyManagerComponent } from './component/status-apply-manager/status-apply-manager.component';
-import { AwaitingClassificationComponent } from './component/awaiting-classification/awaiting-classification.component';
-import { AllApplyManagerComponent } from './component/all-apply-manager/all-apply-manager.component';
 import { NavigatePatientComponent } from './component/navigate-patient/navigate-patient.component';
 import { VisionComponent } from './component/vision/vision.component';
 const routes: Routes = [
@@ -36,10 +32,9 @@ children:[ ]},
 {path:"newApplySecretery",component:NewApplySecreteryComponent},
 {path:"showDetailsApply",component:ShowDetailsApplyComponent},
 {path:"navigatePatient",component:NavigatePatientComponent},
-{path:"awaitingExecution",component:AwaitingExecutionComponent},
 
 {path:"newPassword",component:NewPasswordComponent},
-{path:"newTratmentDetailsManager/:id",component:NewTratmentDetailsManagerComponent},
+// {path:"newTratmentDetailsManager/:id",component:NewTratmentDetailsManagerComponent},
 // 'myroute/:param1/:param2'
 
 {path:'educationalInstitutionsApplicant/:id/:indexCategory/:isTvach/:nowInstition',component:EducationalInstitutionsApplicantComponent},

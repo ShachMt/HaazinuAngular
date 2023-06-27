@@ -42,13 +42,9 @@ import { ShowDetailsApplyComponent } from './component/show-details-apply/show-d
 import { DatePipe } from '@angular/common';
 import { PatientDetailsComponent } from './component/patient-details/patient-details.component';
 import { NewTreatmentDetailsComponent } from './component/new-treatment-details/new-treatment-details.component';
-import { AwaitingExecutionComponent } from './component/awaiting-execution/awaiting-execution.component';
-import { NewTratmentDetailsManagerComponent } from './component/new-tratment-details-manager/new-tratment-details-manager.component';
 import {MatIconModule} from '@angular/material/icon';
 import { SystemActivityComponent } from './component/system-activity/system-activity.component';
-import { AllApplyManagerComponent } from './component/all-apply-manager/all-apply-manager.component';
 import { StatusApplyManagerComponent } from './component/status-apply-manager/status-apply-manager.component';
-import { AwaitingClassificationComponent } from './component/awaiting-classification/awaiting-classification.component';
 import { WaitPageComponent } from './component/wait-page/wait-page.component';
 import { NavigatePatientComponent } from './component/navigate-patient/navigate-patient.component';
 import { HeaderComponent } from './component/header/header.component';
@@ -87,12 +83,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ShowDetailsApplyComponent,
     PatientDetailsComponent,
     NewTreatmentDetailsComponent,
-    AwaitingExecutionComponent,
-    NewTratmentDetailsManagerComponent,
     SystemActivityComponent,
-    AllApplyManagerComponent,
     StatusApplyManagerComponent,
-    AwaitingClassificationComponent,
     WaitPageComponent,
     NavigatePatientComponent,
     HeaderComponent,

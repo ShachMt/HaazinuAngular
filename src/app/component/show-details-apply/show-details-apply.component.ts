@@ -70,9 +70,14 @@ export class ShowDetailsApplyComponent implements OnInit {
     
   }
   deleteTreatmentDetails(id:any,status:any) {
+    this.sivoug=false;
+     this.isClickAddTreatment=false;
     if(status==7){
-      alert("לא ניתן למחוק שלב טיפול זה");
-
+      alert(" יש להזין שנית-לא ניתן למחוק שלב טיפול זה");
+      this.treatmentDetailsService.deleteTreatmentDetails(id,this.currentNumApply).subscribe(emp => {
+      this.sivoug=true;
+     this.isClickAddTreatment=true;}, 
+     err => { console.log("error") });
     }
     else{
       this.treatmentDetailsService.deleteTreatmentDetails(id,this.currentNumApply).subscribe(emp => {

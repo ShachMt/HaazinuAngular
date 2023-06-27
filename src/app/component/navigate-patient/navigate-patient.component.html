@@ -34,7 +34,7 @@
               <td *ngIf="item.treatment?.therapist">{{item.treatment?.therapist?.idUserNavigation?.firstName}}</td>
                 <td>{{item.apply?.asker?.phone}}</td>
               <td>{{item.apply?.applyCaused?.descreption}}<span *ngIf="item.apply?.detailsAnotherCause">-{{item.apply?.detailsAnotherCause}}</span></td>
-              <td>{{item.treatment?.status?.details}}</td>
+              <td>{{item.treatment?.status?.details}}- {{item.treatment?.documentation}}</td>
             </tr>
       
           </tbody>

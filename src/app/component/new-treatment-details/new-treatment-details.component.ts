@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TreatmentDetailsService } from 'src/app/Services/treatment-details.service';
 import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
+import { ApplyService } from 'src/app/Services/apply.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
     private myRouter: Router,
     private datePipe: DatePipe,
     private location: Location,
+    private applyService: ApplyService,
   ) {
 
   }
@@ -42,13 +44,14 @@ export class NewTreatmentDetailsComponent implements OnInit {
     hebrewLetters: new FormControl('', Validators.required),
     time: new FormControl(""),
     place: new FormControl(""),
-    selectNextTaskIsEmplo:new FormControl(''),
+    selectNextTaskIsEmplo: new FormControl(''),
+    s: new FormControl(''),
   });
   form1: FormGroup = new FormGroup({
     // selectTask: new FormControl('', Validators.required),
     // selectNextTask: new FormControl('', Validators.required),
     date: new FormControl(new Date(), [Validators.required]),
-     selectNextTaskIsEmplo: new FormControl('', Validators.required),
+    selectNextEmplo: new FormControl('', Validators.required),
     hebrewLetters: new FormControl('', [Validators.required]),
     dateTime: new FormControl(new Date(), [Validators.required]),
     // place: new FormControl(new Date(), [Validators.required])
@@ -58,13 +61,14 @@ export class NewTreatmentDetailsComponent implements OnInit {
     // selectNextTask: new FormControl('', Validators.required),
     hebrewLetters: new FormControl('', [Validators.required]),
     date: new FormControl(new Date(), [Validators.required]),
-    s:new FormControl(''),
+    s: new FormControl(''),
     // selectNextTaskIsEmplo: new FormControl('', Validators.required),
     // hebrewLettersDetailsTask: new FormControl('', [Validators.required, Validators.pattern(`^[\u0590-\u05FF .,?!"':;_()-\]+$`)]),
     // dateTime: new FormControl(new Date(), [Validators.required]),
     // place: new FormControl(new Date(), [Validators.required])
   });
   currentTreatmentDetails: TreatmentDetails = new TreatmentDetails();
+  ofiCurrent: string = "";
   newTreatmentDedails: TreatmentDetails = new TreatmentDetails();
   isEdkoud: boolean = true;
   isEdkoudB: boolean = true;
@@ -94,12 +98,16 @@ export class NewTreatmentDetailsComponent implements OnInit {
     this.IsSec
     this.isEdkoud = true;
     this.newTreatmentDedails.dateNow = new Date();
-    this.newTreatmentDedails.dateTask= new Date();
+    this.newTreatmentDedails.dateTask = new Date();
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.newTreatmentDedails.applyId = id;
       this.treatmentDetailsService.GetTreatmentDetailsByApplyState(id).subscribe(newTreatmentDetails => {
         this.currentTreatmentDetails = newTreatmentDetails;
+        if (newTreatmentDetails.statusId == 7)
+          this.ofiCurrent = "פניה חדשה"
+        else
+          this.ofiCurrent = "" + this.currentTreatmentDetails.task?.taskName;
       },
         err => { console.log("error") });
     });
@@ -121,10 +129,10 @@ export class NewTreatmentDetailsComponent implements OnInit {
       }
     },
       err => { console.log("error") });
-      this.employeeService.GetAllEmployees().subscribe(emplo => {
-        this.arrayEmplo = emplo;
-      },
-        err => { console.log("error") });
+    this.employeeService.GetAllEmployees().subscribe(emplo => {
+      this.arrayEmplo = emplo;
+    },
+      err => { console.log("error") });
 
   }
 
@@ -188,9 +196,9 @@ export class NewTreatmentDetailsComponent implements OnInit {
   }
   //במידה ומוצג רשימת הפעילים 
   selectIsEmplo() {
-debugger
-this.employeesId
-this.form.get('selectNextTaskIsEmplo')?.value
+    debugger
+    this.employeesId
+    this.form.get('selectNextTaskIsEmplo')?.value
   }
   //ביצוע שלב הבא
   onSelectedValueChange() {
@@ -217,7 +225,7 @@ this.form.get('selectNextTaskIsEmplo')?.value
     }
   }
   validateDate() {
-    
+
     this.isOkDate = true;
     this.isOkDateEmp = true;
     let date1 = new Date(); // your first date
@@ -257,18 +265,47 @@ this.form.get('selectNextTaskIsEmplo')?.value
     if (!this.newTreatmentDedails.nextEmployeesId) {
       if (this.form.get('selectNextTaskIsEmplo')?.value != "")
         // this.newTreatmentDedails.nextEmployeesId = parseInt(this.employeesId);
-        this.newTreatmentDedails.nextEmployeesId=Number(this.form.get('selectNextTaskIsEmplo')?.value)
+        this.newTreatmentDedails.nextEmployeesId = Number(this.form.get('selectNextTaskIsEmplo')?.value)
       else
         this.newTreatmentDedails.nextEmployeesId = this.newTreatmentDedails.therapistId;
     }
     //כדי לקבוע סטטוס פניה
     //אם נבחר סגירת הפניה
-    if (this.newTreatmentDedails.nextStepId == 7)
-      this.newTreatmentDedails.statusId = 5
+    if (this.newTreatmentDedails.nextStepId == 7) {
+      this.newTreatmentDedails.statusId = 5;
+      this.applyService.getApplyById(this.newTreatmentDedails.applyId).subscribe(apply => {
+        apply.isActive = false;
+        this.applyService.UpdateApply(apply.id, apply).subscribe(result => {
+          console.log(result);
+        },
+          err => { console.log("error") });
+      },
+        err => { console.log("error") });
+    }
+    else if (this.newTreatmentDedails.nextStepId == 9) {
+      this.newTreatmentDedails.statusId == 1007;
+      if (this.form.get('s')?.value == 1 || this.currentTreatmentDetails.statusId == 7) {
+        this.newTreatmentDedails.nextEmployeesId = this.arrayEmplo.find
+          (e => e.job?.details == "מנהל פניות          ")?.id;
+        if (this.currentTreatmentDetails.statusId == 7)
+          this.newTreatmentDedails.taskId = this.currentTreatmentDetails.taskId;
+      }
+      else if (this.form.get('s')?.value == 2) {
+
+        this.treatmentDetailsService.employeesApply(this.newTreatmentDedails.applyId).subscribe(emplo => {
+          this.newTreatmentDedails.nextEmployeesId = emplo;
+        },
+          err => { console.log("error") });
+      }
+    }
+
     else
       //ממתין לביצוע
       this.newTreatmentDedails.statusId = 4;
-    this.newTreatmentDedails.taskId = this.currentTreatmentDetails.nextStepId;
+    if (this.currentTreatmentDetails.statusId != 7)
+      this.newTreatmentDedails.taskId = this.currentTreatmentDetails.nextStepId;
+
+
     this.newTreatmentDedails.nextStepId = parseInt("" + this.newTreatmentDedails.nextStepId);
 
     if (this.form.get('time')?.value != "") {
@@ -304,48 +341,51 @@ this.form.get('selectNextTaskIsEmplo')?.value
       err => { console.log("error") });
   }
   //סיווג מנהלי
-  onSubmit1(){
+  onSubmit1() {
+    debugger;
     this.newTreatmentDedails.taskId = 1013;
-    this.newTreatmentDedails.nextEmployeesId = +this.employeesId;
+    this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextEmplo')?.value;
     this.newTreatmentDedails.statusId = 7;
-//תוכן של ביצוע שלב קודם- תיעוד הארוע
-this.newTreatmentDedails.documentation = this.form1.get('hebrewLetters')?.value;
-  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
-    if (this.emp.job?.id == 1) {
-      this.myRouter.navigate(['/manager']);
-    }
-    else if (this.emp.job?.id == 3)
-      this.myRouter.navigate(['/navigateSecretary']);
-    else if (this.emp.job?.id == 4)
-      this.myRouter.navigate(['/inTakeNav']);
-    else if (this.emp.job?.id == 5)
-      this.myRouter.navigate(['/navigatePatient']);  },
-    err => { console.log("error") });
+    //תוכן של ביצוע שלב קודם- תיעוד הארוע
+    this.newTreatmentDedails.documentation = this.form1.get('hebrewLetters')?.value;
+    this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
+      if (this.emp.job?.id == 1) {
+        this.myRouter.navigate(['/manager']);
+      }
+      else if (this.emp.job?.id == 3)
+        this.myRouter.navigate(['/navigateSecretary']);
+      else if (this.emp.job?.id == 4)
+        this.myRouter.navigate(['/inTakeNav']);
+      else if (this.emp.job?.id == 5)
+        this.myRouter.navigate(['/navigatePatient']);
+    },
+      err => { console.log("error") });
 
   }
   // עדכון בפניה של מזכיר
-onSubmit2(){
-this.newTreatmentDedails.statusId=1007;
-this.newTreatmentDedails.taskId=9;
-this.selectIsEmploShiyouchPnia();
-this.newTreatmentDedails.dateTask=new Date();
+  onSubmit2() {
+    this.newTreatmentDedails.statusId = 1007;
+    this.newTreatmentDedails.taskId = 9;
+    this.selectIsEmploShiyouchPnia();
+    this.newTreatmentDedails.dateTask = new Date();
 
-this.newTreatmentDedails.documentation = this.form2.get(
-  'hebrewLetters')?.value;
+    this.newTreatmentDedails.documentation = this.form2.get(
+      'hebrewLetters')?.value;
 
-  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
-    if (this.emp.job?.id == 1) {
-      this.myRouter.navigate(['/manager']);
-    }
-    else if (this.emp.job?.id == 3)
-      this.myRouter.navigate(['/navigateSecretary']);
-    else if (this.emp.job?.id == 4)
-      this.myRouter.navigate(['/inTakeNav']);
-    else if (this.emp.job?.id == 5)
-      this.myRouter.navigate(['/navigatePatient']);    },
+    this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
+      if (this.emp.job?.id == 1) {
+        this.myRouter.navigate(['/manager']);
+      }
+      else if (this.emp.job?.id == 3)
+        this.myRouter.navigate(['/navigateSecretary']);
+      else if (this.emp.job?.id == 4)
+        this.myRouter.navigate(['/inTakeNav']);
+      else if (this.emp.job?.id == 5)
+        this.myRouter.navigate(['/navigatePatient']);
+    },
       err => { console.log("error") });
 
-}
+  }
   return() {
     this.location.back();
   }

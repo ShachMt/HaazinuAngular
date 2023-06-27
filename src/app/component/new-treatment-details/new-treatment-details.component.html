@@ -5,7 +5,7 @@
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
     <mat-form-field class="taskN" appearance="fill">
       <mat-label>אופי הארוע</mat-label>
-      <input matInput value="{{currentTreatmentDetails.nextStep?.taskName}}" readonly>
+      <input matInput value="{{ofiCurrent}}" readonly>
     </mat-form-field>
     <br>
     <span id="title">תיעוד האירוע</span><br>
@@ -115,7 +115,7 @@
     <br>
     <mat-form-field class="taskN" appearance="fill">
       <mat-label>בחר פעיל </mat-label>
-      <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="employeesId">
+      <mat-select id="chooseT" name="chooseT" formControlName="selectNextEmplo" [(ngModel)]="employeesId">
         <mat-option id="taskOp" *ngFor="let item of arrayEmploI"
           [value]="item.id">{{item.idUserNavigation?.firstName}}</mat-option>
       </mat-select>

@@ -12,6 +12,7 @@ export class Apply {
     levelUrgency?:string;
     detailsCausedRefferal?:string;
     detailsAnotherCause?:string;
+    isActive?:boolean;
 
     employees?:Employee;
     asker?:User;
