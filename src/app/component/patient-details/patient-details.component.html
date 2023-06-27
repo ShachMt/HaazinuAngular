@@ -1,11 +1,16 @@
 <div *ngIf="currentPatientDetails!=null" class="card">
   <span *ngIf="currentApply.asker?.phone"> {{currentApply.asker?.firstName}}
     <b>במספר טלפון:</b>
-    {{currentApply.asker?.phone}}</span>פונה בנוגע ל-
+    {{currentApply.asker?.phone}} פונה בנוגע ל-  {{self}}</span>
   {{currentPatientDetails.user?.firstName}} {{currentPatientDetails.user?.lastName}}
   טלפון: {{currentPatientDetails.user?.phone}}
   <button class="btn btn-success" style="cursor: pointer;" (click)="isOpen=!isOpen">לאינטייק המלא</button>
   <div *ngIf="isOpen">
+    <span><svg id="b" (click)="updateIntake()" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+      fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+      <path
+        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+    </svg></span>
     <span *ngIf="currentTreatment" style="white-space:nowrap;"><b> בתאריך:</b>
       {{currentTreatment.dateNow|date:'dd/MM/yyyy'}} <b>בשעה: </b>
       {{currentTreatment.dateNow|date:'HH:mm:ss'}}
@@ -63,16 +68,15 @@
     <span *ngIf="currentPatientDetails.social"> <b>מבחינה חברתית: </b> {{currentPatientDetails.social}} </span><br>
     <span *ngIf="currentPatientDetails.studies"> <b>מבחינה לימודית:</b> {{currentPatientDetails.studies}} </span><br>
     <span *ngIf="currentPatientDetails.diagnoses"> <b>אבחונים:</b> {{currentPatientDetails.diagnoses}} </span><br>
-    <b>{{isTherapeuticT}} </b> {{isTherapeutic}}
-    <span *ngIf="currentPatientDetails.datailsJobTerapist"><b> תפקיד: </b>
-      {{currentPatientDetails.datailsJobTerapist}}</span>
+    <b>{{isTherapeuticT}} </b> {{isTherapeutic}}<br>
     <b>{{permissionContact}}</b>
+
     <br>
     <span *ngIf="currentPatientDetails.isMatureCharacter"><b> בקשר עם: </b> {{isMatureCharacter}}
     </span>
     <span *ngIf="currentPatientDetails.matureCharacter?.framwork"><b> מטעם מסגרת:
       </b>{{currentPatientDetails.matureCharacter?.framwork}} </span>
-    <b><span *ngIf="currentPatientDetails.matureCharacter?.permissionContact"><br>
+    <b><span *ngIf="currentPatientDetails.permissionContactM"><br>
         במידת הצורך מאפשרים לפנות
       </span></b>
     <button *ngIf="currentEmplorees.job?.id==1" class="btn btn-success" style="cursor: pointer;"
@@ -116,16 +120,16 @@
         </div>
         <div class="row">
           <div class="col-10">
-          <span *ngIf="item.nextStep?.taskName" id="title"> לשלב קבע כי
-            יתבצע:<span>{{item.nextStep?.taskName}}
-              <span *ngIf="item.nextEmployeesId!=item.therapistId">
-                <span *ngIf="item.nextEmployees?.idUserNavigation?.firstName" id="title">ע"י
-                  :</span></span><span>{{item.nextEmployees?.idUserNavigation?.firstName}}</span>
-            </span></span>
-          <span *ngIf="item.nextDocumentation&&item.nextStep?.id!=2" id="title">
-            -</span><span>{{item.nextDocumentation}} </span>
+            <span *ngIf="item.nextStep?.taskName" id="title"> לשלב קבע כי
+              יתבצע:<span>{{item.nextStep?.taskName}}
+                <span *ngIf="item.nextEmployeesId!=item.therapistId">
+                  <span *ngIf="item.nextEmployees?.idUserNavigation?.firstName" id="title">ע"י
+                    :</span></span><span>{{item.nextEmployees?.idUserNavigation?.firstName}}</span>
+              </span></span>
+            <span *ngIf="item.nextDocumentation&&item.nextStep?.id!=2" id="title">
+              -</span><span>{{item.nextDocumentation}} </span>
           </div>
-          </div>
+        </div>
         <span *ngIf="item.dateTask&&item.nextDocumentation" id="title"> יבוצע
           לתאריך:</span><span *ngIf="item.dateTask&&item.nextDocumentation">{{item.dateTask|date:'dd/MM/yyyy'}}</span>
         <span *ngIf="item.nextStep?.id==2" id="title"> לשעה:<span>{{item.dateTask|date:'HH:mm'}}</span>
@@ -153,8 +157,10 @@
             </div>
             <span *ngIf="item.documentation" id="title">
             </span><span *ngIf="item.taskId!=9">-{{item.documentation}}</span><br>
-            <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist!=currentEmplorees">- מידע חסוי</span><br>
-          <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist==currentEmplorees">-{{item.documentation}}</span><br>
+            <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist!=currentEmplorees">- מידע
+              חסוי</span><br>
+            <span
+              *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist==currentEmplorees">-{{item.documentation}}</span><br>
 
           </div>
           <span *ngIf="item.nextStep?.taskName" id="title"> לשלב הבא קבע כי
@@ -176,9 +182,50 @@
   <button class="btn btn-success" (click)="isClickTreatment=!isClickTreatment" style="cursor: pointer;">תהליך
     טיפולי</button>
   <div *ngIf="isClickTreatment">
-  <!-- חוץ מקביעת פגישה 3/4 יופיע רק מה שאמפלייז איידי שלו לא  -->
-
-
+    <!-- חוץ מקביעת פגישה 3/4 יופיע רק מה שאמפלייז איידי שלו לא  -->
+    <div id="divTreatmentDetails" *ngFor="let item of arrayTreatmentDetails">
+      <div *ngIf="item.task?.id==2||
+      (item.therapist?.jobId!=3&&item.therapist?.jobId!=4&&item.task?.id!=2012&&item.task?.id!=1013
+      &&item.task?.id!=1012&&item.task?.id!=13)">
+        <div class="row">
+          <div class="col-10">
+            <span *ngIf="item.dateNow" id="title"> בתאריך:</span>
+            <span> {{item.dateNow|date:'dd/MM/yyyy'}} </span>
+            <span *ngIf="item.dateNow" id="title"> בשעה :</span>
+            <span>{{item.dateNow|date:'HH:mm:ss'}}</span>
+          </div>
+          <div class="col-1">
+            <mat-icon id="del" style="cursor: pointer;" (click)="openDeleteDialog(item)"> delete </mat-icon>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <span *ngIf="item.therapist?.idUserNavigation?.firstName" id="title">
+              {{item.therapist?.idUserNavigation?.firstName}} </span>
+            <span *ngIf="item.task?.taskName " id="title">ביצע </span><span>{{item.task?.taskName}}
+              <span *ngIf="item.documentation" id="title">ומתאר
+                כי:</span><span>{{item.documentation}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <span *ngIf="item.nextStep?.taskName" id="title"> לשלב קבע כי
+              יתבצע:<span>{{item.nextStep?.taskName}}
+                <span *ngIf="item.nextEmployeesId!=item.therapistId">
+                  <span *ngIf="item.nextEmployees?.idUserNavigation?.firstName" id="title">ע"י
+                    :</span></span><span>{{item.nextEmployees?.idUserNavigation?.firstName}}</span>
+              </span></span>
+            <span *ngIf="item.nextDocumentation&&item.nextStep?.id!=2" id="title">
+              -</span><span>{{item.nextDocumentation}} </span>
+          </div>
+        </div>
+        <span *ngIf="item.dateTask&&item.nextDocumentation" id="title"> יבוצע
+          לתאריך:</span><span *ngIf="item.dateTask&&item.nextDocumentation">{{item.dateTask|date:'dd/MM/yyyy'}}</span>
+        <span *ngIf="item.nextStep?.id==2" id="title"> לשעה:<span>{{item.dateTask|date:'HH:mm'}}</span>
+          <br>{{item.nextDocumentation}} </span>
+      </div>
+    </div>
 
   </div>
 </div>

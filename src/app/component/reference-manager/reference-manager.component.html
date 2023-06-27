@@ -40,11 +40,6 @@
 <div class="row justify-content-center">
   <div class="col-9 mr-2 n">
     <!-- <div class="mat-elevation-z8"> -->
-      <div *ngIf="newApplyListA.length==0" class="col-md-9 mr-2"> 
-        <div>
-          <img src="../../../assets/images/not found.PNG">
-        </div>
-      </div>
       <table *ngIf="newApplyListA.length>0" class="table table-hover">
         <thead>
           <tr>
@@ -89,6 +84,11 @@
       aria-label="Select page of periodic elements">
       </mat-paginator> -->
     <!-- </div> -->
+    <div *ngIf="newApplyListA.length==0" class="col-md-9 mr-2"> 
+      <div>
+        <img src="../../../assets/images/not found.PNG">
+      </div>
+    </div>
   </div>
   <div class="col-md-2">
     <div id="btn">

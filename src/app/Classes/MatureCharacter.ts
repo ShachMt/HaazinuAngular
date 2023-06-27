@@ -5,8 +5,11 @@ export class MatureCharacter {
     idApplicant?: number;
     idMature?:number;
     framwork?:string;
-    permissionContact?: boolean;
+    // permissionContact?: boolean;
     id?: number;
+    remarks?:string;
+    nameCity?:string;
+
     idApplicantNavigation?:Apply;
     idMatureNavigation?:User;
 }

@@ -33,6 +33,8 @@ import { EducationalInstitutionsApplicant } from 'src/app/Classes/EducationalIns
 import { EducationalInstitutionsApplicantService } from 'src/app/Services/educational-institutions-applicant.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Terapist } from 'src/app/Classes/Terapist';
+import { TerapistService } from 'src/app/Services/terapist.service';
 @Component({
   selector: 'app-fill-new-apply',
   templateUrl: './fill-new-apply.component.html',
@@ -59,8 +61,8 @@ export class FillNewApplyComponent implements OnInit {
     private institutionsCategoryService: InstitutionsCategoryService,
     private educationalInstitutionService: EducationalInstitutionService,
     private educationalInstitutionsApplicantService: EducationalInstitutionsApplicantService,
-    public dialog: MatDialog
-
+    public dialog: MatDialog,
+    public terapistService: TerapistService
   ) { }
 
   form!: FormGroup;
@@ -139,7 +141,13 @@ export class FillNewApplyComponent implements OnInit {
     { id: 13, name: "כיתה יד " }
   ];
 
+  arrayJob = [
+    { id: 4, name: "אחר" },
+    { id: 1, name: "פסיכיאטר" },
+    { id: 2, name: 'עו"ס' },
+    { id: 3, name: "פסיכולוג" }
 
+  ];
   private isDragging: boolean = false;
   private initialX: number = 0;
   private initialY: number = 0;
@@ -246,6 +254,10 @@ export class FillNewApplyComponent implements OnInit {
   emotionalB: boolean = false;
   socialB: boolean = false;
   studiesB: boolean = false;
+  arrayTerapists: Terapist[] = [];
+  isAnotherTerapist: boolean = false;
+  newTerapist: Terapist = new Terapist();
+  selectValueJobTerapist: string = "";
   //dateHebr
   // date = new Date();
 
@@ -257,11 +269,14 @@ export class FillNewApplyComponent implements OnInit {
     this.opentLastEdu = false;
     this.isTipul = false;
     this.isNotExistPatient = false;
+    this.terapistService.getAllTerapists().subscribe(t => {
+      if (t.length > 0)
+        this.arrayTerapists = t
+    },
+      err => { console.log("error") });
     this.route.params.subscribe(params => {
       const id = +params['idApply'];
       this.numApply = id;
-      // const isPastEducation = Boolean(params['isPastEducation']);
-      // this.isInstitionPast = isPastEducation;
       sessionStorage.setItem("isPast", JSON.stringify(this.isInstitionPast));
       if (this.isInstitionPast == true) {
         this.isPressMLN = true;
@@ -269,6 +284,8 @@ export class FillNewApplyComponent implements OnInit {
       sessionStorage.setItem("applyId", JSON.stringify(id));
       this.getCurrentApply();
     });
+
+
     let currentFamily = sessionStorage.getItem('currentFamily');
     if (currentFamily !== null) {
       this.newFamily = JSON.parse(currentFamily) as Family;
@@ -315,12 +332,11 @@ export class FillNewApplyComponent implements OnInit {
           this.newPatientDetails = patientDetails;
           this.isNotExistPatient = true;
           if (this.newPatientDetails.user) {
-            debugger
             this.user = this.newPatientDetails.user;
             sessionStorage.setItem("userPatientDetails", JSON.stringify(this.user));
           }
-          if (this.newPatientDetails.therapeutic) {
-            this.userMetapel = this.newPatientDetails.therapeutic;
+          if (this.newPatientDetails.terapist) {
+            this.userMetapel = this.newPatientDetails.terapist;
             sessionStorage.setItem("userMetapel", JSON.stringify(this.userMetapel));
           }
           if (this.newPatientDetails.matureCharacter?.idMatureNavigation) {
@@ -393,6 +409,11 @@ export class FillNewApplyComponent implements OnInit {
       job: [""],
       hebrewLettersCL: [""],
       permissionContact: [""],
+      still: [""],
+      permissionContactT: [""],
+      city: [""],
+      chooseT: [""],
+      cityM: [""],
     });
   }
   isClickReturnList() {
@@ -429,7 +450,6 @@ export class FillNewApplyComponent implements OnInit {
     }
   }
   isOpI() {
-    debugger
     this.isAnotherInstiton = false;
     this.notExistCity = false;
     this.isOp = !this.isOp;
@@ -459,7 +479,7 @@ export class FillNewApplyComponent implements OnInit {
               this.newEducationalInstitutionsApplicant = new EducationalInstitutionsApplicant();
             }
             if (arrIns.length > 0) {
-              debugger
+              
               this.newEducationalInstitutionsApplicant = arrIns[0];
               //סוג
               if (this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory)
@@ -544,7 +564,6 @@ export class FillNewApplyComponent implements OnInit {
       this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory
   }
   onSelectedValueChangeCategory(category: any) {
-    debugger
     this.isPressCategory = false;
     this.currentCategory = category;
     this.chooseCategory = "" + this.currentCategory.detailsCategory;
@@ -649,7 +668,6 @@ export class FillNewApplyComponent implements OnInit {
 
           },
             err => { console.log("error") });
-          debugger
           for (let index = this.indexCategory; index < this.arrayCategory.length; index++) {
             this.arrayNewCategory.push(this.arrayCategory[index]);
           }
@@ -765,19 +783,30 @@ export class FillNewApplyComponent implements OnInit {
     if (currentSector != null && currentSector.id == 4)
       this.isAnotherSector = true;
   }
-
+  //selectTerapist
+  onSelectedValueChangeTerapist() {
+    this.isAnotherTerapist = false;
+    let value = this.form.get('chooseT')?.value;
+    const currentTerapist = this.arrayTerapists.find(t => t.id == value);
+    if (this.arrayTerapists.length == 0 || value == 0) {
+      this.isAnotherTerapist = true;
+      this.newPatientDetails.terapistId = undefined;
+    }
+    else {
+      this.newPatientDetails.terapistId = currentTerapist?.id;
+      this.updateSessionPatientDetails();
+    }
+  }
 
   // sendValueReferredBy() {
   //   sessionStorage.setItem("detailsAsker", JSON.stringify(this.newDetailsAsker));
   // }
   refrSes() {
-    debugger
     sessionStorage.removeItem("currentListCategory");
     sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
     // location.reload();
   }
   onChangeTipul() {
-
     if (this.form.get('taalich')?.value == true) {
       this.isTipul = true;
       this.newPatientDetails.isTherapeutic = true;
@@ -793,18 +822,18 @@ export class FillNewApplyComponent implements OnInit {
     this.userMetapel.firstName = this.form.get('first')?.value
     this.userMetapel.lastName = this.form.get('last')?.value
     this.userMetapel.phone = this.form.get('mobileNumberM')?.value
-
     sessionStorage.setItem("userTherapist", JSON.stringify(this.userMetapel));
   }
   updateSessionPatientDetails() {
+    this.newPatientDetails.permissionContactTm = Boolean(this.form.get('permissionContactT')?.value)
     sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
   }
   onChangeStillTipul(valuel: any) {
-    if (valuel == true) {
+    if (this.form.get('still')?.value == true) {
       this.newPatientDetails.isStillTerapist = true;
       this.updateSessionPatientDetails();
     }
-    else if (valuel == false) {
+    else if (this.form.get('still')?.value == false) {
       this.newPatientDetails.isStillTerapist = false;
       this.updateSessionPatientDetails();
 
@@ -825,18 +854,19 @@ export class FillNewApplyComponent implements OnInit {
   }
   onChangePermissionContact(valuel: any) {
     if (valuel == "true") {
-      this.matureCharacter.permissionContact = true;
+      this.newPatientDetails.permissionContactM = true;
       this.updateSessiontoCharacter();
     }
     else if (valuel == "false") {
-      this.matureCharacter.permissionContact = false;
+      this.newPatientDetails.permissionContactM = false;
       this.updateSessiontoCharacter();
     }
   }
   updateSessiontoCharacter() {
-    debugger
-    this.matureCharacter.permissionContact = (Boolean)(this.form.get('permissionContact')?.value);
+    this.newPatientDetails.permissionContactM = (Boolean)(this.form.get('permissionContact')?.value);
+    this.updateSessionPatientDetails();
     this.matureCharacter.idApplicant = this.numApply;
+    this.matureCharacter.nameCity = this.form.get('cityM')?.value
     sessionStorage.setItem("matureCharacter", JSON.stringify(this.matureCharacter));
   }
   updateUserMetapelC() {
@@ -852,51 +882,7 @@ export class FillNewApplyComponent implements OnInit {
       this.isJerusalem = true;
   }
 
-  onChangeIns(valuel: any) {
-    this.newFamily.parentStatus = this.form.get('parent')?.value;
-    sessionStorage.setItem("currentFamily", JSON.stringify(this.newFamily));
-    sessionStorage.setItem("currentAddress", JSON.stringify(this.newAddress));
 
-    if (this.newPatientDetails.gender == "" || this.newPatientDetails.ageFillApply == undefined || (this.newPatientDetails.gender == "" && this.newPatientDetails.ageFillApply == undefined)) {
-      alert(" כדי שנוכל לעבור לעבור לשלב הבא יש לבחור מין :זכר / נקבה וכן למלא גיל")
-      this.selectedOptionIns = null;
-    }
-    else {
-      console.log(this.selectedOptionIns);
-      if (valuel.value == '1') {
-        this.newPatientDetails.isInstition = true;
-        // this.isPressPP = false;
-        if (!this.user.id) {
-          this.userService.AddUser(this.user).subscribe(asker => {
-            this.newPatientDetails.userId = asker;
-            this.user.id = asker;
-            sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
-            sessionStorage.setItem("userPatientDetails", JSON.stringify(this.user));
-          },
-            err => { console.log("error") });
-        }
-        else {
-          this.newPatientDetails.userId = this.user.id;
-          sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
-        }
-        //this.myRouter.navigate(['/institutionsCategoryFirst/' + this.numApply + '/' + this.newPatientDetails.gender + '/' + this.age]);
-      }
-      else if (valuel.value == '2') {
-        this.newPatientDetails.isInstition = false;
-        sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
-        this.isPressPP = false;
-        // this.myRouter.navigate(['/institutionsCategory/' + this.numApply + '/' + this.newPatientDetails.gender + '/' + this.age]);
-      }
-      else if (valuel.value == '3') {
-        if (this.isInstitionPast)
-          this.isPressMLN = false;
-        else
-          this.newPatientDetails.isInstition = false;
-        sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
-        this.isPressPP = true;
-      }
-    }
-  }
   //sent another sector and add it on the list sector
   sendValue(value: any) {
     this.anotherSectorO.detailsSector = value;
@@ -906,189 +892,11 @@ export class FillNewApplyComponent implements OnInit {
       err => { console.log("error") });
   }
 
-  // add a user
-  addNewUser() {
-    if (this.user.id) {
-      this.userService.UpdateUser(this.user.id, this.user).subscribe(asker => {
-        this.addAddress();
-      },
-        err => { console.log("error") });
-    }
-    else {
-      this.userService.AddUser(this.user).subscribe(asker => {
-        this.user.id = asker;
-        this.addAddress();
-      },
-        err => { console.log("error") });
-    }
-
-  }
-
-  //addAddress
-  addAddress() {
-    if (this.newAddress.id) {
-      this.addressService.UpdateAddress(this.newAddress.id, this.newAddress).subscribe(idAddress => {
-        this.addFamily();
-      }, err => { console.log("error") });
-    }
-    else {
-      this.addressService.AddAddress(this.newAddress).subscribe(idAddress => {
-        this.newPatientDetails.addressId = idAddress;
-        this.addFamily();
-      },
-        err => { console.log("error") });
-    }
-  }
-
-  //addFamily
-  addFamily() {
-    if (this.newFamily.id) {
-      this.familyService.UpdateFamily(this.newFamily.id, this.newFamily).subscribe(idAddress => {
-        // this.addDetailsAsker();
-        //שליפה לפי מספר פניה של הפרטי פונה
-        this.addPatientDetails();
-
-      }, err => { console.log("error") });
-    }
-
-    else {
-      this.familyService.AddFamily(this.newFamily).subscribe(idFamily => {
-        this.newPatientDetails.familyId = idFamily;
-        //שליפה לפי מספר פניה של הפרטי פונה
-        this.detailsAskerService.getIdDetailsAsker(this.currentApply.askerId)
-          .subscribe(idAsker => {
-            if (idAsker != 0) {
-              this.newPatientDetails.idDetailsAsker = idAsker;
-              this.addPatientDetails();
-            }
-            else {
-              alert("לא קיים פונה לפנייה זו!")
-            }
-          }, err => { console.log("error") });
-
-
-        // this.addDetailsAsker();
-
-      },
-        err => { console.log("error") });
-    }
-  }
-  addDetailsAsker() {
-    if (this.currentApply) {
-      this.newDetailsAsker.id = undefined
-      this.newDetailsAsker.userId = this.currentApply.asker?.id;
-      this.newDetailsAsker.idResone = this.currentApply.applyCausedId;
-      this.detailsAskerService.AddDetailsAsker(this.newDetailsAsker).subscribe(resultDetails => {
-        this.newPatientDetails.idDetailsAsker = resultDetails;
-        // this.newDetailsAsker.id=resultDetails;
-        this.addPatientDetails();
-      },
-        err => { console.log("error") });
-    }
-  }
-  //addPatientDetails
-  addPatientDetails() {
-    debugger
-    this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
-    this.newPatientDetails.emotional = this.form.get('emotional')?.value;
-    this.newPatientDetails.social = this.form.get('social')?.value;
-    this.newPatientDetails.studies = this.form.get('studies')?.value;
-    this.newPatientDetails.datailsJobTerapist = this.form.get('job')?.value;
-    if (this.newPatientDetails.id) {
-      this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
-        // this.newPatientDetails.id = idPatient;
-        this.addTreatment();
-      },
-        err => { console.log("error") });
-    }
-    else {
-      this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
-        // this.newPatientDetails.id = idPatient;
-        this.addTreatment();
-      },
-        err => { console.log("error") });
-    }
-  }
-
-  //הוספת שלב ביצוע  לסיווג מנהל
-  addTreatment() {
-    this.newTreatmentDetails.applyId = this.numApply;
-    this.newTreatmentDetails.therapistId = this.currentEmployees.id;
-    this.newTreatmentDetails.dateNow = new Date();
-    this.newTreatmentDetails.taskId = 1012;
-    this.newTreatmentDetails.statusId = 2;
-    this.newTreatmentDetails.dateTask = new Date();
-    this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
-      const config = new MatSnackBarConfig();
-      config.duration = 2000;
-      config.direction = 'rtl'
-      this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
-      sessionStorage.removeItem("currentListCategory");
-      sessionStorage.removeItem("userPatientDetails");
-      sessionStorage.removeItem("currentPatientDetails");
-      sessionStorage.removeItem("currentAddress");
-      sessionStorage.removeItem("currentFamily");
-      if (this.currentEmployees.job?.id == 1) {
-        this.myRouter.navigate(['/manager']);
-      }
-      else if (this.currentEmployees.job?.id == 3)
-        this.myRouter.navigate(['/navigateSecretary']);
-      else if (this.currentEmployees.job?.id == 4)
-        this.myRouter.navigate(['/inTakeNav']);
-      else if (this.currentEmployees.job?.id == 5)
-        this.myRouter.navigate(['/navigatePatient']);
-    },
-      err => { console.log("error") });
-  }
-
-
-
-  //////////////////////////
-  //   updateUser() {
-  //     this.userService.UpdateUser(this.newPatientDetails.userId, this.user).subscribe(asker => {
-  //       this.updateFamily();
-  //     },
-  //       err => { console.log("error") });
-  //   }
-  //   updateFamily() {
-
-  //     this.familyService.UpdateFamily(this.newPatientDetails.familyId, this.newFamily).subscribe(family => {
-  //       this.updateAddress();
-  //     },
-  //       err => { console.log("error") });
-  //   }
-  //   updateAddress() {
-
-  //     this.addressService.UpdateAddress(this.newPatientDetails.addressId, this.newAddress).subscribe(address => {
-  // this.updateDetailsAsker();
-  // },
-  //       err => { console.log("error") });
-
-  //   }
-  //   updateDetailsAsker(){
-  //     this.detailsAskerService.UpdateDetailsAsker(this.newDetailsAsker.id,this.newDetailsAsker).subscribe(resultDetails => {
-  //     this.newPatientDetails.idDetailsAsker=this.newDetailsAsker.id;
-  //     if(this.isNotExistPatient)
-  //     this.updatePatientDetails();
-  //     else
-  //     this.addPatientDetails();
-  //     },
-  //       err => { console.log("error") });
-  //   }
-  //   updatePatientDetails() {
-  //     this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(patientDetails => {
-  //       console.log(patientDetails);
-  //     },
-  //       err => { console.log("error") });
-  //   }
-
   saveNow() {
     let data = sessionStorage.getItem('currentPatientDetails');
     if (data !== null) {
       this.newPatientDetails = JSON.parse(data) as PatientDetails;
-      debugger
       if (this.newPatientDetails.isMatureCharacter == true) {
-
         let matureCharacter = sessionStorage.getItem('matureCharacter');
         if (matureCharacter !== null) {
           this.newMatureCharacter = JSON.parse(matureCharacter) as MatureCharacter;
@@ -1096,11 +904,17 @@ export class FillNewApplyComponent implements OnInit {
         }
       }
       if (this.newPatientDetails.isTherapeutic == true) {
-        let userTherapist = sessionStorage.getItem('userTherapist');
-        if (userTherapist !== null) {
-          this.newUserTherapist = JSON.parse(userTherapist) as User;
+        if (this.isAnotherTerapist == true) {
+          let userTherapist = sessionStorage.getItem('userTherapist');
+          if (userTherapist != null) {
+            this.newUserTherapist = JSON.parse(userTherapist) as User;
+            this.addUserTherapist();
+          }
         }
-        this.addUserTherapist();
+        else if (this.isAnotherTerapist == false) {
+          this.newPatientDetails.terapistId = this.newTerapist.id;
+
+        }
       }
     }
     let detailsAsker = sessionStorage.getItem('detailsAsker');
@@ -1121,20 +935,160 @@ export class FillNewApplyComponent implements OnInit {
     }
     this.addNewUser();
   }
-
-  addUserTherapist() {
-    this.userService.AddUser(this.newUserTherapist).subscribe(terapist => {
-      this.newPatientDetails.therapeuticId = terapist;
+ // add a user
+ addNewUser() {
+  if (this.user.id) {
+    this.userService.UpdateUser(this.user.id, this.user).subscribe(asker => {
+      this.addAddress();
     },
-      err => { console.log("error") })
+      err => { console.log("error") });
   }
+  else {
+    this.userService.AddUser(this.user).subscribe(asker => {
+      this.user.id = asker;
+      this.addAddress();
+    },
+      err => { console.log("error") });
+  }
+
+}
+
+//addAddress
+addAddress() {
+  if (this.newAddress.id) {
+    this.addressService.UpdateAddress(this.newAddress.id, this.newAddress).subscribe(idAddress => {
+      this.addFamily();
+    }, err => { console.log("error") });
+  }
+  else {
+    this.addressService.AddAddress(this.newAddress).subscribe(idAddress => {
+      this.newPatientDetails.addressId = idAddress;
+      this.addFamily();
+    },
+      err => { console.log("error") });
+  }
+}
+//addFamily
+addFamily() {
+  if (this.newFamily.id) {
+    this.familyService.UpdateFamily(this.newFamily.id, this.newFamily).subscribe(idAddress => {
+      this.addPatientDetails();
+
+    }, err => { console.log("error") });
+  }
+  else {
+    this.familyService.AddFamily(this.newFamily).subscribe(idFamily => {
+      this.newPatientDetails.familyId = idFamily;
+      //שליפה לפי מספר פניה של הפרטי פונה
+      this.detailsAskerService.getIdDetailsAsker(this.currentApply.askerId)
+        .subscribe(idAsker => {
+          if (idAsker != 0) {
+            this.newPatientDetails.idDetailsAsker = idAsker;
+            this.addPatientDetails();
+          }
+          else {
+            alert("לא קיים פונה לפנייה זו!")
+          }
+        }, err => { console.log("error") });
+
+
+      // this.addDetailsAsker();
+
+    },
+      err => { console.log("error") });
+  }
+}
+//addPatientDetails
+addPatientDetails() {
+  this.newPatientDetails.userId = this.user.id;
+  this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
+  this.newPatientDetails.emotional = this.form.get('emotional')?.value;
+  this.newPatientDetails.social = this.form.get('social')?.value;
+  this.newPatientDetails.studies = this.form.get('studies')?.value;
+  this.newPatientDetails.parentPhone = this.form.get('mobileNumberP')?.value;
+  this.newPatientDetails.terapistId = this.newTerapist.id;
+  this.newPatientDetails.isStillTerapist = this.form.get('still')?.value;
+  if (this.newPatientDetails.id) {
+    this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
+      this.addTreatment();
+    },
+      err => { console.log("error") });
+  }
+  else {
+    this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
+      this.addTreatment();
+    },
+      err => { console.log("error") });
+  }
+}
+
+//הוספת שלב ביצוע  לסיווג מנהל
+addTreatment() {
+  this.newTreatmentDetails.applyId = this.numApply;
+  this.newTreatmentDetails.therapistId = this.currentEmployees.id;
+  this.newTreatmentDetails.dateNow = new Date();
+  this.newTreatmentDetails.taskId = 1012;
+  this.newTreatmentDetails.statusId = 2;
+  this.newTreatmentDetails.dateTask = new Date();
+  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
+    const config = new MatSnackBarConfig();
+    config.duration = 2000;
+    config.direction = 'rtl'
+    this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
+    sessionStorage.removeItem("currentListCategory");
+    sessionStorage.removeItem("userPatientDetails");
+    sessionStorage.removeItem("currentPatientDetails");
+    sessionStorage.removeItem("currentAddress");
+    sessionStorage.removeItem("currentFamily");
+    if (this.currentEmployees.job?.id == 1) {
+      this.myRouter.navigate(['/manager']);
+    }
+    else if (this.currentEmployees.job?.id == 3)
+      this.myRouter.navigate(['/navigateSecretary']);
+    else if (this.currentEmployees.job?.id == 4)
+      this.myRouter.navigate(['/inTakeNav']);
+    else if (this.currentEmployees.job?.id == 5)
+      this.myRouter.navigate(['/navigatePatient']);
+  },
+    err => { console.log("error") });
+}
+
+
+  //הוספה/ עדכון של מטפל
+  addUserTherapist() {
+    if (this.newUserTherapist.id) {
+      this.userService.UpdateUser(this.user.id, this.newUserTherapist).subscribe(asker => {
+        this.newTerapist.city = this.form.get('city')?.value;
+        this.terapistService.updateTerapist(this.newTerapist.id, this.newTerapist).subscribe(t => {
+        },
+          err => { console.log("error") })
+      },
+        err => { console.log("error") });
+    }
+    else {
+      this.userService.AddUser(this.newUserTherapist).subscribe(terapist => {
+        this.newTerapist.idUser = terapist;
+        this.newTerapist.city = this.form.get('city')?.value;
+        this.terapistService.addTerapist(this.newTerapist).subscribe(t => {
+          this.newPatientDetails.terapistId = t;
+          this.newTerapist.id = t;
+        },
+          err => { console.log("error") })
+      },
+        err => { console.log("error") })
+    }
+  }
+  //הוספה/ עדכון של הפרטים אישיים של החונך
   addMature() {
     let userMature = sessionStorage.getItem('userMetapelC');
-    if (userMature !== null) {
+    if (userMature != null) {
       this.userMature = JSON.parse(userMature) as User;
     }
     if (this.userMature.id) {
-      this.addNewMature();
+      this.userService.UpdateUser(this.userMature.id, this.userMature).subscribe(asker => {
+        this.addNewMature()
+      },
+        err => { console.log("error") });
     }
     else {
       this.userService.AddUser(this.userMature).subscribe(terapist => {
@@ -1144,10 +1098,14 @@ export class FillNewApplyComponent implements OnInit {
         err => { console.log("error") });
     }
   }
+    //הוספה/ עדכון של חונך
   addNewMature() {
     this.newMatureCharacter.idApplicant = this.numApply;
     if (this.newMatureCharacter.id) {
-      return;
+      this.matureCharacterService.UpdateMatureCharacter
+        (this.newMatureCharacter.id, this.newMatureCharacter).subscribe(mature => {
+        },
+          err => { console.log("error") });
     }
     else {
       this.matureCharacterService.AddMatureCharacter(this.newMatureCharacter).subscribe(mature => {
@@ -1156,8 +1114,6 @@ export class FillNewApplyComponent implements OnInit {
         err => { console.log("error") });
     }
   }
-
-
   return() {
     this.location.back();
   }

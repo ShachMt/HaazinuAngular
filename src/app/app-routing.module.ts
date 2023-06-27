@@ -10,7 +10,6 @@ import { NewPasswordComponent } from './component/new-password/new-password.comp
 import { ReferenceManagerComponent } from './component/reference-manager/reference-manager.component';
 import { InstitutionsCategoryComponent } from './component/institutions-category/institutions-category.component';
 import { EducationalInstitutionsApplicantComponent } from './component/educational-institutions-applicant/educational-institutions-applicant.component';
-import { DetailsApplicantsComponent } from './component/details-applicants/details-applicants.component';
 import { NewApplySecreteryComponent } from './component/new-apply-secretery/new-apply-secretery.component';
 import { InstitutionsCategoryFirstComponent } from './component/institutions-category-first/institutions-category-first.component';
 import { ShowDetailsApplyComponent } from './component/show-details-apply/show-details-apply.component';
@@ -41,7 +40,6 @@ children:[ ]},
 
 {path:"newPassword",component:NewPasswordComponent},
 {path:"newTratmentDetailsManager/:id",component:NewTratmentDetailsManagerComponent},
-{path:"detailsApplicants/:id",component:DetailsApplicantsComponent},
 // 'myroute/:param1/:param2'
 
 {path:'educationalInstitutionsApplicant/:id/:indexCategory/:isTvach/:nowInstition',component:EducationalInstitutionsApplicantComponent},

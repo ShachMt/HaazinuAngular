@@ -132,6 +132,7 @@
             <mat-label>מגזר:</mat-label>
             <mat-select id="chooseSector" name="chooseSector" [(ngModel)]="newPatientDetails.sectorId"
               (ngModelChange)="onSelectedValueChangeSector($event)">
+              <mat-option style="text-align: right">אחר</mat-option>
               <mat-option style="text-align: right" *ngFor="let sector of arraySector" [value]="sector.id">{{
                 sector.detailsSector }}</mat-option>
             </mat-select>
@@ -426,88 +427,122 @@
       <div [formGroup]="form">
         <div class="row">
           <div class="col-4">
-        <h3 (click)="isP('studiesB')">תחום לימודי- </h3>
-          <mat-label *ngIf="studiesB">איך בלימוד?</mat-label>
-          <textarea *ngIf="studiesB" [(ngModel)]="newPatientDetails.studies" class="text-input"(input)="resizeTextarea(textarea)"#textarea matInput id="studies" name="studies"
-           formControlName="studies"></textarea>
+            <h3 (click)="isP('studiesB')">תחום לימודי- </h3>
+            <mat-label *ngIf="studiesB">איך בלימוד?</mat-label>
+            <textarea *ngIf="studiesB" [(ngModel)]="newPatientDetails.studies" class="text-input"
+              (input)="resizeTextarea(textarea)" #textarea matInput id="studies" name="studies"
+              formControlName="studies"></textarea>
+          </div>
+          <div class="col-4">
+            <h3 (click)="isP('socialB')">תחום חברתי- </h3>
+            <mat-label *ngIf="socialB">איך בחברה?</mat-label>
+            <textarea *ngIf="socialB" [(ngModel)]="newPatientDetails.social" class="text-input"
+              (input)="resizeTextarea(textarea)" #textarea matInput id="social" name="social"
+              formControlName="social"></textarea>
+          </div>
+          <div class="col-4">
+            <h3 (click)="isP('emotionalB')">תחום רגשי-</h3>
+            <mat-label *ngIf="emotionalB">איך מתנהל בבית מול ההורים והאחים?</mat-label>
+            <textarea *ngIf="emotionalB" [(ngModel)]="newPatientDetails.emotional" class="text-input"
+              (input)="resizeTextarea(textarea)" #textarea matInput id="emotional" name="emotional"
+              formControlName="emotional"></textarea>
+          </div>
         </div>
-        <div class="col-4">
-        <h3 (click)="isP('socialB')">תחום חברתי- </h3>
-          <mat-label *ngIf="socialB">איך בחברה?</mat-label>
-          <textarea *ngIf="socialB"[(ngModel)]="newPatientDetails.social" class="text-input"(input)="resizeTextarea(textarea)"#textarea matInput id="social" name="social"
-             formControlName="social"></textarea></div>
-        <div class="col-4">
-        <h3 (click)="isP('emotionalB')">תחום רגשי-</h3>
-          <mat-label *ngIf="emotionalB">איך מתנהל בבית מול ההורים והאחים?</mat-label>
-          <textarea *ngIf="emotionalB"[(ngModel)]="newPatientDetails.emotional" class="text-input"(input)="resizeTextarea(textarea)"#textarea matInput id="emotional" name="emotional"
-             formControlName="emotional"></textarea>
-        </div></div>
         <div class="row">
           <div class="col-4">
-        <h3 (click)="isP('diagnosesB')"> אבחונים- </h3>
-          <mat-label *ngIf="diagnosesB">איזה אבחונים עבר?</mat-label>
-          <textarea *ngIf="diagnosesB" [(ngModel)]="newPatientDetails.diagnoses" class="text-input"(input)="resizeTextarea(textarea)"#textarea matInput id="diagnoses" name="diagnoses"
-            formControlName="diagnoses"></textarea>
+            <h3 (click)="isP('diagnosesB')"> אבחונים- </h3>
+            <mat-label *ngIf="diagnosesB">איזה אבחונים עבר?</mat-label>
+            <textarea *ngIf="diagnosesB" [(ngModel)]="newPatientDetails.diagnoses" class="text-input"
+              (input)="resizeTextarea(textarea)" #textarea matInput id="diagnoses" name="diagnoses"
+              formControlName="diagnoses"></textarea>
           </div>
         </div>
         <h3>האם היה בתהליך טיפולי?</h3>
         <div class="row"></div>
         <div class="col-md-3">
-          <mat-radio-group id="selectedOptionTipul" name="selectedOptionTipul" 
-            (change)="onChangeTipul()" formControlName="taalich">
-            <mat-radio-button [color]="color" [value]="true">כן</mat-radio-button>
-            <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
+          <mat-radio-group id="selectedOptionTipul" name="selectedOptionTipul" (change)="onChangeTipul()"
+            formControlName="taalich">
+            <mat-radio-button  [checked]="newPatientDetails.isTherapeutic" [color]="color" [value]="true">כן</mat-radio-button>
+            <mat-radio-button  [checked]="!newPatientDetails.isTherapeutic" [color]="color" [value]="false">לא</mat-radio-button>
           </mat-radio-group>
         </div>
 
         <div class="row" *ngIf="isTipul==true||newPatientDetails.isTherapeutic==true">
-          <div class="col-md-3">
+          <div *ngIf="arrayTerapists.length>0">
             <mat-form-field>
-              <mat-label>שם פרטי של המטפל:</mat-label>
-              <input matInput id="firstName" name="firstName"
-                (change)="updateSessiontoTerapist()" [(ngModel)]="userMetapel.firstName" formControlName="first">
-              <mat-error *ngIf="form.get('first')?.invalid && (form.get('first')?.dirty || form.get('first')?.touched)"
-                style="color:red;">שדה חובה</mat-error>
+              <mat-label>מטפל:</mat-label>
+              <mat-select id="chooseTerapist" name="chooseTerapist" [(ngModel)]="newPatientDetails.terapistId"
+                (ngModelChange)="onSelectedValueChangeTerapist()" formControlName="chooseT">
+                <mat-option style="text-align: right" [value]="0">אחר</mat-option>
+                <mat-option style="text-align: right" *ngFor="let t of arrayTerapists" [value]="t.id">{{
+                  t.idUserNavigation?.firstName }}-{{ t.idUserNavigation?.lastName}}-{{t.city}}</mat-option>
+              </mat-select>
             </mat-form-field>
+
           </div>
-          <div class="col-md-3"> <mat-form-field>
-              <mat-label>שם משפחה של המטפל:</mat-label>
-              <input matInput id="lastName" name="lastName"[(ngModel)]="userMetapel.lastName"
-                (change)="updateSessiontoTerapist()" formControlName="last">
-              <mat-error *ngIf="form.get('last')?.invalid && (form.get('last')?.dirty || form.get('last')?.touched)"
-                style="color:red;">שדה חובה</mat-error>
-            </mat-form-field>
-          </div>
-          <div class="col-md-3"> <mat-form-field>
-              <mat-label>טלפון :</mat-label>
-              <input matInput [(ngModel)]="userMetapel.phone"formControlName="mobileNumberM" id="phone" name="phone"
-                (change)="updateSessiontoTerapist()">
-              <mat-error *ngIf="form.get('mobileNumberM')?.invalid && (form.get('mobileNumberM')?.
+          <div *ngIf="arrayTerapists.length==0||isAnotherTerapist">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>שם פרטי של המטפל:</mat-label>
+                <input matInput id="firstName" name="firstName" (change)="updateSessiontoTerapist()"
+                  [(ngModel)]="userMetapel.firstName" formControlName="first">
+                <mat-error
+                  *ngIf="form.get('first')?.invalid && (form.get('first')?.dirty || form.get('first')?.touched)"
+                  style="color:red;">שדה חובה</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3"> <mat-form-field>
+                <mat-label>שם משפחה של המטפל:</mat-label>
+                <input matInput id="lastName" name="lastName" [(ngModel)]="userMetapel.lastName"
+                  (change)="updateSessiontoTerapist()" formControlName="last">
+                <mat-error *ngIf="form.get('last')?.invalid && (form.get('last')?.dirty || form.get('last')?.touched)"
+                  style="color:red;">שדה חובה</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3"> <mat-form-field>
+                <mat-label>טלפון :</mat-label>
+                <input matInput [(ngModel)]="userMetapel.phone" formControlName="mobileNumberM" id="phone" name="phone"
+                  (change)="updateSessiontoTerapist()">
+                <mat-error *ngIf="form.get('mobileNumberM')?.invalid && (form.get('mobileNumberM')?.
                     dirty || form.get('mobileNumberM')?.touched)"
-                style="color:red;">{{getErrorMessageMobileNumberP()}}</mat-error>
-            </mat-form-field>
-          </div>
-          <div class="col-md-3"> <mat-form-field class="example-full-width">
-              <mat-label>תפקיד :</mat-label>
-              <input matInput [(ngModel)]="newPatientDetails.datailsJobTerapist" id="datailsJobTerapist" name="datailsJobTerapist"
-              formControlName="job" >
-            </mat-form-field>
+                  style="color:red;">{{getErrorMessageMobileNumberP()}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3"> <mat-form-field class="example-full-width">
+                <mat-label>תפקיד :</mat-label>
+                <mat-select [(ngModel)]="newTerapist.job" id="datailsJobTerapist" name="datailsJobTerapist"
+                  formControlName="job">
+                  <mat-option style="text-align: right" *ngFor="let t of arrayJob"
+                    [value]="t.name">{{t.name}}</mat-option>
+                </mat-select>
+                <!-- 
+                <input matInput [(ngModel)]="newTerapist.job" id="datailsJobTerapist"
+                  name="datailsJobTerapist" formControlName="job"> -->
+              </mat-form-field>
+            </div>
+            <div class="col-md-3"> <mat-form-field>
+                <mat-label>עיר :</mat-label>
+                <input matInput [(ngModel)]="newTerapist.city" formControlName="city" id="city" name="city"
+                  (change)="updateSessiontoTerapist()">
+              </mat-form-field>
+            </div>
           </div>
           <div class="col-md-3">
             <mat-label> האם נמצא עדיין בתהליך טיפולי?</mat-label>
             <mat-radio-group id="selectIsStillTerapist" name="selectIsStillTerapist" [(ngModel)]="selectIsStillTerapist"
-              (change)="onChangeStillTipul(selectIsStillTerapist)">
-              <mat-radio-button [color]="color" [value]="true">כן</mat-radio-button>
-              <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
+              formControlName="still" (change)="onChangeStillTipul(selectIsStillTerapist)">
+              <mat-radio-button  [checked]="" [color]="color" [value]=true>כן</mat-radio-button>
+              <mat-radio-button [color]="color" [value]=false>לא</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="col-md-3">
-            <mat-label> במידת הצורך האם יש אישור שנפנה לאיש מקצוע ?</mat-label>
-            <mat-radio-group id="isContact" name="isContact" [(ngModel)]="newPatientDetails.isContact"
+            <mat-label> במידת הצורך האם יש אישור לפנות אליו ?</mat-label>
+            <mat-radio-group id="permissionContactTM" name="permissionContactTM"
+              [(ngModel)]="newPatientDetails.permissionContactTm" formControlName="permissionContactT"
               (change)="updateSessionPatientDetails()">
               <!-- (change)="onChangeIsContact(currentPatientDetailsByApplyId.isContact)" -->
-              <mat-radio-button [color]="color" value="כן">כן</mat-radio-button>
-              <mat-radio-button [color]="color" value="לא">לא</mat-radio-button>
+              <mat-radio-button [color]="color" value=true>כן</mat-radio-button>
+              <mat-radio-button [color]="color" value=false>לא</mat-radio-button>
               <!-- <mat-radio-button [color]="color" value="נעדכן בהמשך">נעדכן בהמשך</mat-radio-button> -->
             </mat-radio-group>
           </div>
@@ -515,8 +550,8 @@
         <h3>האם קיים קשר עם דמות בוגרת ?</h3>
         <div class="row">
           <div class="col-md-3">
-            <mat-radio-group id="isMatureCharacter" name="isMatureCharacter" 
-              (change)="onChangeIsMatureCharacter()" formControlName="p">
+            <mat-radio-group id="isMatureCharacter" name="isMatureCharacter" (change)="onChangeIsMatureCharacter()"
+              formControlName="p">
               <mat-radio-button [color]="color" [value]="true">כן</mat-radio-button>
               <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
             </mat-radio-group>
@@ -531,7 +566,7 @@
                 <mat-form-field>
                   <mat-label>שם פרטי של החונך:</mat-label>
                   <input matInput id="firstNameC" formControlName="hebrewLettersC" name="firstNameC"
-                  [(ngModel)]="userMetapelC.firstName"(ngModelChange)="updateUserMetapelC()">
+                    [(ngModel)]="userMetapelC.firstName" (ngModelChange)="updateUserMetapelC()">
                   <mat-error *ngIf="form.get('hebrewLettersC')?.invalid &&
                      (form.get('hebrewLettersC')?.dirty || form.get('hebrewLettersC')?.touched)" style="color:red;">שדה
                     חובה</mat-error>
@@ -540,8 +575,8 @@
               <div class="col-md-3">
                 <mat-form-field>
                   <mat-label>שם משפחה של החונך:</mat-label>
-                  <input formControlName="hebrewLettersCL" matInput id="firstNameC" name="firstNameC" [(ngModel)]="userMetapelC.lastName"
-                    (ngModelChange)="updateUserMetapelC()">
+                  <input formControlName="hebrewLettersCL" matInput id="firstNameC" name="firstNameC"
+                    [(ngModel)]="userMetapelC.lastName" (ngModelChange)="updateUserMetapelC()">
                 </mat-form-field>
               </div>
               <div class="col-md-3">
@@ -554,11 +589,16 @@
                     style="color:red;">{{getErrorMessageMobileNumberC()}}</mat-error>
                 </mat-form-field>
               </div>
-
+              <div class="col-md-3"> <mat-form-field>
+                <mat-label>עיר :</mat-label>
+                <input matInput [(ngModel)]="matureCharacter.nameCity" formControlName="cityM" id="city" name="city"
+                  (change)="updateSessiontoCharacter()">
+              </mat-form-field>
+            </div>
               <div class="col-md-3"> <mat-form-field class="example-full-width">
                   <mat-label> באיזה מסגרת פגש אותו ?</mat-label>
                   <input matInput id="matureCharacter" formControlName="hebrewLettersCM" name="matureCharacter"
-                    [(ngModel)]="matureCharacter.framwork"  (ngModelChange)="updateSessiontoCharacter()">
+                    [(ngModel)]="matureCharacter.framwork" (ngModelChange)="updateSessiontoCharacter()">
                   <mat-error
                     *ngIf="form.get('hebrewLettersCM')?.invalid && (form.get('hebrewLettersCM')?.dirty || form.get('hebrewLettersCM')?.touched)"
                     style="color:red;">שדה חובה</mat-error>
@@ -568,8 +608,8 @@
               <div class="col-md-3">
                 <mat-label> אישור לפנות אליו?</mat-label>
 
-                <mat-radio-group id="PermissionContact" name="PermissionContact"  formControlName="permissionContact"
-                [(ngModel)]="matureCharacter.permissionContact"  (change)="updateSessiontoCharacter()">
+                <mat-radio-group id="PermissionContact" name="PermissionContact" formControlName="permissionContact"
+                  [(ngModel)]="newPatientDetails.permissionContactM" (change)="updateSessiontoCharacter()">
                   <mat-radio-button [color]="color" value="true">כן</mat-radio-button>
                   <mat-radio-button [color]="color" value="false">לא</mat-radio-button>
                 </mat-radio-group>
@@ -579,6 +619,7 @@
           </div>
           <!-- סגירת תנאי אם יש קשק לדמות בוגרת -->
         </div>
+
         <!-- סגירת הפורם הדיב של פרוט הפניה -->
       </div>
       <!-- סגירה של דיטיילס -->
@@ -587,11 +628,19 @@
   </div>
 </div>
 
-<div class="row justify-content-md-center">
+<div *ngIf="!isNotExistPatient" class="row justify-content-md-center">
   <div class="col-md-auto d-flex">
     <!-- האם זה הפונקציה שיש לשמור את הנתונים? -->
     <button type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
       שמור
+    </button>
+  </div>
+</div>
+<div *ngIf="isNotExistPatient" class="row justify-content-md-center">
+  <div class="col-md-auto d-flex">
+    <!-- האם זה הפונקציה שיש לשמור את הנתונים? -->
+    <button type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
+      עדכן
     </button>
   </div>
 </div>

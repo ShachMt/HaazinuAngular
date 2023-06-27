@@ -14,7 +14,6 @@ import { ReferenceManagerComponent } from './component/reference-manager/referen
 import { CodeSendComponent } from './component/code-send/code-send.component';
 import { NewPasswordComponent } from './component/new-password/new-password.component';
 import { NavigateSecretaryComponent } from './component/navigate-secretary/navigate-secretary.component';
-import { DetailsApplicantsComponent } from './component/details-applicants/details-applicants.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatSelectModule} from '@angular/material/select';
@@ -76,7 +75,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     CodeSendComponent,
     NewPasswordComponent,
     NavigateSecretaryComponent,
-    DetailsApplicantsComponent,
     InTakeNavComponent,
     FillNewApplyComponent,
     EducationalInstitutionsComponent,

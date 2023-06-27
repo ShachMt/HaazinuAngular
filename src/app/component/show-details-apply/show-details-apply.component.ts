@@ -28,7 +28,7 @@ export class ShowDetailsApplyComponent implements OnInit {
   isClickPP: boolean = false;
   arrayTreatmentDetails: TreatmentDetails[] = [];
   currentNumApply?: number;
-  currentTreatmentDetails: TreatmentDetails = new TreatmentDetails();
+  item: TreatmentDetails = new TreatmentDetails();
   isClickAddTreatment: boolean = false;
   currentEmployees: Employee = new Employee();
   localTime: any;
@@ -57,13 +57,7 @@ export class ShowDetailsApplyComponent implements OnInit {
 
 
     this.treatmentDetailsService.GetTreatmentDetailsByApplyState(this.currentNumApply).subscribe(newTreatmentDetails => {
-      this.currentTreatmentDetails = newTreatmentDetails;
-      if (this.currentTreatmentDetails.nextStep?.id == 2) {
-        // let utcTime = this.currentTreatmentDetails.dateTask; // replace with your C# time value
-        // if (utcTime != undefined)
-        //   this.localTime = new Date(utcTime);
-
-      }
+      this.item = newTreatmentDetails;
     },
       err => { console.log("error") });
 
@@ -78,6 +72,7 @@ export class ShowDetailsApplyComponent implements OnInit {
   deleteTreatmentDetails(id:any,status:any) {
     if(status==7){
       alert("לא ניתן למחוק שלב טיפול זה");
+
     }
     else{
       this.treatmentDetailsService.deleteTreatmentDetails(id,this.currentNumApply).subscribe(emp => {

@@ -5,6 +5,7 @@ import { Employee } from "./Employee";
 import { Family } from "./Family";
 import { MatureCharacter } from "./MatureCharacter";
 import { Sector } from "./Sector";
+import { Terapist } from "./Terapist";
 import { User } from "./User";
 
 export class PatientDetails {
@@ -19,9 +20,8 @@ export class PatientDetails {
     isInstition?: boolean;
     isMatureCharacter?: boolean;
     isTherapeutic?:boolean;
-    isContact?:string;
     id?: number;
-    therapeuticId?: number;
+    terapistId?: number;
     isStillTerapist?:boolean;
     matureCharacterId?:number;
     applyId?:number;
@@ -31,12 +31,15 @@ export class PatientDetails {
     detailsAnotherSector?:string;
     parentPhone?:string;
     ageFillApply?:number;
-    datailsJobTerapist?:string;
     enotherParentPhone?:string;
     social?:string;
     emotional?:string;
     diagnoses?:string;
     studies?:string;
+    permissionContactM?:boolean;
+    permissionContactT?:boolean;
+    framework?:string;  
+    permissionContactTm?:boolean;
     ////////////////////////////
     fillEmloyees?:Employee;
     apply?:Apply;
@@ -44,9 +47,8 @@ export class PatientDetails {
     family?:Family;
     matureCharacter?:MatureCharacter;
     sector?:Sector;
-    therapeutic?:User;
+    terapist?:Terapist;
     user?:User;
     idDetailsAskerNavigation?:DetailsAsker
-
 }
 

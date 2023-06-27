@@ -108,7 +108,7 @@ export class PatientDetailsComponent implements OnInit {
           this.yachas = "הוא"
           this.affinity = " הם הופנו להאזינו ע'י";
         debugger
-          switch (this.currentPatientDetails.idDetailsAskerNavigation?.affinity) {
+          switch (patientDetails.idDetailsAskerNavigation?.affinity) {
             case "פונה עבור עצמו":
               this.affinity = " הוא הופנה להאזינו ע'י";
               this.self = "עצמו. "
@@ -153,31 +153,32 @@ export class PatientDetailsComponent implements OnInit {
           this.ageNow = new Date().getFullYear() - new Date(this.currentPatientDetails.dateNow).getFullYear() +
             this.currentPatientDetails.ageFillApply;
         }
-
+debugger;
         //האם היה בתהליך טיפולי
         if (this.currentPatientDetails.isTherapeutic) {
           if (this.gender == "בן") {
             this.isTherapeuticT = "היה בעבר בתהליך טיפולי אצל: "
-            this.isTherapeutic = this.currentPatientDetails.therapeutic?.firstName + " " +
-              this.currentPatientDetails.therapeutic?.lastName + " טלפון: " + this.currentPatientDetails.therapeutic?.phone + " ";
+            this.isTherapeutic = this.currentPatientDetails.terapist?.idUserNavigation?.firstName + " " +
+              this.currentPatientDetails.terapist?.idUserNavigation?.lastName + " טלפון: " +
+               this.currentPatientDetails.terapist?.idUserNavigation?.phone + " תפקיד: "+ this.currentPatientDetails.terapist?.job;
           }
           else if (this.gender = "בת") {
             this.isTherapeuticT = "היתה בעבר בתהליך טיפולי אצל: "
-            this.isTherapeutic = this.currentPatientDetails.therapeutic?.firstName + " " +
-              this.currentPatientDetails.therapeutic?.lastName + " טלפון: " + this.currentPatientDetails.therapeutic?.phone + " ";
+            this.isTherapeutic = this.currentPatientDetails.terapist?.idUserNavigation?.firstName + " " +
+              this.currentPatientDetails.terapist?.idUserNavigation?.lastName + " טלפון: " + this.currentPatientDetails.terapist?.idUserNavigation?.phone + " ";
           }
         }
         else {
           if (this.gender == "בן")
-            this.isTherapeutic = "לא היה בעבר בתהליך טיפולי אצל "
+            this.isTherapeutic = "לא היה בעבר בתהליך טיפולי  "
           else if (this.gender = "בת")
-            this.isTherapeutic = "לא היתה בעבר בתהליך טיפולי אצל "
+            this.isTherapeutic = "לא היתה בעבר בתהליך טיפולי  "
         }
         //נמצא עדיין בתהליך טיפולי
         if (this.currentPatientDetails.isStillTerapist) {
           if (this.gender == "בן") {
             this.isStillTerapist = " מטופל אצל : ";
-            if (this.currentPatientDetails.isContact == "לא") {
+            if (this.currentPatientDetails.permissionContactTm ==false) {
               this.permissionContact = " לא מאפשרים לפנות אליו. "
             }
             else {
@@ -185,9 +186,10 @@ export class PatientDetailsComponent implements OnInit {
             }
           }
           else if (this.gender = "בת") {
-            this.isStillTerapist = " מטופלת אצל : " + this.currentPatientDetails.therapeutic?.firstName + " " +
-              this.currentPatientDetails.therapeutic?.lastName + " " + this.currentPatientDetails.therapeutic?.phone + " ";
-            if (this.currentPatientDetails.isContact == "לא") {
+            this.isStillTerapist = " מטופלת אצל : " + this.currentPatientDetails.terapist?.idUserNavigation?.firstName + " " +
+              this.currentPatientDetails.terapist?.idUserNavigation?.lastName + " " + this.currentPatientDetails.
+              terapist?.idUserNavigation?.phone + " ";
+            if (this.currentPatientDetails.permissionContactTm == false) {
               this.isStillTerapist += " לא מאפשרים לפנות  "
             }
             else {
@@ -218,6 +220,10 @@ export class PatientDetailsComponent implements OnInit {
       }
     },
       err => { console.log("error") });
+
+  }
+  updateIntake(){
+    this.myRouter.navigate(['/fillNewApply/' + this.idApply]);
 
   }
   openDeleteDialog(item: any) {
@@ -305,6 +311,7 @@ export class PatientDetailsComponent implements OnInit {
             this.isInstitionPast += "לא פורטו מוסדות לימודים קודמים"
         },
           err => { console.log("error") });
+
 
 
       },
