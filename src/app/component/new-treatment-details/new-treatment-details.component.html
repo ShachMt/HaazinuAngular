@@ -4,11 +4,12 @@
     <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
     <mat-form-field class="taskN" appearance="fill">
-      <mat-label>אופי הארוע</mat-label>
-      <input matInput value="{{ofiCurrent}}" readonly>
+      <mat-label>משימה נוכחית</mat-label>
+      <!-- <input matInput value="{{ofiCurrent}}" readonly> -->
+      
     </mat-form-field>
     <br>
-    <span id="title">תיעוד האירוע</span><br>
+    <span id="title"> סיכום</span><br>
     <textarea dir="rtl" style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
       (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
       [(ngModel)]="newTreatmentDedails.documentation" required></textarea>
@@ -104,16 +105,29 @@
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
 
     <mat-form-field class="taskN" appearance="fill">
-      <mat-label>אופי האירוע</mat-label>
-      <input matInput value="סיווג מנהלי" readonly>
+      <mat-label>משימה נוכחית </mat-label>
+      <mat-select id="descreption" name="descreption" formControlName="selectDescreptionC" [(ngModel)]="newTreatmentDedails.nextStepId"
+      (selectionChange)="selectDescreption($event)">
+        <mat-option value="1013">סיווג מנהלי</mat-option>
+        <mat-option value="1">התיעצות פנימית</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="isEmploC" class="taskN" appearance="fill">
+      <mat-label>בחר פעיל </mat-label>
+      <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="employeesId"
+        (valueChange)="selectIsEmplo()">
+        <mat-option>--</mat-option>
+        <mat-option id="taskOp" *ngFor="let item of arrayEmplo"
+          [value]="item.id">{{item.idUserNavigation?.firstName}}</mat-option>
+      </mat-select>
     </mat-form-field>
     <br>
-    <span id="title">הערה </span><br>
+    <span id="title">סיכום </span><br>
     <textarea style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
       (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
       [(ngModel)]="newTreatmentDedails.documentation" placeholder="חדש" required></textarea>
     <br>
-    <mat-form-field class="taskN" appearance="fill">
+    <mat-form-field *ngIf="!isEmploC" class="taskN" appearance="fill">
       <mat-label>בחר פעיל </mat-label>
       <mat-select id="chooseT" name="chooseT" formControlName="selectNextEmplo" [(ngModel)]="employeesId">
         <mat-option id="taskOp" *ngFor="let item of arrayEmploI"
@@ -142,12 +156,12 @@
     <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
     <mat-form-field class="taskN" appearance="fill">
-      <mat-label>אופי האירוע</mat-label>
+      <mat-label>משימה נוכחית</mat-label>
       <input matInput value="עדכון בפניה" readonly>
     </mat-form-field>
     <br>
     <br>
-    <span id="title">תיעוד האירוע</span><br>
+    <span id="title">סיכום</span><br>
     <textarea dir="rtl" style=" text-align: right;" formControlName="hebrewLetters" class="text-input" #textarea
       (input)="resizeTextarea(textarea)" id="documentation" name="documentation"
       [(ngModel)]="newTreatmentDedails.documentation" required></textarea>

@@ -21,7 +21,8 @@ import { ApplyService } from 'src/app/Services/apply.service';
 
 export class NewTreatmentDetailsComponent implements OnInit {
   @Input() sivoug!: boolean;
-  @Input() IsSec!: boolean
+  @Input() IsSec!: boolean;
+  @Input() item!:TreatmentDetails;
   constructor(private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private taskService: TaskService,
@@ -36,7 +37,6 @@ export class NewTreatmentDetailsComponent implements OnInit {
 
   }
   form = new FormGroup({
-    // selectTask: new FormControl('', Validators.required),
     selectNextTask: new FormControl('', Validators.required),
     date: new FormControl("", [Validators.required]),
     dateTime: new FormControl(new Date(), [Validators.required]),
@@ -48,24 +48,17 @@ export class NewTreatmentDetailsComponent implements OnInit {
     s: new FormControl(''),
   });
   form1: FormGroup = new FormGroup({
-    // selectTask: new FormControl('', Validators.required),
-    // selectNextTask: new FormControl('', Validators.required),
     date: new FormControl(new Date(), [Validators.required]),
     selectNextEmplo: new FormControl('', Validators.required),
     hebrewLetters: new FormControl('', [Validators.required]),
     dateTime: new FormControl(new Date(), [Validators.required]),
-    // place: new FormControl(new Date(), [Validators.required])
+    selectNextTaskIsEmplo: new FormControl(''),
+    selectDescreptionC:new FormControl(''),
   });
   form2: FormGroup = new FormGroup({
-    // selectTask: new FormControl('', Validators.required),
-    // selectNextTask: new FormControl('', Validators.required),
     hebrewLetters: new FormControl('', [Validators.required]),
     date: new FormControl(new Date(), [Validators.required]),
     s: new FormControl(''),
-    // selectNextTaskIsEmplo: new FormControl('', Validators.required),
-    // hebrewLettersDetailsTask: new FormControl('', [Validators.required, Validators.pattern(`^[\u0590-\u05FF .,?!"':;_()-\]+$`)]),
-    // dateTime: new FormControl(new Date(), [Validators.required]),
-    // place: new FormControl(new Date(), [Validators.required])
   });
   currentTreatmentDetails: TreatmentDetails = new TreatmentDetails();
   ofiCurrent: string = "";
@@ -86,6 +79,8 @@ export class NewTreatmentDetailsComponent implements OnInit {
   isOkDateEmp: boolean = true;
   isEmplo: boolean = false;
   arrayEmplo: Employee[] = [];
+  isEmploC:boolean=false;
+  b:string="";
   isDetails: boolean = false;
   employeesId: string = "";
   dadeN: Date = new Date();
@@ -95,10 +90,18 @@ export class NewTreatmentDetailsComponent implements OnInit {
   arrayEmploI: Employee[] = [];
 
   ngOnInit(): void {
-    this.IsSec
-    this.isEdkoud = true;
+  
+  if(this.item) 
+  this.newTreatmentDedails=this.item;
+  else{
     this.newTreatmentDedails.dateNow = new Date();
     this.newTreatmentDedails.dateTask = new Date();
+  }
+    this.IsSec
+    this.isEdkoud = true;
+    this.isEmplo = false;
+    this.isEmploC=false;
+    
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.newTreatmentDedails.applyId = id;
@@ -106,7 +109,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
         this.currentTreatmentDetails = newTreatmentDetails;
         if (newTreatmentDetails.statusId == 7)
           this.ofiCurrent = "פניה חדשה"
-        else
+        else if(!this.item)
           this.ofiCurrent = "" + this.currentTreatmentDetails.nextStep?.taskName;
       },
         err => { console.log("error") });
@@ -228,7 +231,7 @@ this.newTreatmentDedails.nextEmployeesId=4;
     }
   }
   validateDate() {
-
+if(!this.item){
     this.isOkDate = true;
     this.isOkDateEmp = true;
     let date1 = new Date(); // your first date
@@ -243,7 +246,7 @@ this.newTreatmentDedails.nextEmployeesId=4;
       this.isOkDate = false;
     } else {
       this.isOkDate = true;
-    }
+    }}
   }
   //עדכון בפניה
   selectIsEmploShiyouchPnia() {
@@ -261,7 +264,7 @@ this.newTreatmentDedails.nextEmployeesId=4;
       }
     }
   }
-
+  
   onSubmit() {
     debugger;
     //במידה ולא נבחר עדכון בפניה-שיוך פניה למטפל
@@ -349,12 +352,23 @@ else{
     },
       err => { console.log("error") });
   }
+  
   //סיווג מנהלי
+  selectDescreption(event: any){
+    this.isEmploC = false;
+    if(event.value=="1"){
+        this.isEmploC = true;
+        this.newTreatmentDedails.taskId = 1;
+        this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextTaskIsEmplo')?.value;
+        this.newTreatmentDedails.statusId = 3;    }
+    else if(event.value=="1013"){
+      this.newTreatmentDedails.taskId = 1013;
+      this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextEmplo')?.value;
+      this.newTreatmentDedails.statusId = 7;
+    }
+  }
   onSubmit1() {
     debugger;
-    this.newTreatmentDedails.taskId = 1013;
-    this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextEmplo')?.value;
-    this.newTreatmentDedails.statusId = 7;
     //תוכן של ביצוע שלב קודם- תיעוד הארוע
     this.newTreatmentDedails.documentation = this.form1.get('hebrewLetters')?.value;
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {

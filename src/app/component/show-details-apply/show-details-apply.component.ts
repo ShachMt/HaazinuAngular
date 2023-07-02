@@ -30,12 +30,14 @@ export class ShowDetailsApplyComponent implements OnInit {
   currentNumApply?: number;
   item: TreatmentDetails = new TreatmentDetails();
   isClickAddTreatment: boolean = false;
+  IsUpdate:boolean=false;
   currentEmployees: Employee = new Employee();
   localTime: any;
   sivoug: boolean = false;
   IsSec: boolean = false;
   chooseItem: TreatmentDetails = new TreatmentDetails();
   ngOnInit(): void {
+    this.IsUpdate=false;
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.currentNumApply = id;
@@ -68,6 +70,10 @@ export class ShowDetailsApplyComponent implements OnInit {
       result.delete && this.deleteTreatmentDetails(item.id,item.statusId);
     });
     
+  }
+  updateIns(item: any){
+this.IsUpdate=!this.IsUpdate;
+
   }
   deleteTreatmentDetails(id:any,status:any) {
     this.sivoug=false;
