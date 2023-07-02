@@ -1,0 +1,14 @@
+<div class="calendar-container">
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Select a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-content>
+        <ng-template matDatepickerContent>
+          <div class="custom-content">
+            <span class="date">{{ selectedDate?.toDateString() }}</span>
+            <input class="custom-input" placeholder="Enter additional data">
+          </div>
+        </ng-template>
+      </mat-datepicker-content>
+    </mat-form-field>
+  </div>

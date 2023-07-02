@@ -1,0 +1,23 @@
+.calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .custom-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .date {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .custom-input {
+    width: 200px;
+    padding: 5px;
+    margin-bottom: 10px;
+  }

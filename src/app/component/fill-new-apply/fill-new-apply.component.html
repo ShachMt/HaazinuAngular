@@ -1,20 +1,4 @@
-<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" /> -->
 
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
-<!-- <button id="returnHome" (click)="return()"> -->
-<!-- ליבא את התמונה ולהכניס ל assets -->
-<!-- <svg id="faClass" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-  </svg> -->
-<!-- עד פה -->
-<!-- <br>חזרה לדף הבית</button> -->
-<!-- חץ גלילה לתחילת הדף לא עובד טוב -->
-<!-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
-  <i class="fa-solid fa-arrow-up"></i></a> -->
 <app-header></app-header>
 <link rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -25,19 +9,13 @@
   <h2>קליטת פניה חדשה</h2>
 </div>
 
-
-<!-- <h1 style="margin-top: 10px;">קליטת פניה חדשה</h1> -->
 <div class="container">
   <div class="row ">
-
+          <!-- החלון הצדדי הקופץ -->
     <div *ngIf="currentApply.asker" (mousedown)="onMouseDown($event)" (document:mousemove)="onMouseMove($event)"
       (document:mouseup)="onMouseUp($event)" class="col-md-3 fff">
-
-      <!-- <div class="col-md-auto"> -->
-      <!-- <div class=" justify-content-end fff"> -->
       <div class="row">
         <label>שם הפונה: {{ currentApply.asker?.firstName }}| </label>
-        <!--  -->
       </div>
       <div class="row">
         <label>מספר טלפון:{{ currentApply.asker?.phone }} | </label>
@@ -63,7 +41,7 @@
               </textarea>
       </div>
     </div>
-    <!-- <div class="col-md-8"> -->
+    <!-- כותרת -->
     <div class="col-md-auto">
       <label>פנייה מספר: {{ numApply }}| </label>
       <!--  -->
@@ -76,13 +54,7 @@
     </div>
 
   </div>
-  <!-- <div class="row "> -->
-
-  <!-- </div> -->
-
-
 </div>
-<!-- /עד כאן מצוין -->
 
 <div class="all-container">
   <div class="list-product-container">
@@ -121,7 +93,7 @@
         <div class="col-md-3">
           <mat-form-field>
             <mat-label>מין:</mat-label>
-            <mat-select id="chooseG" name="chooseG" [(ngModel)]="newPatientDetails.gender" (ngModelChange)="refrSes()">
+            <mat-select id="chooseG" name="chooseG" [(ngModel)]="newPatientDetails.gender" (ngModelChange)="removeSessionCategory()">
               <mat-option style="text-align: right" *ngFor="let gender of arrayGender" [value]="gender.name">{{
                 gender.name }}</mat-option>
             </mat-select>
@@ -151,7 +123,7 @@
             <mat-form-field>
               <mat-label>גיל :</mat-label>
               <input matInput formControlName="ageV" type="number" min="6" max="99" id="age" name="age"
-                [(ngModel)]="newPatientDetails.ageFillApply" (change)="refrSes()" required />
+                [(ngModel)]="newPatientDetails.ageFillApply" (ngModelChange)="removeSessionCategory()" required />
               <mat-error *ngIf="
                       form.get('ageV')?.invalid &&
                       (form.get('ageV')?.dirty || form.get('ageV')?.touched)
@@ -176,7 +148,6 @@
           </mat-form-field> -->
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-3">
           <div [formGroup]="form">
@@ -219,17 +190,11 @@
             <input matInput id="neighborhood" name="neighborhood" [(ngModel)]="newAddress.neighborhood" />
           </mat-form-field>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
-
-  <!-- עד כאן מסודר! -->
   <div class="list-product-container">
-    <!-- <div class="header-container"> -->
     <h2 class="header-text">רקע משפחתי</h2>
     <div class="detaile">
 
@@ -280,19 +245,17 @@
             <textarea matInput style="border: none" id="familyDetails" name="familyDetails"
               [(ngModel)]="newFamily.familyDetails" class="text-input" #textarea
               (input)="resizeTextarea(textarea)"></textarea>
-            <!-- <mat-error *ngIf="form.get('textAreaHeb')?.invalid && (form.get('textAreaHeb')?.dirty || form.get('textAreaHeb')?.touched)"style="color:red;">{{getErrorMessageHebrewLettersTExtA()}}</mat-error> -->
           </mat-form-field>
         </div>
-        <!-- <form (ngSubmit)="saveNow()" class="example-form" mat-label-position="end"> -->
         <mat-error *ngIf="validPlace() == false">
-
           <span style="color: red">שים לב המיקום אינו תואם למספר הילדים במשפחה</span>
         </mat-error>
       </div>
     </div>
   </div>
+ 
+<!-- מקום לימודים -->
   <div class="list-product-container">
-    <!-- <div class="header-container"> -->
     <h2 (click)="isOpI()" class="header-text">מקום לימודים </h2>
     <div *ngIf="isOp">
       <h3 class="header-text">מקום לימודים נוכחי</h3>
@@ -321,16 +284,24 @@
           <td *ngIf="newEducationalInstitutionsApplicant.id==null">
             <mat-form-field style="text-align: right;width: auto;">
               <mat-label> שם הישיבה :</mat-label>
+              <!-- <input type="text"
+              placeholder="Pick one"
+              aria-label="Number"
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"> -->
               <mat-select id="selectedValueNameIns" (ngModelChange)="onSelectedValueNameIns($event)"
-                name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns">
-                <mat-option style="text-align: right;"></mat-option>
+                name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns"> -->
+                 <mat-option style="text-align: right;"></mat-option>
                 <mat-option [value]=" " style="text-align: right;">אחר</mat-option>
-                <mat-option style="text-align: right;" *ngFor="let item of arrayEducational"
+
+                <!-- <mat-autocomplete #auto="matAutocomplete"> -->
+                <mat-option style="text-align: right;" *ngFor="let item of arrayEducational" 
                   [value]="item.institutionName">{{item.institutionName}}
                   -{{item.enotherName}}-{{item.address?.city}}</mat-option>
               </mat-select>
+                <!-- </mat-autocomplete> -->
             </mat-form-field>
-
           </td>
           <td *ngIf="newEducationalInstitutionsApplicant.id!=null">{{selectedValueNameIns}}</td>
           <td *ngIf="newEducationalInstitutionsApplicant.id==null">
@@ -370,7 +341,6 @@
       <div *ngIf="opentLastEdu">
         <app-educational-institutions-applicant [category]="currentCategory"></app-educational-institutions-applicant>
       </div>
-      <!-- ----- -->
       <div *ngIf="isAnotherInstiton==true">
         <div class="row ">
           <div class="col-md-2">
@@ -381,16 +351,12 @@
             <input type="text" [(ngModel)]="newEducationalInstitution.institutionName" id="newInstitutionName"
               name="newInstitutionName" placeholder="שם מוסד לימודים  ">
           </div>
-          <!-- <div class="col-md-2 ">
-            <button type="button" class="btn" (click)="isClickReturnList()">חזרה לבחירה מתוך הרשימה הקיימת</button>
-          </div> -->
         </div>
         <div class="row">
           <div class="col-md-2 ps-1">
             <label for="nameAnotherInstiton">שם נוסף/ שם הרב המנהל <span
                 class="glyphicon glyphicon-pencil"></span></label>
           </div>
-
           <div class="col-md-3">
             <input type="text" [(ngModel)]="newEducationalInstitution.enotherName" id="newInstitutionAnotherName"
               name="newInstitutionAnotherName" placeholder="שם נוסף /שם הרב המנהל ">
@@ -414,10 +380,8 @@
     </div>
   </div>
   <div class="list-product-container">
-    <!-- <div class="header-container"> -->
     <h2 class="header-text">פרטי הפניה</h2>
     <div class="details">
-      <!-- <app-details-applicants></app-details-applicants> -->
       <div class="row">
         <textarea class="text-input" id="detailsApplyCaused" name="detailsApplyCaused"
           [(ngModel)]="currentApply.detailsCausedRefferal" #textarea (input)="resizeTextarea(textarea)"
@@ -466,7 +430,7 @@
             <mat-radio-button  [checked]="!newPatientDetails.isTherapeutic" [color]="color" [value]="false">לא</mat-radio-button>
           </mat-radio-group>
         </div>
-
+<!-- במידה ונבחר שהבחור נמצא בתהליך טיפולי -->
         <div class="row" *ngIf="isTipul==true||newPatientDetails.isTherapeutic==true">
           <div *ngIf="arrayTerapists.length>0">
             <mat-form-field>
@@ -480,6 +444,7 @@
             </mat-form-field>
 
           </div>
+          <!-- כאשר נבחר אחר/ שרשימת המטפלים ריקה -->
           <div *ngIf="arrayTerapists.length==0||isAnotherTerapist">
             <div class="col-md-3">
               <mat-form-field>
@@ -515,9 +480,6 @@
                   <mat-option style="text-align: right" *ngFor="let t of arrayJob"
                     [value]="t.name">{{t.name}}</mat-option>
                 </mat-select>
-                <!-- 
-                <input matInput [(ngModel)]="newTerapist.job" id="datailsJobTerapist"
-                  name="datailsJobTerapist" formControlName="job"> -->
               </mat-form-field>
             </div>
             <div class="col-md-3"> <mat-form-field>
@@ -540,13 +502,13 @@
             <mat-radio-group id="permissionContactTM" name="permissionContactTM"
               [(ngModel)]="newPatientDetails.permissionContactTm" formControlName="permissionContactT"
               (change)="updateSessionPatientDetails()">
-              <!-- (change)="onChangeIsContact(currentPatientDetailsByApplyId.isContact)" -->
               <mat-radio-button [color]="color" value=true>כן</mat-radio-button>
               <mat-radio-button [color]="color" value=false>לא</mat-radio-button>
-              <!-- <mat-radio-button [color]="color" value="נעדכן בהמשך">נעדכן בהמשך</mat-radio-button> -->
             </mat-radio-group>
           </div>
         </div>
+        <!-- MatureCharacter-דמות בוגרת- קשר לחונך
+         -->
         <h3>האם קיים קשר עם דמות בוגרת ?</h3>
         <div class="row">
           <div class="col-md-3">
@@ -556,7 +518,7 @@
               <mat-radio-button [color]="color" [value]="false">לא</mat-radio-button>
             </mat-radio-group>
           </div>
-
+<!-- במידה ונבחר כן לקשר עם דמות בוגרת -->
           <div *ngIf="isMatureCaracter==true||newPatientDetails.isMatureCharacter">
             <div class="row">
               <mat-label>חונך ומלווה:</mat-label>
@@ -627,19 +589,13 @@
     <!-- סגירה של פרודקט קונטיינר -->
   </div>
 </div>
-
-<div *ngIf="!isNotExistPatient" class="row justify-content-md-center">
+<!--  כפתור ששומר את הנתונים -->
+<div  class="row justify-content-md-center">
   <div class="col-md-auto d-flex">
-    <!-- האם זה הפונקציה שיש לשמור את הנתונים? -->
-    <button type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
+    <button *ngIf="!isNotExistPatient" type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
       שמור
     </button>
-  </div>
-</div>
-<div *ngIf="isNotExistPatient" class="row justify-content-md-center">
-  <div class="col-md-auto d-flex">
-    <!-- האם זה הפונקציה שיש לשמור את הנתונים? -->
-    <button type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
+    <button *ngIf="isNotExistPatient" type="submit" [disabled]="form.invalid" class="btn" (click)="saveNow()">
       עדכן
     </button>
   </div>

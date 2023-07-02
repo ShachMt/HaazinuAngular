@@ -14,7 +14,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-
+import { MatCalendarCellClassFunction, MatDatepicker } from '@angular/material/datepicker';
+import { CalenderComponent } from '../calender/calender.component';
+export interface Event {
+  title: string;
+  date: Date;
+}
 
 @Component({
   selector: 'app-reference-manager',
@@ -22,6 +27,32 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
   styleUrls: ['./reference-manager.component.scss']
 })
 export class ReferenceManagerComponent implements OnInit {
+  @ViewChild(CalenderComponent) c!: CalenderComponent;
+  events: Event[] = [
+    { title: 'Event 1', date: new Date('2023-05-01') },
+    { title: 'Event 2', date: new Date('2023-05-05') },
+    { title: 'Event 3', date: new Date('2023-05-10') }
+  ];
+  hasEvent(date: Date): boolean {
+    return this.events.some(event => this.isSameDay(event.date, date));
+  }
+
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
+
+  dateClass: MatCalendarCellClassFunction<Date> = (cellDate, view) => {
+    if (view === 'month') {
+      const highlight = this.events.some(event => this.isSameDay(event.date, cellDate));
+      return highlight ? 'event-date' : '';
+    }
+    return '';
+  };
+
   // displayedColumns: string[] = ['דחיפות הפניה', 'מספר פניה', 'סטטוס הפניה', 'תאריך טיפול אחרון',
   // 'שם מטפל אחרון','סיבת הפניה'];
   // @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -45,7 +76,7 @@ export class ReferenceManagerComponent implements OnInit {
   countApplyAwait: number = 0;
   currentEmployees: Employee = new Employee();
   employeesListI: Employee[] = [];
-
+  selectedDate: Date=new Date();
   applyList: Apply[] = [];
   zman: string = "";
   //////
@@ -63,7 +94,7 @@ export class ReferenceManagerComponent implements OnInit {
   arrIntake: PatientApply[] = [];
   searchText: string = "";
   isPressM: boolean = false;
-  title: string = "כלל הפניות";
+  title: string = " כלל הפניות הפעילות";
   isPressSivoug: boolean = false;
   isDelete: boolean = false;
   countP: number = 0
@@ -95,6 +126,11 @@ export class ReferenceManagerComponent implements OnInit {
         for (let i = 0; i < arrayApplies.length; i++) {
           this.arrayApply.push(this.currentA);
           this.arrayApply[i].apply = arrayApplies[i];
+          if (this.arrayApply[i].apply.isActive)
+            this.arrayApply[i].isActive = "פניה פעילה"
+          else
+            this.arrayApply[i].isActive = "פניה סגורה"
+
           if (this.arrayApply[i].apply) {
             this.treatmentDetailsService.GetTreatmentDetailsByApplyState(arrayApplies[i].id).
               subscribe(newTreatmentDetails => {
@@ -111,7 +147,7 @@ export class ReferenceManagerComponent implements OnInit {
                   subscribe(patientDetails => {
                     this.arrayApply[i].patientDetails = patientDetails;
                     this.isOk = true;
-                    this.newApplyListA = this.arrayApply;
+                    this.newApplyListA = this.arrayApply.filter(x => x.apply.isActive == true);
 
                   },
                     err => { console.log("error") });
@@ -127,7 +163,7 @@ export class ReferenceManagerComponent implements OnInit {
           //applyList=כל הפניות המשוייכות וששויכו
           this.applyList = arrayApplyI;
           this.detailsApply();
-         
+
           this.applyService.GetAllApplyByStatus(2).
             subscribe(arrayApply => {
               this.countApplyIntake = Object.keys(arrayApply).length;
@@ -178,19 +214,19 @@ export class ReferenceManagerComponent implements OnInit {
             }
             this.patientDetailsService.getPatientDetailsByApplyId(this.applyList[i].id).
               subscribe(patientDetails => {
-                if(this.newApplyP[i])
-                this.newApplyP[i].patientDetails = patientDetails;
+                if (this.newApplyP[i])
+                  this.newApplyP[i].patientDetails = patientDetails;
                 this.newApplyList[i].patientDetails = patientDetails;
                 this.countApplyFinish = Object.keys(this.newApplyList.filter(x => x.treatment?.statusId == 5)).length;
                 this.countApplyBeti = Object.keys(this.newApplyList.filter(x => x.treatment?.statusId == 4)).length;
                 this.countApplyMam = Object.keys(this.newApplyList.filter(x => x.treatment?.statusId == 3 ||
                   x.treatment?.statusId == 3007)).length;
-                  if (this.countP > 1) {
-                    const config = new MatSnackBarConfig();
-                    //  config.duration = 2000;
-                    config.direction = 'rtl'
-                    this.snackBar.open("  נקבעו " + this.countP + " פגישות להיום , אנא עדכן האם בוצע ", 'הסר', config)
-                  }
+                if (this.countP > 1) {
+                  const config = new MatSnackBarConfig();
+                  //  config.duration = 2000;
+                  config.direction = 'rtl'
+                  this.snackBar.open("  נקבעו " + this.countP + " פגישות להיום , אנא עדכן האם בוצע ", 'הסר', config)
+                }
               },
                 err => { console.log("error") });
           },
@@ -275,10 +311,10 @@ export class ReferenceManagerComponent implements OnInit {
 
   }
   addTreatmentDetails(item: any) {
-    
-    this.isPressSivoug=false;
-    if(item.treatment?.statusId==2){
-      this.isPressSivoug=true;
+
+    this.isPressSivoug = false;
+    if (item.treatment?.statusId == 2) {
+      this.isPressSivoug = true;
     }
     if (!this.isPressSivoug && !this.isDelete && (item.treatment?.statusId != 6)) {
       this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id]);
@@ -287,7 +323,7 @@ export class ReferenceManagerComponent implements OnInit {
       this.myRouter.navigate(['/fillNewApply/' + item.apply?.id]);
     }
     else if (item.treatment?.statusId == 2 && !this.isDelete) {
-      this.isPressSivoug=true;
+      this.isPressSivoug = true;
       this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id + '/' + this.isPressSivoug]);
     }
     else if (item != null) {

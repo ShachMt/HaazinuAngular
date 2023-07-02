@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
   PassToLogin: string = "";
   //פעיל ריק
   emplo!: Employee;
-  // currentEmployee:Employee=new Employee();
   count: number = 0;
   emploEmail: Employee = new Employee();
   //משתנה השומר את התשובה שתחזור מהפונקצייה השולפת את שם הפעיל
@@ -36,7 +35,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.isI = false;
     this.count = 0;
-    // this.GetEmployeeName();
     this.form = this.formBuilder.group({
       emailV: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       passwordV: [null, [Validators.required, Validators.pattern("^[a-z0-9A-Z_-]{4,15}$")]]
@@ -79,7 +77,6 @@ export class LoginComponent implements OnInit {
     if(!this.isForget){
     this.isI = false;
     this.employeeService.GetEmployeeByPasswordEmail(this.EmailToLogin, this.PassToLogin).subscribe(emp => {
-      // this.currentEmployee=this.employeesList.find(x=>x.email==emp.email);
       this.emplo = emp;
       if (this.emplo) {
         sessionStorage.setItem("userId", JSON.stringify(emp.id));
@@ -89,7 +86,6 @@ export class LoginComponent implements OnInit {
       else {
         alert("פרטיך אינם מזוהים במערכת אנא פנה למנהל המערכת");
       }
-
     },
       err => { console.log("error") });
     }
@@ -98,6 +94,7 @@ export class LoginComponent implements OnInit {
 
   //בדיקת שם משתמש וסיסמה וכן ניווטים מותאמים
   Checklogin() {
+    //אפשרות של 3 פעמים אפשרות של שכחתי ססמה אחרת המשתמש חסום  לכניסה ונשלחת בקשה למנהל המערכת -count-
     if (this.emplo.password == null) {
       if (this.count == 3) {
         this.employeeService.getEmployee().subscribe(emp => {
@@ -120,8 +117,6 @@ export class LoginComponent implements OnInit {
 
       if (this.emplo.lockOutEnabled == false) {
         const config = new MatSnackBarConfig();
-        // config.verticalPosition = 'center';
-        // config.panelClass = ['center-snackbar'];
         config.duration = 2000;
         config.direction = 'rtl'
         const snackBarRef = this.snackBar.open(" שלום לך " + this.emplo.idUserNavigation?.firstName + " היקר", 'הסר', config);
@@ -166,15 +161,6 @@ export class LoginComponent implements OnInit {
     sessionStorage.setItem("emailEmp", JSON.stringify(this.EmailToLogin));
     this.isForget=false;
     this.myRouter.navigate(['/forgetPassword']);
-  }
-
-
-  // //מחזיר את רשימת הפעילים בפרוייקט
-  GetAllEmployees() {
-    this.employeeService.GetAllEmployees().subscribe(emp => {
-      this.employeesList = emp;
-      console.log(emp);
-    });
   }
 }
 

@@ -72,63 +72,6 @@ export class NavigatePatientComponent implements OnInit {
           this.detailsApply();
         },
           err => { console.log("error") });
-      // this.applyService.getAllAppliesEmployee(this.currentEmplo.id).subscribe(arrayApply => {
-      //   this.applyList = arrayApply;
-      //   //ממתין לביצוע
-      //   this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 3).subscribe(arrayApply => {
-      //     this.countApplyMam = Object.keys(arrayApply).length;
-      //     for (let index = 0; index < arrayApply.length; index++) {
-      //       this.isExist = false;
-      //       for (let i = 0; i < this.applyList.length; i++) {
-      //         if (this.applyList[i].id == arrayApply[index].id) {
-      //           this.isExist = true;
-      //           break;
-      //         }
-      //       }
-      //       if (!this.isExist)
-      //         this.applyList.push(arrayApply[index]);
-      //     }
-      //     //בטיפול
-      //     this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 4).subscribe(arrayApply => {
-      //       this.countApplyBeti = Object.keys(arrayApply).length;
-      //       for (let index = 0; index < arrayApply.length; index++) {
-      //         this.isExist = false;
-      //         for (let i = 0; i < this.applyList.length; i++) {
-      //           if (this.applyList[i].id == arrayApply[index].id) {
-      //             this.isExist = true;
-      //             break;
-      //           }
-      //         }
-      //         if (!this.isExist)
-      //           this.applyList.push(arrayApply[index]);
-      //       }
-      //       //פניות שהסתיימו
-      //       this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 5).subscribe(arrayApply => {
-      //         this.countApplyFinish = Object.keys(arrayApply).length;
-      //         for (let index = 0; index < arrayApply.length; index++) {
-      //           this.isExist = false;
-      //           for (let i = 0; i < this.applyList.length; i++) {
-      //             if (this.applyList[i].id == arrayApply[index].id) {
-      //               this.isExist = true;
-      //               break;
-      //             }
-      //           }
-      //           if (!this.isExist)
-      //             this.applyList.push(arrayApply[index]);
-      //         }
-      //         for (let index = 0; index < this.applyList.length; index++) {
-      //           this.newApplyList.push(this.currentA);
-      //           this.currentA = new PatientApply();
-      //         }
-      //         this.getTreatment();
-      //       },
-      //         err => { console.log("error") });
-      //     },
-      //       err => { console.log("error") });
-      //   },
-      //     err => { console.log("error") });
-      // },
-      //   err => { console.log("error") });
     },
       err => { console.log("error") });
 
@@ -182,10 +125,6 @@ export class NavigatePatientComponent implements OnInit {
     }
   }
   hidden = false;
-
-  toggleBadgeVisibility() {
-    // this.hidden = !this.hidden;
-  }
   fillNewApply(item: any) {
     if (item != null) {
       this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id]);

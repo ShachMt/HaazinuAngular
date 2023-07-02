@@ -8,15 +8,13 @@ import { LoginComponent } from './component/login/login.component';
 import { NavigateSecretaryComponent } from './component/navigate-secretary/navigate-secretary.component';
 import { NewPasswordComponent } from './component/new-password/new-password.component';
 import { ReferenceManagerComponent } from './component/reference-manager/reference-manager.component';
-import { InstitutionsCategoryComponent } from './component/institutions-category/institutions-category.component';
 import { EducationalInstitutionsApplicantComponent } from './component/educational-institutions-applicant/educational-institutions-applicant.component';
 import { NewApplySecreteryComponent } from './component/new-apply-secretery/new-apply-secretery.component';
-import { InstitutionsCategoryFirstComponent } from './component/institutions-category-first/institutions-category-first.component';
 import { ShowDetailsApplyComponent } from './component/show-details-apply/show-details-apply.component';
 import { SystemActivityComponent } from './component/system-activity/system-activity.component';
-import { StatusApplyManagerComponent } from './component/status-apply-manager/status-apply-manager.component';
 import { NavigatePatientComponent } from './component/navigate-patient/navigate-patient.component';
 import { VisionComponent } from './component/vision/vision.component';
+import { CalenderComponent } from './component/calender/calender.component';
 const routes: Routes = [
 {path:"",component:LoginComponent,
 children:[ ]},
@@ -38,11 +36,6 @@ children:[ ]},
 // 'myroute/:param1/:param2'
 
 {path:'educationalInstitutionsApplicant/:id/:indexCategory/:isTvach/:nowInstition',component:EducationalInstitutionsApplicantComponent},
-{path:"institutionsCategory/:id/:indexCategory",component:InstitutionsCategoryComponent},
-{path:"institutionsCategory/:id/:gender/:age",component:InstitutionsCategoryComponent},
-
-{path:"institutionsCategory/:id",component:InstitutionsCategoryComponent},
-{path:"institutionsCategoryFirst/:id/:gender/:age",component:InstitutionsCategoryFirstComponent},
 {path:"fillNewApply/:idApply",component:FillNewApplyComponent},
 {path:"fillNewApply/:idApply/:isPastEducation",component:FillNewApplyComponent},
 { path: 'showDetailsApply/:id/:sivoug', component: ShowDetailsApplyComponent },
@@ -50,6 +43,7 @@ children:[ ]},
 { path: 'showDetailsApply/:id', component: ShowDetailsApplyComponent },
 {path:"forgetPassword",component:ForgetPasswordComponent},
 {path:"codeSend",component:CodeSendComponent},
+{path:"C",component:CalenderComponent},
 
 ];
 

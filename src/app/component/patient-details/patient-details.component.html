@@ -1,16 +1,16 @@
 <div *ngIf="currentPatientDetails!=null" class="card">
   <span *ngIf="currentApply.asker?.phone"> {{currentApply.asker?.firstName}}
     <b>במספר טלפון:</b>
-    {{currentApply.asker?.phone}} פונה בנוגע ל-  {{self}}</span>
+    {{currentApply.asker?.phone}} פונה בנוגע ל- {{self}}</span>
   {{currentPatientDetails.user?.firstName}} {{currentPatientDetails.user?.lastName}}
   טלפון: {{currentPatientDetails.user?.phone}}
   <button class="btn btn-success" style="cursor: pointer;" (click)="isOpen=!isOpen">לאינטייק המלא</button>
   <div *ngIf="isOpen">
     <span><svg id="b" (click)="updateIntake()" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-      fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-      <path
-        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-    </svg></span>
+        fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+        <path
+          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+      </svg></span>
     <span *ngIf="currentTreatment" style="white-space:nowrap;"><b> בתאריך:</b>
       {{currentTreatment.dateNow|date:'dd/MM/yyyy'}} <b>בשעה: </b>
       {{currentTreatment.dateNow|date:'HH:mm:ss'}}
@@ -30,8 +30,8 @@
     </b>{{self}}<br> <b>{{affinity}} </b> {{currentPatientDetails.idDetailsAskerNavigation?.referredBy}}<br>
     {{currentPatientDetails.user?.firstName}} {{currentPatientDetails.user?.lastName}}
     <span> <b> בשלב לקיחת הפנייה:</b></span>
-    <b>{{gender}} </b>{{currentPatientDetails.ageFillApply}}
-    <span *ngIf="ageNow"> <b>כיום {{gender}}:</b>{{ageNow}}</span>
+    {{gender}}<b> {{currentPatientDetails.ageFillApply}}</b>
+    <span *ngIf="ageNow"> כיום {{gender}}:<b>{{ageNow}}</b></span>
 
     <span *ngIf="currentPatientDetails.family">
       <br>
@@ -50,7 +50,7 @@
       <div *ngFor="let index of arrayCurrentInstitionPast">
         <span style="white-space: nowrap;"> <b> ב{{index.institution?.idCategoryNavigation?.detailsCategory}}: </b>
           {{stad}} ב
-          {{index.institution?.institutionName}},{{index.institution?.enotherName}} ו{{leave}} ב
+          {{index.institution?.institutionName}}<span *ngIf="index.institution?.enotherName">,{{index.institution?.enotherName}}</span> ו{{leave}} ב
           {{index.details}}</span><br>
         <!-- <b> {{namePresentIns}}</b>
         {{repeatCategory()}}
@@ -111,8 +111,12 @@
         <div class="row">
           <div class="col-10">
             <span *ngIf="item.therapist?.idUserNavigation?.firstName" id="title">
-              {{item.therapist?.idUserNavigation?.firstName}} </span>
-            <span *ngIf="item.task?.taskName " id="title">ביצע </span><span>{{item.task?.taskName}}
+              {{item.therapist?.idUserNavigation?.firstName}} ביצע </span>
+            <span *ngIf="item.task?.taskName " id="title">{{item.task?.taskName}} </span>
+            <span *ngIf="item.statusId==7">
+              פתיחת פניה חדשה
+            </span>
+            <span>
               <span *ngIf="item.documentation" id="title">ומתאר
                 כי:</span><span>{{item.documentation}}</span>
             </span>
@@ -141,7 +145,7 @@
       <div id="divTreatmentDetails" *ngFor="let item of arrayTreatmentDetails">
         <div class="conta">
           <div class="row">
-            <div class="col">
+            <div class="col"><br>
               <span *ngIf="item.dateNow" id="title">בתאריך:</span>
               <span>{{item.dateNow|date:'dd/MM/yyyy'}}</span>
               <span *ngIf="item.dateNow" id="title">בשעה:</span>
@@ -152,19 +156,21 @@
           <div class="row">
             <div class="col">
               <span *ngIf="item.therapist?.idUserNavigation?.firstName" id="title">
-                {{item.therapist?.idUserNavigation?.firstName}} </span><span> ביצע</span><br>
-              <span *ngIf="item.task?.taskName " id="title"></span><span>{{item.task?.taskName}}</span>
+                {{item.therapist?.idUserNavigation?.firstName}} ביצע </span>
+              <span *ngIf="item.task?.taskName " id="title"> {{item.task?.taskName}} </span>
+              <span *ngIf="item.statusId==7">
+                פתיחת פניה חדשה
+              </span>
             </div>
             <span *ngIf="item.documentation" id="title">
-            </span><span *ngIf="item.taskId!=9">-{{item.documentation}}</span><br>
+            </span><span *ngIf="item.taskId!=9">-{{item.documentation}}</span>
             <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist!=currentEmplorees">- מידע
-              חסוי</span><br>
+              חסוי</span>
             <span
-              *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist==currentEmplorees">-{{item.documentation}}</span><br>
-
+              *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&item.therapist==currentEmplorees">-{{item.documentation}}</span>
           </div>
-          <span *ngIf="item.nextStep?.taskName" id="title"> לשלב הבא קבע כי
-            יתבצע:<span>{{item.nextStep?.taskName}}
+          <span *ngIf="item.nextStep?.taskName" id="title"><b> לשלב הבא קבע כי
+              יתבצע:</b> {{item.nextStep?.taskName}} <span>
               <span *ngIf="item.nextEmployeesId!=item.therapistId">
                 <span *ngIf="item.nextEmployees?.idUserNavigation?.firstName" id="title">ע"י
                   :</span> <span>{{item.nextEmployees?.idUserNavigation?.firstName}}</span>

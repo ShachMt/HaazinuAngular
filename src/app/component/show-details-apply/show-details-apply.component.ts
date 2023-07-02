@@ -75,6 +75,10 @@ export class ShowDetailsApplyComponent implements OnInit {
     if(status==7){
       alert(" יש להזין שנית-לא ניתן למחוק שלב טיפול זה");
       this.treatmentDetailsService.deleteTreatmentDetails(id,this.currentNumApply).subscribe(emp => {
+        this.treatmentDetailsService.GetTreatmentDetailsByApplyState(this.currentNumApply).subscribe(newTreatmentDetails => {
+          this.item = newTreatmentDetails;
+        },
+          err => { console.log("error") });
       this.sivoug=true;
      this.isClickAddTreatment=true;}, 
      err => { console.log("error") });

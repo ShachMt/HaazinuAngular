@@ -108,7 +108,6 @@ export class NewApplySecreteryComponent implements OnInit {
     this.form = this.formBuilder.group({
       hebrewLetters: [null, [Validators.required, Validators.pattern(`^[\u0590-\u05FF .,?!"':;_()-\]+$`)]],
       mobileNumber: [null, [Validators.required, Validators.pattern(/^\+?([0-9]{1,4})?[-. (]*([0-9]{1,3})[-. )]*([0-9]{1,4})[-. ]*([0-9]{1,4})[-. ]*([0-9]{1,9})$/)]],
-      // mobileNumber: [null, [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       selectedValueControl: [""],
       selectedValueControlLevelUrgency: [""],
       valueDetailsAnotherCause: [""],
@@ -140,27 +139,20 @@ export class NewApplySecreteryComponent implements OnInit {
       }
       else {
         this.newDetailsAsker.affinity = this.arrayReferral[value].name;
-        // sessionStorage.setItem("detailsAsker", JSON.stringify(this.newDetailsAsker));
       }
     }
   }
   sendValueB(value: any) {
     this.newDetailsAsker.affinity = value;
-    // sessionStorage.setItem("detailsAsker", JSON.stringify(this.newDetailsAsker));
   }
   onSelectedValueChange() {
     this.isAnotherCause = false;
-    // this.form.get('valueDetailsAnotherCause')?.value.clearValidators();
     console.log(this.form.get('selectedValueControl')?.value);
     for (let index = 0; index < this.arrayCauseReferral.length; index++) {
       if (this.arrayCauseReferral[index].descreption == this.form.get('selectedValueControl')?.value) {
         this.currentCauseReferral = this.arrayCauseReferral[index];
         this.newDetailsAsker.idResone = this.arrayCauseReferral[index].id;
-        // if (this.form.get('selectedValueControl')?.value != "שונות               ")
-        //   this.form.get('valueDetailsAnotherCause')?.value.clearValidators();
-
         if (this.form.get('selectedValueControl')?.value == "שונות               ") {
-          // this.form.get('valueDetailsAnotherCause')?.value.setValidators([Validators.required]);
           this.isAnotherCause = true;
         }
         break;
@@ -271,44 +263,6 @@ export class NewApplySecreteryComponent implements OnInit {
       this.myRouter.navigate(['/inTakeNav']);
     else if (this.currentEmplo.job?.id == 5)
       this.myRouter.navigate(['/navigatePatient']);
-  }
-  searchPhone() {
-    this.isOk = false;
-    this.ApplyService.getAllAppliesByPhone(this.phoneAsker).subscribe(result => {
-      this.applyPhone = result;
-      for (let i = 0; i < result.length; i++) {
-        this.arrayApply.push(this.currentA);
-        this.arrayApply[i].apply = result[i];
-        if (this.arrayApply[i].apply) {
-          this.treatmentDetailsService.GetTreatmentDetailsByApplyState(result[i].id).
-            subscribe(newTreatmentDetails => {
-              this.arrayApply[i].treatment = newTreatmentDetails;
-              if (newTreatmentDetails.dateNow != null && newTreatmentDetails.dateNow != undefined) {
-                let d = newTreatmentDetails.dateNow;
-                if (d != null && d != undefined) {
-                  let didi = this.datePipe.transform(d, 'dd/MM/yyyy')
-                  if (didi != null && didi != undefined)
-                    this.arrayApply[i].dateEndTreatment = "" + didi;
-                }
-              }
-              this.patientDetailsService.getPatientDetailsByApplyId(result[i].id).
-                subscribe(patientDetails => {
-                  this.arrayApply[i].patientDetails = patientDetails;
-                  this.isOk = true;
-                  this.newApplyListA = this.arrayApply
-                },
-                  err => { console.log("error") });
-              // }
-
-            },
-              err => { console.log("error") });
-
-        }
-        this.currentA = new PatientApply();
-      }
-
-    },
-      err => { console.log("error"); });
   }
   showTreatmentDetails(numApply: any) {
     this.myRouter.navigate(['/showDetailsApply/' + numApply + '/' + true + '/' + true]);

@@ -8,4 +8,5 @@ patientDetails?:PatientDetails;
 treatment?:TreatmentDetails;
 dateEndTreatment?:string="";
 nameEndTerapist?:string;
+isActive?:string="";
 }

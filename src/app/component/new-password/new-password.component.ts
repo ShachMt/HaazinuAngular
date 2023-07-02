@@ -11,7 +11,6 @@ import { EmployeeService } from 'src/app/Services/employee.service';
   styleUrls: ['./new-password.component.scss']
 })
 export class NewPasswordComponent implements OnInit {
-
   isNot:boolean=true;
   form!: FormGroup;
   PassToLogin: string = "";
@@ -31,9 +30,7 @@ export class NewPasswordComponent implements OnInit {
     this.form = this.formBuilder.group({
       passwordV: [null, [Validators.required, Validators.pattern("^[a-z0-9A-Z_-]{4,15}$")]],
       confirmPasswordV: [null, [Validators.required]],
-
     });
-
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#password");
     const togglePassword1 = document.querySelector("#togglePassword1");
@@ -55,13 +52,7 @@ export class NewPasswordComponent implements OnInit {
       // toggle the icon
       togglePassword1?.classList.toggle("bi-eye");
     });
-    // prevent form submit
-    //  const form = document.querySelector("form");
-    //  form?.addEventListener('submit', function (e) {
-    //      e.preventDefault();
-    //  });
     const button = document.getElementById('btn');
-
     button?.addEventListener('click', function handleClick(event) {
       console.log('button clicked');
       console.log(event);
@@ -75,7 +66,33 @@ export class NewPasswordComponent implements OnInit {
       console.log(event.target);
     });
   }
+  //אימות ססמאות תואמות
+  ConfirmPassword() {
+    this.isNot=true;
+    this.isValid = false;
+    if (this.PassToLogin != this.confirmPassword) {
+      return "הסיסמה אינה תואמת";
+    }
+    else if (this.confirmPassword == "") {
+      if(this.PassToLogin!="")
+      return "שדה חובה";
+      return "";
+    }
+    else {
+      this.isValid = true
+      return "saccefull";
+    }
+  }
+  //הודעת שגיאה 
+  getErrorMessagePassword() {
+    if (this.form.get('passwordV')?.hasError('required')) {
+      this.isNot=false;
+      return '  שדה חובה-אנא הקלד סיסמה ';
+    }
+    this.isNot=false;
+    return this.form.get('passwordV')?.hasError('pattern') ? 'סיסמה שגויה אנא הקלד בין 4-15 תווים מספרים/ אותיות' : '';
 
+  }
   //שינוי סיסמה לפעיל הנוכחי
   Confirm() {
     //שליפת האימייל הנוכחי ועדכון הסיסמה
@@ -102,37 +119,6 @@ export class NewPasswordComponent implements OnInit {
       err => { console.log("error") });
 
   }
-  ConfirmPassword() {
-    this.isNot=true;
-    this.isValid = false;
-    if (this.PassToLogin != this.confirmPassword) {
-      return "הסיסמה אינה תואמת";
-    }
-    else if (this.confirmPassword == "") {
-      if(this.PassToLogin!="")
-      return "שדה חובה";
-      return "";
-    }
-    else {
-      this.isValid = true
-      return "saccefull";
-    }
-  }
-  getErrorMessagePassword() {
-    if (this.form.get('passwordV')?.hasError('required')) {
-      this.isNot=false;
-      return '  שדה חובה-אנא הקלד סיסמה ';
-    }
-    this.isNot=false;
-    return this.form.get('passwordV')?.hasError('pattern') ? 'סיסמה שגויה אנא הקלד בין 4-15 תווים מספרים/ אותיות' : '';
-
-  }
-  //  validatePassword() {
-  //       if (this.form.get('confirmPasswordV')?.hasError('required')) {
-  //     return '  שדה חובה-אנא הקלד סיסמה ';
-  //   }
-  //   return  'vvvvvvvvv';
-
-  //  }
+ 
 
 }

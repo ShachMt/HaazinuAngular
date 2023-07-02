@@ -107,7 +107,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
         if (newTreatmentDetails.statusId == 7)
           this.ofiCurrent = "פניה חדשה"
         else
-          this.ofiCurrent = "" + this.currentTreatmentDetails.task?.taskName;
+          this.ofiCurrent = "" + this.currentTreatmentDetails.nextStep?.taskName;
       },
         err => { console.log("error") });
     });
@@ -216,7 +216,10 @@ export class NewTreatmentDetailsComponent implements OnInit {
     }
     //משימת מזכיר/שיחה טלפונית/שיחת משוב
     else if (this.form.get('selectNextTask')?.value == 3 || this.form.get('selectNextTask')?.value == 4 || this.form.get('selectNextTask')?.value == 8)
-      this.isDetails = true;
+  {
+    this.isDetails = true;
+this.newTreatmentDedails.nextEmployeesId=4;
+  }
 
     //עדכון בפנייה
     else if (this.form.get('selectNextTask')?.value == 9) {
@@ -282,13 +285,15 @@ export class NewTreatmentDetailsComponent implements OnInit {
       },
         err => { console.log("error") });
     }
+    //עדכון בפניה
     else if (this.newTreatmentDedails.nextStepId == 9) {
       this.newTreatmentDedails.statusId == 1007;
       if (this.form.get('s')?.value == 1 || this.currentTreatmentDetails.statusId == 7) {
         this.newTreatmentDedails.nextEmployeesId = this.arrayEmplo.find
           (e => e.job?.details == "מנהל פניות          ")?.id;
         if (this.currentTreatmentDetails.statusId == 7)
-          this.newTreatmentDedails.taskId = this.currentTreatmentDetails.taskId;
+          this.newTreatmentDedails.statusId = 2;
+
       }
       else if (this.form.get('s')?.value == 2) {
 
@@ -299,12 +304,16 @@ export class NewTreatmentDetailsComponent implements OnInit {
       }
     }
 
-    else
-      //ממתין לביצוע
-      this.newTreatmentDedails.statusId = 4;
+    else {
+      
+      //בטיפול
+      this.newTreatmentDedails.statusId = 4;}
     if (this.currentTreatmentDetails.statusId != 7)
       this.newTreatmentDedails.taskId = this.currentTreatmentDetails.nextStepId;
+else{
+  this.newTreatmentDedails.taskId = 3012;
 
+}
 
     this.newTreatmentDedails.nextStepId = parseInt("" + this.newTreatmentDedails.nextStepId);
 
@@ -326,7 +335,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
       if (this.newTreatmentDedails.nextStepId == 2)
         this.newTreatmentDedails.nextDocumentation += " מיקום הפגישה " + this.place;
     }
-
+    this.form.get('selectNextTask')?.value
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
       if (this.emp.job?.id == 1) {
         this.myRouter.navigate(['/manager']);

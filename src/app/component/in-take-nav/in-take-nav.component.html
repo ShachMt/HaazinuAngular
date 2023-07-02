@@ -14,7 +14,7 @@
         keyboard_return
     </span></div>
   <h2> {{zman}} {{nameEmployee}} היקר -{{title}}</h2>
-  <div class="search-hero">
+  <div *ngIf="newApplyListA.length>0" class="search-hero">
     <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
       placeholder="ערך לחיפוש  &#61442; ">
   </div>
@@ -32,8 +32,8 @@
           <th>תאריך</th>
           <th> שם הפעיל</th>
           <th>טלפון הפונה</th>
-          <th>סיבת הפניה</th>
           <th>שם הפונה</th>
+          <th>משימה לביצוע</th>
               <th></th>
             </tr>
           </thead>
@@ -44,9 +44,14 @@
               <td> {{item.dateEndTreatment}}</td>
               <td>{{item.apply?.employees?.idUserNavigation?.firstName}}</td>
               <td>{{item.apply?.asker?.phone}}</td>
-              <td>{{item.apply?.applyCaused?.descreption}}<span
-                  *ngIf="item.apply?.detailsAnotherCause">-{{item.apply?.detailsAnotherCause}}</span></td>
               <td>{{item.apply?.asker?.firstName}}</td>
+             <td ><span *ngIf="item.treatment?.nextStep"> יש לבצע- 
+                    {{item.treatment?.nextStep?.taskName}}-{{item.treatment?.nextDocumentation}}</span>
+                    <span *ngIf="!item.treatment?.nextStep"><span *ngIf="item.treatment?.status?.details">{{item.treatment?.status?.details}}
+                      -{{item.treatment?.documentation}}<span *ngIf="item.treatment?.nextStep"> יש לבצע- 
+                        {{item.treatment?.nextStep?.taskName}}-{{item.treatment?.nextDocumentation}}</span></span>
+                    </span>
+                </td>
              
             </tr>
           </tbody>

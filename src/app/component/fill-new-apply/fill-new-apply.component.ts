@@ -35,14 +35,25 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 import { Terapist } from 'src/app/Classes/Terapist';
 import { TerapistService } from 'src/app/Services/terapist.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+
 @Component({
   selector: 'app-fill-new-apply',
   templateUrl: './fill-new-apply.component.html',
   styleUrls: ['./fill-new-apply.component.scss']
 })
-export class FillNewApplyComponent implements OnInit {
 
-  constructor(private snackBar: MatSnackBar,
+export class FillNewApplyComponent implements OnInit {
+  private _filter(value: string): EducationalInstitution[] {
+    const filterValue = value.toLowerCase();
+    return this.arrayEducational.filter(option => option.institutionName?.toLowerCase().includes(filterValue));
+  }
+
+   constructor(
+
+    private snackBar: MatSnackBar,
     private matureCharacterService: MatureCharacterService,
     private detailsAskerService: DetailsAskerService,
     private applyService: ApplyService,
@@ -148,6 +159,7 @@ export class FillNewApplyComponent implements OnInit {
     { id: 3, name: "פסיכולוג" }
 
   ];
+  // הזזת הריבוע 
   private isDragging: boolean = false;
   private initialX: number = 0;
   private initialY: number = 0;
@@ -161,7 +173,6 @@ export class FillNewApplyComponent implements OnInit {
       movableDiv.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     }
   }
-
   onMouseDown(event: MouseEvent) {
     this.isDragging = true;
     this.initialX = event.clientX;
@@ -189,7 +200,6 @@ export class FillNewApplyComponent implements OnInit {
   isTipul?: boolean;
   userMetapel: User = new User();
   userMetapelC: User = new User();
-
   isMatureCharacter?: boolean;
   newMatureCharacter: MatureCharacter = new MatureCharacter();
   userMature: User = new User();
@@ -258,11 +268,14 @@ export class FillNewApplyComponent implements OnInit {
   isAnotherTerapist: boolean = false;
   newTerapist: Terapist = new Terapist();
   selectValueJobTerapist: string = "";
-  //dateHebr
-  // date = new Date();
-
-
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions!: Observable<EducationalInstitution[]>;
   ngOnInit(): void {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
     this.isUpdate = false;
     this.isOp = false;
     this.isAnotherInstiton = false;
@@ -389,7 +402,6 @@ export class FillNewApplyComponent implements OnInit {
       numberV: [null, [Validators.required, Validators.pattern('^([1-9]|[1-2][0-9]|25)$')]],
       numberVV: [null, [Validators.required, Validators.pattern('^([1-9]|[1-2][0-9]|25)$')]],
       ageV: [null, [Validators.required, Validators.pattern('^([6-9]|[1-9][0-9])$')]],
-      // textAreaHeb: [null, [Validators.required, Validators.pattern(`^[\u0590-\u05FF .,?!"':;_()\n-\]+$`)]],
       mobileNumber: [null, [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       mobileNumberP: [null, [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       textArea: [""],
@@ -449,6 +461,13 @@ export class FillNewApplyComponent implements OnInit {
         break;
     }
   }
+  //מחיקת רשימת הקטגוריות במידה ומשנים את הגיל /מין שנגזרת מהנתונים הנ"ל
+removeSessionCategory(){
+  this.isOp=false;
+  sessionStorage.removeItem('currentListCategory');
+  this.updateSessionPatientDetails();
+}
+  //כאשר לוחצים על מוסד לימודים
   isOpI() {
     this.isAnotherInstiton = false;
     this.notExistCity = false;
@@ -479,7 +498,6 @@ export class FillNewApplyComponent implements OnInit {
               this.newEducationalInstitutionsApplicant = new EducationalInstitutionsApplicant();
             }
             if (arrIns.length > 0) {
-              
               this.newEducationalInstitutionsApplicant = arrIns[0];
               //סוג
               if (this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory)
@@ -680,32 +698,7 @@ export class FillNewApplyComponent implements OnInit {
 
 
 
-
-
-  resizeTextarea(textarea: any) {
-    this.renderer.setStyle(textarea, 'height', 'auto');
-    this.renderer.setStyle(textarea, 'height', textarea.scrollHeight + 'px');
-  }
-  saveAndUpdateDetailsCause() {
-    this.applyService.UpdateApply(this.numApply, this.currentApply).subscribe(resultApply => {
-    },
-      err => { console.log("error") });
-  }
-  getErrorMessageRefferalB() {
-    if (this.form.get('refferalB')?.hasError('refferalB')) {
-      return '  שדה חובה   ';
-    }
-    return "";
-  }
-
-
-  getCurrentApply() {
-    this.applyService.getApplyById(this.numApply).subscribe(apply => {
-      if (apply != null)
-        this.currentApply = apply;
-    },
-      err => { console.log("error") });
-  }
+  //error Message-הודעות שגיאה
   getErrorMessageMobileNumber() {
     if (this.form.get('mobileNumber')?.hasError('required')) {
       return '  שדה חובה   ';
@@ -729,42 +722,42 @@ export class FillNewApplyComponent implements OnInit {
     }
     return this.form.get('mobileNumberP')?.hasError('pattern') ? '  מספר טלפון שגוי   ' : '';
   }
+      // הודעת שגיאה לאותיות עברית בשם פרטי
   getErrorMessageHebrewLettersF() {
     if (this.form.get('hebrewLettersF')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('hebrewLettersF')?.hasError('pattern') ? '  אותיות עברית בלבד ' : '';
   }
-  getErrorMessageHebrewLettersTExtA() {
-    if (this.form.get('textAreaHeb')?.hasError('required')) {
-      return '  שדה חובה   ';
-    }
-    return this.form.get('textAreaHeb')?.hasError('pattern') ? '  אותיות עברית בלבד ' : '';
-  }
+     // הודעת שגיאה לאותיות עברית בשם משפחה
   getErrorMessageHebrewLettersL() {
     if (this.form.get('hebrewLettersL')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('hebrewLettersL')?.hasError('pattern') ? '  אותיות עברית בלבד ' : '';
   }
+      // לתיבת מתוך- הודעת שגיאה לקליטת מספר ילדים
   getErrorMessageNumber() {
     if (this.form.get('numberV')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('numberV')?.hasError('pattern') ? '   מספר ילדים בין 1-25 בלבד  ' : 'מספר ילדים בין 1-25 בלבד';
   }
+    // לתיבת סך ילדים-הודעת שגיאה לקליטת מספר ילדים
   getErrorMessageNumberV() {
     if (this.form.get('numberVV')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('numberVV')?.hasError('pattern') ? '   מספר ילדים בין 1-25 בלבד  ' : 'מספר ילדים בין 1-25 בלבד';
   }
+  // הודעת שגיאה לקליטת גיל
   getErrorMessageAge() {
     if (this.form.get('ageV')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('ageV')?.hasError('pattern') ? '  גיל אינו חוקי אנא הקלד גיל בין 6 ל-99 ' : '';
   }
+  //בדיקת תקינות של מיקום במשפחה שלא יהיה מיקום פחות מסך הילדים
   validPlace() {
     if (this.newFamily.childrenNumber != null && this.newPatientDetails.familyPlace != null) {
       if (this.newFamily.childrenNumber < this.newPatientDetails.familyPlace)
@@ -776,35 +769,49 @@ export class FillNewApplyComponent implements OnInit {
     }
   }
 
-  //selectSector
+
+
+//לרדת שורה באנטר Textarea פונקציה ל
+resizeTextarea(textarea: any) {
+  this.renderer.setStyle(textarea, 'height', 'auto');
+  this.renderer.setStyle(textarea, 'height', textarea.scrollHeight + 'px');
+}
+//שמירה של פירוט הפניה (תוך כדי שיחה)
+saveAndUpdateDetailsCause() {
+  this.applyService.UpdateApply(this.numApply, this.currentApply).subscribe(resultApply => {
+  },
+    err => { console.log("error") });
+}
+// חזרת הפניה לפי id
+getCurrentApply() {
+  this.applyService.getApplyById(this.numApply).subscribe(apply => {
+    if (apply != null)
+      this.currentApply = apply;
+  },
+    err => { console.log("error") });
+}
+  //selectSector-בחירת מגזר
   onSelectedValueChangeSector(value: any) {
     this.isAnotherSector = false;
     const currentSector = this.arraySector.find(s => s.id == value);
     if (currentSector != null && currentSector.id == 4)
       this.isAnotherSector = true;
   }
-  //selectTerapist
+  //selectTerapist-בחירת מטפל
   onSelectedValueChangeTerapist() {
     this.isAnotherTerapist = false;
     let value = this.form.get('chooseT')?.value;
     const currentTerapist = this.arrayTerapists.find(t => t.id == value);
-    if (this.arrayTerapists.length == 0 || value == 0) {
+    if(currentTerapist)
+    {
+      this.newPatientDetails.terapistId = currentTerapist?.id;
+      this.updateSessionPatientDetails();
+      this.newUserTherapist.id=currentTerapist?.id;
+    }
+   else if (this.arrayTerapists.length == 0 || value == 0) {
       this.isAnotherTerapist = true;
       this.newPatientDetails.terapistId = undefined;
     }
-    else {
-      this.newPatientDetails.terapistId = currentTerapist?.id;
-      this.updateSessionPatientDetails();
-    }
-  }
-
-  // sendValueReferredBy() {
-  //   sessionStorage.setItem("detailsAsker", JSON.stringify(this.newDetailsAsker));
-  // }
-  refrSes() {
-    sessionStorage.removeItem("currentListCategory");
-    sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
-    // location.reload();
   }
   onChangeTipul() {
     if (this.form.get('taalich')?.value == true) {
@@ -891,7 +898,7 @@ export class FillNewApplyComponent implements OnInit {
     },
       err => { console.log("error") });
   }
-
+//שמירה
   saveNow() {
     let data = sessionStorage.getItem('currentPatientDetails');
     if (data !== null) {
@@ -935,7 +942,7 @@ export class FillNewApplyComponent implements OnInit {
     }
     this.addNewUser();
   }
- // add a user
+ // add a user-הוספה/עדכון של בנ"א
  addNewUser() {
   if (this.user.id) {
     this.userService.UpdateUser(this.user.id, this.user).subscribe(asker => {
@@ -952,8 +959,7 @@ export class FillNewApplyComponent implements OnInit {
   }
 
 }
-
-//addAddress
+//addAddress-הוספה/עדכון של כתובת
 addAddress() {
   if (this.newAddress.id) {
     this.addressService.UpdateAddress(this.newAddress.id, this.newAddress).subscribe(idAddress => {
@@ -968,7 +974,7 @@ addAddress() {
       err => { console.log("error") });
   }
 }
-//addFamily
+//addFamily-הוספה /עדכון של משפחה
 addFamily() {
   if (this.newFamily.id) {
     this.familyService.UpdateFamily(this.newFamily.id, this.newFamily).subscribe(idAddress => {
@@ -998,61 +1004,6 @@ addFamily() {
       err => { console.log("error") });
   }
 }
-//addPatientDetails
-addPatientDetails() {
-  this.newPatientDetails.userId = this.user.id;
-  this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
-  this.newPatientDetails.emotional = this.form.get('emotional')?.value;
-  this.newPatientDetails.social = this.form.get('social')?.value;
-  this.newPatientDetails.studies = this.form.get('studies')?.value;
-  this.newPatientDetails.parentPhone = this.form.get('mobileNumberP')?.value;
-  this.newPatientDetails.terapistId = this.newTerapist.id;
-  this.newPatientDetails.isStillTerapist = this.form.get('still')?.value;
-  if (this.newPatientDetails.id) {
-    this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
-      this.addTreatment();
-    },
-      err => { console.log("error") });
-  }
-  else {
-    this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
-      this.addTreatment();
-    },
-      err => { console.log("error") });
-  }
-}
-
-//הוספת שלב ביצוע  לסיווג מנהל
-addTreatment() {
-  this.newTreatmentDetails.applyId = this.numApply;
-  this.newTreatmentDetails.therapistId = this.currentEmployees.id;
-  this.newTreatmentDetails.dateNow = new Date();
-  this.newTreatmentDetails.taskId = 1012;
-  this.newTreatmentDetails.statusId = 2;
-  this.newTreatmentDetails.dateTask = new Date();
-  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
-    const config = new MatSnackBarConfig();
-    config.duration = 2000;
-    config.direction = 'rtl'
-    this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
-    sessionStorage.removeItem("currentListCategory");
-    sessionStorage.removeItem("userPatientDetails");
-    sessionStorage.removeItem("currentPatientDetails");
-    sessionStorage.removeItem("currentAddress");
-    sessionStorage.removeItem("currentFamily");
-    if (this.currentEmployees.job?.id == 1) {
-      this.myRouter.navigate(['/manager']);
-    }
-    else if (this.currentEmployees.job?.id == 3)
-      this.myRouter.navigate(['/navigateSecretary']);
-    else if (this.currentEmployees.job?.id == 4)
-      this.myRouter.navigate(['/inTakeNav']);
-    else if (this.currentEmployees.job?.id == 5)
-      this.myRouter.navigate(['/navigatePatient']);
-  },
-    err => { console.log("error") });
-}
-
 
   //הוספה/ עדכון של מטפל
   addUserTherapist() {
@@ -1114,6 +1065,62 @@ addTreatment() {
         err => { console.log("error") });
     }
   }
+//addPatientDetails
+addPatientDetails() {
+  this.newPatientDetails.userId = this.user.id;
+  this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
+  this.newPatientDetails.emotional = this.form.get('emotional')?.value;
+  this.newPatientDetails.social = this.form.get('social')?.value;
+  this.newPatientDetails.studies = this.form.get('studies')?.value;
+  this.newPatientDetails.parentPhone = this.form.get('mobileNumberP')?.value;
+  this.newPatientDetails.terapistId = this.newTerapist.id;
+  this.newPatientDetails.isStillTerapist = this.form.get('still')?.value;
+  if (this.newPatientDetails.id) {
+    this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
+      this.addTreatment();
+    },
+      err => { console.log("error") });
+  }
+  else {
+    this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
+      this.addTreatment();
+    },
+      err => { console.log("error") });
+  }
+}
+
+//הוספת שלב ביצוע  לסיווג מנהל
+addTreatment() {
+  this.newTreatmentDetails.applyId = this.numApply;
+  this.newTreatmentDetails.therapistId = this.currentEmployees.id;
+  this.newTreatmentDetails.dateNow = new Date();
+  this.newTreatmentDetails.taskId = 1012;
+  this.newTreatmentDetails.statusId = 2;
+  this.newTreatmentDetails.dateTask = new Date();
+  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
+    const config = new MatSnackBarConfig();
+    config.duration = 2000;
+    config.direction = 'rtl'
+    this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
+    sessionStorage.removeItem("currentListCategory");
+    sessionStorage.removeItem("userPatientDetails");
+    sessionStorage.removeItem("currentPatientDetails");
+    sessionStorage.removeItem("currentAddress");
+    sessionStorage.removeItem("currentFamily");
+    if (this.currentEmployees.job?.id == 1) {
+      this.myRouter.navigate(['/manager']);
+    }
+    else if (this.currentEmployees.job?.id == 3)
+      this.myRouter.navigate(['/navigateSecretary']);
+    else if (this.currentEmployees.job?.id == 4)
+      this.myRouter.navigate(['/inTakeNav']);
+    else if (this.currentEmployees.job?.id == 5)
+      this.myRouter.navigate(['/navigatePatient']);
+  },
+    err => { console.log("error") });
+}
+
+
   return() {
     this.location.back();
   }

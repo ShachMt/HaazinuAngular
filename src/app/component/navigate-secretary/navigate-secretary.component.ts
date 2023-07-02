@@ -43,6 +43,7 @@ export class NavigateSecretaryComponent implements OnInit{
     private _liveAnnouncer: LiveAnnouncer
 
   ) { }
+  isOO:boolean=false;
   isOk: boolean = false;
   nameEmployee: any;
   searchText: string = "";
@@ -307,15 +308,15 @@ export class NavigateSecretaryComponent implements OnInit{
     //הסתיימו
     if (i == 1) {
       this.title="פניות שהסתיימו"
-
-      this.newApplyListA = this.newApplyList.filter(x => x.treatment?.statusId == 5);
+      this.isOO=false;
+      this.newApplyListA = this.newApplyList.filter(x => x.apply?.isActive == false);
       this.isPressM = true;
 
     }
-    //ביפול
+    //בטיפול
     else if (i == 2) {
       this.title="פניות בטיפול"
-
+      this.isOO=false;
       this.newApplyListA = this.newApplyList.filter(x => x.treatment?.statusId == 4);
       this.isPressM = true;
 
@@ -323,7 +324,7 @@ export class NavigateSecretaryComponent implements OnInit{
     //ממתין לביצוע
     else if (i == 3) {
       this.title="פניות הממתינות ביצוע"
-
+      this.isOO=false;
       this.newApplyListA = this.newApplyList.filter(x => x.treatment?.statusId == 3 ||
         x.treatment?.statusId == 3007);
       this.isPressM = !this.isPressM;
@@ -331,7 +332,7 @@ export class NavigateSecretaryComponent implements OnInit{
     //הפניות שלך
     else if (i == 4) {
       this.title="פניות שלי"
-
+      this.isOO=false;
       this.newApplyListA = this.newApplyList;
       this.isPressM = true;
 

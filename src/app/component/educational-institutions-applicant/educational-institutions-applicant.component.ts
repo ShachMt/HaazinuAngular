@@ -245,11 +245,10 @@ export class EducationalInstitutionsApplicantComponent implements OnInit {
 }
   isUp(){
     let id=this.newEducationalInstitutionsApplicant.id;
-    // this.newEducationalInstitutionsApplicant.id=undefined;
     this.newEducationalInstitutionsApplicant.institutionId = this.currentChooseEdu.id;
     this.newEducationalInstitutionsApplicant.details = 
-    this.selectedValueClassL + "  זמן עזיבה :" + this.chooseTimeLeave;
-    this.newEducationalInstitutionsApplicant.status="עבר"
+    this.chooseTimeLeave+","+this.selectedValueClassL;
+    this.newEducationalInstitutionsApplicant.status="עבר";
     this.educationalInstitutionsApplicantService.updateEducational(id,this.newEducationalInstitutionsApplicant).
     subscribe(result => {
       this.isUpdate=false;

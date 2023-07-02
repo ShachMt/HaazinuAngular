@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -6,7 +6,6 @@ import{FormsModule,ReactiveFormsModule} from  '@angular/forms';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './component/home-page/home-page.component';
 import { LoginComponent } from './component/login/login.component';
-import { UpdatePasswordComponent } from './component/update-password/update-password.component';
 import { ForgetPasswordComponent } from './component/forget-password/forget-password.component';
 import { EmployeeService } from './Services/employee.service';
 import { UserService } from './Services/user.service';
@@ -27,28 +26,23 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
 import { EducationalInstitutionsComponent } from './component/educational-institutions/educational-institutions.component';
-import { InstitutionsCategoryComponent } from './component/institutions-category/institutions-category.component';
 import { EducationalInstitutionsApplicantComponent } from './component/educational-institutions-applicant/educational-institutions-applicant.component';
 import { NewApplySecreteryComponent } from './component/new-apply-secretery/new-apply-secretery.component';
 import {MatCardModule} from '@angular/material/card';
 
 // search module
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-// import { NgxTimepickerModule } from 'ngx-timepicker';
 import {MatTableModule} from '@angular/material/table';
-import { InstitutionsCategoryFirstComponent } from './component/institutions-category-first/institutions-category-first.component';
 import { SearchPipe } from './search.pipe';
 import { ShowDetailsApplyComponent } from './component/show-details-apply/show-details-apply.component';
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { PatientDetailsComponent } from './component/patient-details/patient-details.component';
 import { NewTreatmentDetailsComponent } from './component/new-treatment-details/new-treatment-details.component';
 import {MatIconModule} from '@angular/material/icon';
 import { SystemActivityComponent } from './component/system-activity/system-activity.component';
-import { StatusApplyManagerComponent } from './component/status-apply-manager/status-apply-manager.component';
 import { WaitPageComponent } from './component/wait-page/wait-page.component';
 import { NavigatePatientComponent } from './component/navigate-patient/navigate-patient.component';
 import { HeaderComponent } from './component/header/header.component';
-// import { MDBSpinningPreloader, MDBBootstrapModulesPro, ToastModule, TimePickerModule, DatepickerModule, RangeModule, StepperModule, TabsModule, ChipsModule, MDBBootstrapModulePro } from 'ng-uikit-pro-standard';
 import { FooterComponent } from './component/footer/footer.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule} from '@angular/material/menu';
@@ -57,15 +51,15 @@ import { VisionComponent } from './component/vision/vision.component';
 import { MatSortModule } from '@angular/material/sort';
 import { DeleteDialogComponent } from './component/delete-dialog/delete-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-// import {MatTableDataSource} from '@angular/material/table';
-// export class MyModule {}
+import { CalenderComponent } from './component/calender/calender.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     LoginComponent,
-    UpdatePasswordComponent,
     ForgetPasswordComponent,
     ReferenceManagerComponent,
     CodeSendComponent,
@@ -74,25 +68,23 @@ import { MatDialogModule } from '@angular/material/dialog';
     InTakeNavComponent,
     FillNewApplyComponent,
     EducationalInstitutionsComponent,
-    InstitutionsCategoryComponent,
     EducationalInstitutionsApplicantComponent,
-    // DetailApplyComponent,
     NewApplySecreteryComponent,
-    InstitutionsCategoryFirstComponent,
     SearchPipe,
     ShowDetailsApplyComponent,
     PatientDetailsComponent,
     NewTreatmentDetailsComponent,
     SystemActivityComponent,
-    StatusApplyManagerComponent,
     WaitPageComponent,
     NavigatePatientComponent,
     HeaderComponent,
     FooterComponent,
     VisionComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    CalenderComponent
   ],
   imports: [
+    MatAutocompleteModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

@@ -114,16 +114,6 @@
     </td>
     <td>
       <mat-form-field style="text-align: right;width: auto;">
-        <mat-label> כיתת לימוד :</mat-label>
-        <mat-select id="selectedValueClassL" [(ngModel)]="selectedValueClassL" name="selectedValueClassL">
-          <mat-option style="text-align: right;"></mat-option>
-          <mat-option style="text-align: right;" *ngFor="let item of chooseArray"
-            [value]="item.name">{{item.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </td>
-    <td>
-      <mat-form-field style="text-align: right;width: auto;">
         <mat-label> שלב עזיבה :</mat-label>
         <mat-select id="chooseTimeLeave" [(ngModel)]="chooseTimeLeave" name="chooseTimeLeave">
           <mat-option style="text-align: right;"></mat-option>
@@ -132,6 +122,17 @@
         </mat-select>
       </mat-form-field>
     </td>
+    <td>
+      <mat-form-field style="text-align: right;width: auto;">
+        <mat-label> כיתת לימוד :</mat-label>
+        <mat-select id="selectedValueClassL" [(ngModel)]="selectedValueClassL" name="selectedValueClassL">
+          <mat-option style="text-align: right;"></mat-option>
+          <mat-option style="text-align: right;" *ngFor="let item of chooseArray"
+            [value]="item.name">{{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+    
   </tr>
 </table>
 

@@ -398,7 +398,7 @@ debugger;
     this.newTreatmentDedails.therapistId = this.currentEmplorees.id;
 
     //שליחה לממלא האינטייק
-    this.newTreatmentDedails.nextEmployeesId = this.arrEmployees.find(x => x.job?.id == 4)?.id;
+    this.newTreatmentDedails.nextEmployeesId = 5;
     this.newTreatmentDedails.dateNow = new Date();
     this.newTreatmentDedails.dateTask = new Date();
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
