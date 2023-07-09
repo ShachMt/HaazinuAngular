@@ -5,8 +5,12 @@
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
     <mat-form-field class="taskN" appearance="fill">
       <mat-label>משימה נוכחית</mat-label>
-      <!-- <input matInput value="{{ofiCurrent}}" readonly> -->
-      
+      <input matInput value="{{ofiCurrent}}" readonly>
+      <mat-select id="chooseTN" name="chooseTN" formControlName="selectNextTaskNow"
+      [(ngModel)]="newTreatmentDedails.taskId">
+      <mat-option>--</mat-option>
+      <mat-option id="taskOp" *ngFor="let item of arrayTasks" [value]="item.id">{{item.taskName}}</mat-option>
+    </mat-select>
     </mat-form-field>
     <br>
     <span id="title"> סיכום</span><br>
@@ -83,7 +87,14 @@
       <mat-error *ngIf="!isOkDate">תאריך לא תקין</mat-error>
       <mat-error *ngIf="!isOkDateEmp"> שדה חובה </mat-error>
     </div>
-
+<mat-form-field class="chooseE">
+  <mat-label >דחיפות ביצוע המשימה</mat-label>
+  <mat-select name="chooseE" [(ngModel)]="shiyouchPnia"
+  (selectionChange)="changeD($event)">
+  <mat-option class="chooseE" *ngFor="let item of arrayLevelUrgency"
+   [value]="item.name"> {{item.name}}</mat-option>
+</mat-select>
+</mat-form-field>
 
     <div class="row">
       <div class="col-md-3 mr-4">
@@ -98,6 +109,7 @@
     </div>
   </form>
 </div>
+<!-- //סיווג מנהלי -->
 <div class="container" *ngIf="sivoug&&!IsSec">
   <form [formGroup]="form1" class="w3-container">
     <p>הוספת שלב טיפול</p>
@@ -106,7 +118,7 @@
 
     <mat-form-field class="taskN" appearance="fill">
       <mat-label>משימה נוכחית </mat-label>
-      <mat-select id="descreption" name="descreption" formControlName="selectDescreptionC" [(ngModel)]="newTreatmentDedails.nextStepId"
+      <mat-select id="descreption" name="descreption" formControlName="selectDescreptionC" [(ngModel)]="newTreatmentDedails.taskId"
       (selectionChange)="selectDescreption($event)">
         <mat-option value="1013">סיווג מנהלי</mat-option>
         <mat-option value="1">התיעצות פנימית</mat-option>
@@ -114,7 +126,7 @@
     </mat-form-field>
     <mat-form-field *ngIf="isEmploC" class="taskN" appearance="fill">
       <mat-label>בחר פעיל </mat-label>
-      <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="employeesId"
+      <mat-select id="chooseT" name="chooseT" formControlName="selectNextTaskIsEmplo" [(ngModel)]="newTreatmentDedails.nextEmployeesId"
         (valueChange)="selectIsEmplo()">
         <mat-option>--</mat-option>
         <mat-option id="taskOp" *ngFor="let item of arrayEmplo"
@@ -150,6 +162,7 @@
     </div>
   </form>
 </div>
+<!-- //עדכון בפניה למזכיר -->
 <div class="container" *ngIf="IsSec">
   <form [formGroup]="form2" class="w3-container">
     <p>הוספת שלב טיפול</p>

@@ -244,6 +244,7 @@ export class NewApplySecreteryComponent implements OnInit {
     else {
       this.newTreatmentDetails.taskId = 13;
       this.newTreatmentDetails.statusId = 6;
+      this.newTreatmentDetails.nextStepId=1012
     }
 
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {

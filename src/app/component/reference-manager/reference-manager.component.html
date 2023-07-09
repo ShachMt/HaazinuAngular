@@ -27,6 +27,12 @@
       </span></mat-icon>
     <span> שחרור נעילת פעיל</span>
   </button>
+  <button  (click)="systemActivity(5)" mat-menu-item>
+    <mat-icon><span class="material-symbols-outlined">
+add
+      </span></mat-icon>
+    <span> הוספת מוסד לימודים</span>
+  </button>
 </mat-menu>
 
 <h2> {{zman}} {{currentEmployees?.idUserNavigation?.firstName}} - {{title}}</h2>
@@ -43,7 +49,7 @@
     <table *ngIf="newApplyListA.length>0" class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">דחיפות הפניה</th>
+          <th scope="col">רמת דחיפות</th>
           <th scope="col">מספר פניה</th>
           <th scope="col">סטטוס הפניה</th>
           <th scope="col">תאריך טיפול אחרון</th>

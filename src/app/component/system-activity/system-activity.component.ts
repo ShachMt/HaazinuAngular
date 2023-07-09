@@ -11,6 +11,7 @@ import { UserService } from 'src/app/Services/user.service';
 import { Location } from '@angular/common';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EducationalInstitution } from 'src/app/Classes/EducationalInstitution';
 @Component({
   selector: 'app-system-activity',
   templateUrl: './system-activity.component.html',
@@ -31,6 +32,7 @@ export class SystemActivityComponent implements OnInit {
   ) { }
   form!: FormGroup;
   form1!: FormGroup;
+  form2!: FormGroup;
 
   zman: string = "";
   currentEmployees: Employee = new Employee();
@@ -47,7 +49,8 @@ export class SystemActivityComponent implements OnInit {
   isUpdateEmployees: boolean = false;
   isOk: boolean = false;
   isOkI: boolean = false;
-  choose: number = 0
+  choose: number = 0;
+  newEducational:EducationalInstitution=new EducationalInstitution();
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
@@ -159,6 +162,9 @@ export class SystemActivityComponent implements OnInit {
       return '  שדה חובה   ';
     }
     return this.form.get('mobileNumber')?.hasError('pattern') ? '  מספר טלפון שגוי   ' : '';
+  }
+  addEducation(){
+
   }
   onSelectedValueJob() {
     console.log(this.form.get('selectedValueJob')?.value);

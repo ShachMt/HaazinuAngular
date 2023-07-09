@@ -11,6 +11,7 @@ import { TreatmentDetailsService } from 'src/app/Services/treatment-details.serv
 import { DatePipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { ApplyService } from 'src/app/Services/apply.service';
+import { Apply } from 'src/app/Classes/Apply';
 
 
 @Component({
@@ -36,6 +37,11 @@ export class NewTreatmentDetailsComponent implements OnInit {
   ) {
 
   }
+  arrayLevelUrgency = [
+    { id: 1, name: "VIP" },
+    { id: 2, name: "דחוף" },
+    { id: 3, name: "רגיל" }
+  ];
   form = new FormGroup({
     selectNextTask: new FormControl('', Validators.required),
     date: new FormControl("", [Validators.required]),
@@ -63,6 +69,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
   currentTreatmentDetails: TreatmentDetails = new TreatmentDetails();
   ofiCurrent: string = "";
   newTreatmentDedails: TreatmentDetails = new TreatmentDetails();
+  currentApply:Apply=new Apply();
   isEdkoud: boolean = true;
   isEdkoudB: boolean = true;
   isClick: boolean = true;
@@ -105,6 +112,10 @@ export class NewTreatmentDetailsComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.newTreatmentDedails.applyId = id;
+      this.applyService.getApplyById(id).subscribe(apply => {
+        this.currentApply=apply;
+    },
+    err => { console.log("error") });
       this.treatmentDetailsService.GetTreatmentDetailsByApplyState(id).subscribe(newTreatmentDetails => {
         this.currentTreatmentDetails = newTreatmentDetails;
         if (newTreatmentDetails.statusId == 7)
@@ -181,6 +192,16 @@ export class NewTreatmentDetailsComponent implements OnInit {
   resizeTextarea(textarea: any) {
     this.renderer.setStyle(textarea, 'height', 'auto');
     this.renderer.setStyle(textarea, 'height', textarea.scrollHeight + 'px');
+  }
+  changeD(event:any){
+if(event.value){
+  this.currentApply.levelUrgency=event.value;
+  this.applyService.UpdateApply(this.currentApply.id, this.currentApply).subscribe(resultApply => {
+ debugger
+ 
+  },
+    err => { console.log("error") });
+}
   }
   getEmployeesArray() {
     this.employeeService.GetAllEmployees().subscribe(emplo => {
@@ -279,14 +300,11 @@ if(!this.item){
     //אם נבחר סגירת הפניה
     if (this.newTreatmentDedails.nextStepId == 7) {
       this.newTreatmentDedails.statusId = 5;
-      this.applyService.getApplyById(this.newTreatmentDedails.applyId).subscribe(apply => {
-        apply.isActive = false;
-        this.applyService.UpdateApply(apply.id, apply).subscribe(result => {
+        this.currentApply.isActive = false;
+        this.applyService.UpdateApply(this.currentApply.id, this.currentApply).subscribe(result => {
           console.log(result);
         },
           err => { console.log("error") });
-      },
-        err => { console.log("error") });
     }
     //עדכון בפניה
     else if (this.newTreatmentDedails.nextStepId == 9) {
@@ -359,17 +377,16 @@ else{
     if(event.value=="1"){
         this.isEmploC = true;
         this.newTreatmentDedails.taskId = 1;
-        this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextTaskIsEmplo')?.value;
         this.newTreatmentDedails.statusId = 3;    }
     else if(event.value=="1013"){
       this.newTreatmentDedails.taskId = 1013;
-      this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextEmplo')?.value;
       this.newTreatmentDedails.statusId = 7;
     }
   }
   onSubmit1() {
     debugger;
     //תוכן של ביצוע שלב קודם- תיעוד הארוע
+    this.newTreatmentDedails.nextEmployeesId = this.form1.get('selectNextEmplo')?.value;
     this.newTreatmentDedails.documentation = this.form1.get('hebrewLetters')?.value;
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
       if (this.emp.job?.id == 1) {
