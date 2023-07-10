@@ -68,6 +68,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
   });
   currentTreatmentDetails: TreatmentDetails = new TreatmentDetails();
   ofiCurrent: string = "";
+  Dchi:string="";
   newTreatmentDedails: TreatmentDetails = new TreatmentDetails();
   currentApply:Apply=new Apply();
   isEdkoud: boolean = true;
@@ -95,11 +96,13 @@ export class NewTreatmentDetailsComponent implements OnInit {
   place: string = "";
   isPlace: boolean = false;
   arrayEmploI: Employee[] = [];
-
   ngOnInit(): void {
   
-  if(this.item) 
+  if(this.item) {
   this.newTreatmentDedails=this.item;
+  this.ofiCurrent=""+this.newTreatmentDedails.task?.taskName;
+ 
+}
   else{
     this.newTreatmentDedails.dateNow = new Date();
     this.newTreatmentDedails.dateTask = new Date();
@@ -114,6 +117,7 @@ export class NewTreatmentDetailsComponent implements OnInit {
       this.newTreatmentDedails.applyId = id;
       this.applyService.getApplyById(id).subscribe(apply => {
         this.currentApply=apply;
+        this.Dchi=""+ this.currentApply.levelUrgency
     },
     err => { console.log("error") });
       this.treatmentDetailsService.GetTreatmentDetailsByApplyState(id).subscribe(newTreatmentDetails => {
@@ -357,6 +361,23 @@ else{
         this.newTreatmentDedails.nextDocumentation += " מיקום הפגישה " + this.place;
     }
     this.form.get('selectNextTask')?.value
+    if(this.newTreatmentDedails.id){
+      this.treatmentDetailsService.UpdateTreatmentDetailsII(this.newTreatmentDedails.id,this.newTreatmentDedails)
+      .subscribe(result => {
+        if (this.emp.job?.id == 1) {
+          this.myRouter.navigate(['/manager']);
+        }
+        else if (this.emp.job?.id == 3)
+          this.myRouter.navigate(['/navigateSecretary']);
+        else if (this.emp.job?.id == 4)
+          this.myRouter.navigate(['/inTakeNav']);
+        else if (this.emp.job?.id == 5)
+          this.myRouter.navigate(['/navigatePatient']);
+      },
+        err => { console.log("error") });
+   
+   
+    }
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDedails).subscribe(result => {
       if (this.emp.job?.id == 1) {
         this.myRouter.navigate(['/manager']);

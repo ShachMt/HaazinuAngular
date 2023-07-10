@@ -6,7 +6,7 @@ export class PatientApply {
 apply:Apply=new Apply();
 patientDetails?:PatientDetails;
 treatment?:TreatmentDetails;
-dateEndTreatment?:string="";
-nameEndTerapist?:string;
+dateEndTreatment:string="";
+nameEndTerapist:string="";
 isActive?:string="";
 }

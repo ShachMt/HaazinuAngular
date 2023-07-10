@@ -13,7 +13,7 @@ export class Apply {
     detailsCausedRefferal?:string;
     detailsAnotherCause?:string;
     isActive?:boolean;
-
+    treatmentId?:number
     employees?:Employee;
     asker?:User;
     applyCaused?:CauseReferral

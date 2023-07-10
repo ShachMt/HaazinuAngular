@@ -51,7 +51,7 @@ export class FillNewApplyComponent implements OnInit {
     return this.arrayEducational.filter(option => option.institutionName?.toLowerCase().includes(filterValue));
   }
 
-   constructor(
+  constructor(
 
     private snackBar: MatSnackBar,
     private matureCharacterService: MatureCharacterService,
@@ -137,6 +137,7 @@ export class FillNewApplyComponent implements OnInit {
     { id: 4, name: "שיעור ד" },
   ];
   arrayC = [
+    { id: 0, name: "ללא מוסד לימודים" },
     { id: 1, name: "כיתה א" },
     { id: 2, name: "כיתה ב" },
     { id: 3, name: "כיתה ג" },
@@ -462,11 +463,11 @@ export class FillNewApplyComponent implements OnInit {
     }
   }
   //מחיקת רשימת הקטגוריות במידה ומשנים את הגיל /מין שנגזרת מהנתונים הנ"ל
-removeSessionCategory(){
-  this.isOp=false;
-  sessionStorage.removeItem('currentListCategory');
-  this.updateSessionPatientDetails();
-}
+  removeSessionCategory() {
+    this.isOp = false;
+    sessionStorage.removeItem('currentListCategory');
+    this.updateSessionPatientDetails();
+  }
   //כאשר לוחצים על מוסד לימודים
   isOpI() {
     this.isAnotherInstiton = false;
@@ -492,6 +493,7 @@ removeSessionCategory(){
       else {
         this.newPatientDetails.userId = this.user.id;
         sessionStorage.setItem("currentPatientDetails", JSON.stringify(this.newPatientDetails));
+        debugger
         this.educationalInstitutionsApplicantService.getAllEducationalInstitutionByUserIdStatus
           (this.user.id, "הווה      ").subscribe(arrIns => {
             if (arrIns.length == 0) {
@@ -673,26 +675,30 @@ removeSessionCategory(){
       this.newEducationalInstitutionsApplicant.userId = this.user.id;
       this.newEducationalInstitutionsApplicant.status = "הווה";
       this.newEducationalInstitutionsApplicant.details = "" + this.selectedValueClassL;
-      this.newEducationalInstitutionsApplicant.institutionId = this.currentChooseEdu.id;
-      this.educationalInstitutionsApplicantService.AddEducational(this.newEducationalInstitutionsApplicant)
-        .subscribe(idEduAp => {
-          this.opentLastEdu = true;
-          this.educationalInstitutionsApplicantService.getAllEducationalInstitutionByUserIdStatus(this.user.id, "הווה      ").subscribe(arrIns => {
-            if (arrIns.length > 0)
-              this.newEducationalInstitutionsApplicant = arrIns[0];
-            if (this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory)
-              this.chooseCategory =
-                this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory
+      if (!this.currentChooseEdu.id)
+        alert("");
+      else {
+        this.newEducationalInstitutionsApplicant.institutionId = this.currentChooseEdu.id;
+        this.educationalInstitutionsApplicantService.AddEducational(this.newEducationalInstitutionsApplicant)
+          .subscribe(idEduAp => {
+            this.opentLastEdu = true;
+            this.educationalInstitutionsApplicantService.getAllEducationalInstitutionByUserIdStatus(this.user.id, "הווה      ").subscribe(arrIns => {
+              if (arrIns.length > 0)
+                this.newEducationalInstitutionsApplicant = arrIns[0];
+              if (this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory)
+                this.chooseCategory =
+                  this.newEducationalInstitutionsApplicant.institution?.idCategoryNavigation?.detailsCategory
 
+            },
+              err => { console.log("error") });
+            for (let index = this.indexCategory; index < this.arrayCategory.length; index++) {
+              this.arrayNewCategory.push(this.arrayCategory[index]);
+            }
+            sessionStorage.setItem("currentListCategory", JSON.stringify(this.arrayNewCategory));
+            this.arrayNewCategory = [];
           },
             err => { console.log("error") });
-          for (let index = this.indexCategory; index < this.arrayCategory.length; index++) {
-            this.arrayNewCategory.push(this.arrayCategory[index]);
-          }
-          sessionStorage.setItem("currentListCategory", JSON.stringify(this.arrayNewCategory));
-          this.arrayNewCategory = [];
-        },
-          err => { console.log("error") });
+      }
     }
   }
 
@@ -722,28 +728,28 @@ removeSessionCategory(){
     }
     return this.form.get('mobileNumberP')?.hasError('pattern') ? '  מספר טלפון שגוי   ' : '';
   }
-      // הודעת שגיאה לאותיות עברית בשם פרטי
+  // הודעת שגיאה לאותיות עברית בשם פרטי
   getErrorMessageHebrewLettersF() {
     if (this.form.get('hebrewLettersF')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('hebrewLettersF')?.hasError('pattern') ? '  אותיות עברית בלבד ' : '';
   }
-     // הודעת שגיאה לאותיות עברית בשם משפחה
+  // הודעת שגיאה לאותיות עברית בשם משפחה
   getErrorMessageHebrewLettersL() {
     if (this.form.get('hebrewLettersL')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('hebrewLettersL')?.hasError('pattern') ? '  אותיות עברית בלבד ' : '';
   }
-      // לתיבת מתוך- הודעת שגיאה לקליטת מספר ילדים
+  // לתיבת מתוך- הודעת שגיאה לקליטת מספר ילדים
   getErrorMessageNumber() {
     if (this.form.get('numberV')?.hasError('required')) {
       return '  שדה חובה   ';
     }
     return this.form.get('numberV')?.hasError('pattern') ? '   מספר ילדים בין 1-25 בלבד  ' : 'מספר ילדים בין 1-25 בלבד';
   }
-    // לתיבת סך ילדים-הודעת שגיאה לקליטת מספר ילדים
+  // לתיבת סך ילדים-הודעת שגיאה לקליטת מספר ילדים
   getErrorMessageNumberV() {
     if (this.form.get('numberVV')?.hasError('required')) {
       return '  שדה חובה   ';
@@ -771,25 +777,25 @@ removeSessionCategory(){
 
 
 
-//לרדת שורה באנטר Textarea פונקציה ל
-resizeTextarea(textarea: any) {
-  this.renderer.setStyle(textarea, 'height', 'auto');
-  this.renderer.setStyle(textarea, 'height', textarea.scrollHeight + 'px');
-}
-//שמירה של פירוט הפניה (תוך כדי שיחה)
-saveAndUpdateDetailsCause() {
-  this.applyService.UpdateApply(this.numApply, this.currentApply).subscribe(resultApply => {
-  },
-    err => { console.log("error") });
-}
-// חזרת הפניה לפי id
-getCurrentApply() {
-  this.applyService.getApplyById(this.numApply).subscribe(apply => {
-    if (apply != null)
-      this.currentApply = apply;
-  },
-    err => { console.log("error") });
-}
+  //לרדת שורה באנטר Textarea פונקציה ל
+  resizeTextarea(textarea: any) {
+    this.renderer.setStyle(textarea, 'height', 'auto');
+    this.renderer.setStyle(textarea, 'height', textarea.scrollHeight + 'px');
+  }
+  //שמירה של פירוט הפניה (תוך כדי שיחה)
+  saveAndUpdateDetailsCause() {
+    this.applyService.UpdateApply(this.numApply, this.currentApply).subscribe(resultApply => {
+    },
+      err => { console.log("error") });
+  }
+  // חזרת הפניה לפי id
+  getCurrentApply() {
+    this.applyService.getApplyById(this.numApply).subscribe(apply => {
+      if (apply != null)
+        this.currentApply = apply;
+    },
+      err => { console.log("error") });
+  }
   //selectSector-בחירת מגזר
   onSelectedValueChangeSector(value: any) {
     this.isAnotherSector = false;
@@ -798,17 +804,18 @@ getCurrentApply() {
       this.isAnotherSector = true;
   }
   //selectTerapist-בחירת מטפל
-  onSelectedValueChangeTerapist() {
+  onSelectedValueChangeTerapist(event:any) {
+    debugger;
     this.isAnotherTerapist = false;
     let value = this.form.get('chooseT')?.value;
     const currentTerapist = this.arrayTerapists.find(t => t.id == value);
-    if(currentTerapist)
-    {
+    if (currentTerapist) {
       this.newPatientDetails.terapistId = currentTerapist?.id;
       this.updateSessionPatientDetails();
-      this.newUserTherapist.id=currentTerapist?.id;
+      this.newUserTherapist.id = currentTerapist?.id;
+      this.newUserTherapist=currentTerapist;
     }
-   else if (this.arrayTerapists.length == 0 || value == 0) {
+    else if (this.arrayTerapists.length == 0 || value == 0) {
       this.isAnotherTerapist = true;
       this.newPatientDetails.terapistId = undefined;
     }
@@ -898,7 +905,7 @@ getCurrentApply() {
     },
       err => { console.log("error") });
   }
-//שמירה
+  //שמירה
   saveNow() {
     let data = sessionStorage.getItem('currentPatientDetails');
     if (data !== null) {
@@ -918,10 +925,11 @@ getCurrentApply() {
             this.addUserTherapist();
           }
         }
-        else if (this.isAnotherTerapist == false) {
-          this.newPatientDetails.terapistId = this.newTerapist.id;
 
-        }
+        // else if (this.isAnotherTerapist == false) {
+        //   this.newPatientDetails.terapistId = this.newTerapist.id;
+
+        // }
       }
     }
     let detailsAsker = sessionStorage.getItem('detailsAsker');
@@ -942,73 +950,73 @@ getCurrentApply() {
     }
     this.addNewUser();
   }
- // add a user-הוספה/עדכון של בנ"א
- addNewUser() {
-  if (this.user.id) {
-    this.userService.UpdateUser(this.user.id, this.user).subscribe(asker => {
-      this.addAddress();
-    },
-      err => { console.log("error") });
-  }
-  else {
-    this.userService.AddUser(this.user).subscribe(asker => {
-      this.user.id = asker;
-      this.addAddress();
-    },
-      err => { console.log("error") });
-  }
+  // add a user-הוספה/עדכון של בנ"א
+  addNewUser() {
+    if (this.user.id) {
+      this.userService.UpdateUser(this.user.id, this.user).subscribe(asker => {
+        this.addAddress();
+      },
+        err => { console.log("error") });
+    }
+    else {
+      this.userService.AddUser(this.user).subscribe(asker => {
+        this.user.id = asker;
+        this.addAddress();
+      },
+        err => { console.log("error") });
+    }
 
-}
-//addAddress-הוספה/עדכון של כתובת
-addAddress() {
-  if (this.newAddress.id) {
-    this.addressService.UpdateAddress(this.newAddress.id, this.newAddress).subscribe(idAddress => {
-      this.addFamily();
-    }, err => { console.log("error") });
   }
-  else {
-    this.addressService.AddAddress(this.newAddress).subscribe(idAddress => {
-      this.newPatientDetails.addressId = idAddress;
-      this.addFamily();
-    },
-      err => { console.log("error") });
+  //addAddress-הוספה/עדכון של כתובת
+  addAddress() {
+    if (this.newAddress.id) {
+      this.addressService.UpdateAddress(this.newAddress.id, this.newAddress).subscribe(idAddress => {
+        this.addFamily();
+      }, err => { console.log("error") });
+    }
+    else {
+      this.addressService.AddAddress(this.newAddress).subscribe(idAddress => {
+        this.newPatientDetails.addressId = idAddress;
+        this.addFamily();
+      },
+        err => { console.log("error") });
+    }
   }
-}
-//addFamily-הוספה /עדכון של משפחה
-addFamily() {
-  if (this.newFamily.id) {
-    this.familyService.UpdateFamily(this.newFamily.id, this.newFamily).subscribe(idAddress => {
-      this.addPatientDetails();
+  //addFamily-הוספה /עדכון של משפחה
+  addFamily() {
+    if (this.newFamily.id) {
+      this.familyService.UpdateFamily(this.newFamily.id, this.newFamily).subscribe(idAddress => {
+        this.addPatientDetails();
 
-    }, err => { console.log("error") });
+      }, err => { console.log("error") });
+    }
+    else {
+      this.familyService.AddFamily(this.newFamily).subscribe(idFamily => {
+        this.newPatientDetails.familyId = idFamily;
+        //שליפה לפי מספר פניה של הפרטי פונה
+        this.detailsAskerService.getIdDetailsAsker(this.currentApply.askerId)
+          .subscribe(idAsker => {
+            if (idAsker != 0) {
+              this.newPatientDetails.idDetailsAsker = idAsker;
+              this.addPatientDetails();
+            }
+            else {
+              alert("לא קיים פונה לפנייה זו!")
+            }
+          }, err => { console.log("error") });
+
+
+        // this.addDetailsAsker();
+
+      },
+        err => { console.log("error") });
+    }
   }
-  else {
-    this.familyService.AddFamily(this.newFamily).subscribe(idFamily => {
-      this.newPatientDetails.familyId = idFamily;
-      //שליפה לפי מספר פניה של הפרטי פונה
-      this.detailsAskerService.getIdDetailsAsker(this.currentApply.askerId)
-        .subscribe(idAsker => {
-          if (idAsker != 0) {
-            this.newPatientDetails.idDetailsAsker = idAsker;
-            this.addPatientDetails();
-          }
-          else {
-            alert("לא קיים פונה לפנייה זו!")
-          }
-        }, err => { console.log("error") });
-
-
-      // this.addDetailsAsker();
-
-    },
-      err => { console.log("error") });
-  }
-}
 
   //הוספה/ עדכון של מטפל
   addUserTherapist() {
     if (this.newUserTherapist.id) {
-      this.userService.UpdateUser(this.user.id, this.newUserTherapist).subscribe(asker => {
+      this.userService.UpdateUser(this.newUserTherapist.id, this.newUserTherapist).subscribe(asker => {
         this.newTerapist.city = this.form.get('city')?.value;
         this.terapistService.updateTerapist(this.newTerapist.id, this.newTerapist).subscribe(t => {
         },
@@ -1049,7 +1057,7 @@ addFamily() {
         err => { console.log("error") });
     }
   }
-    //הוספה/ עדכון של חונך
+  //הוספה/ עדכון של חונך
   addNewMature() {
     this.newMatureCharacter.idApplicant = this.numApply;
     if (this.newMatureCharacter.id) {
@@ -1065,60 +1073,66 @@ addFamily() {
         err => { console.log("error") });
     }
   }
-//addPatientDetails
-addPatientDetails() {
-  this.newPatientDetails.userId = this.user.id;
-  this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
-  this.newPatientDetails.emotional = this.form.get('emotional')?.value;
-  this.newPatientDetails.social = this.form.get('social')?.value;
-  this.newPatientDetails.studies = this.form.get('studies')?.value;
-  this.newPatientDetails.parentPhone = this.form.get('mobileNumberP')?.value;
-  this.newPatientDetails.terapistId = this.newTerapist.id;
-  this.newPatientDetails.isStillTerapist = this.form.get('still')?.value;
-  if (this.newPatientDetails.id) {
-    this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
-      this.addTreatment();
-    },
-      err => { console.log("error") });
-  }
-  else {
-    this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
-      this.addTreatment();
-    },
-      err => { console.log("error") });
-  }
-}
-
-//הוספת שלב ביצוע  לסיווג מנהל
-addTreatment() {
-  this.newTreatmentDetails.applyId = this.numApply;
-  this.newTreatmentDetails.therapistId = this.currentEmployees.id;
-  this.newTreatmentDetails.dateNow = new Date();
-  this.newTreatmentDetails.taskId = 1012;
-  this.newTreatmentDetails.statusId = 2;
-  this.newTreatmentDetails.dateTask = new Date();
-  this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
-    const config = new MatSnackBarConfig();
-    config.duration = 2000;
-    config.direction = 'rtl'
-    this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
-    sessionStorage.removeItem("currentListCategory");
-    sessionStorage.removeItem("userPatientDetails");
-    sessionStorage.removeItem("currentPatientDetails");
-    sessionStorage.removeItem("currentAddress");
-    sessionStorage.removeItem("currentFamily");
-    if (this.currentEmployees.job?.id == 1) {
-      this.myRouter.navigate(['/manager']);
+  //addPatientDetails
+  addPatientDetails() {
+    this.newPatientDetails.userId = this.user.id;
+    this.newPatientDetails.diagnoses = this.form.get('diagnoses')?.value;
+    this.newPatientDetails.emotional = this.form.get('emotional')?.value;
+    this.newPatientDetails.social = this.form.get('social')?.value;
+    this.newPatientDetails.studies = this.form.get('studies')?.value;
+    this.newPatientDetails.parentPhone = this.form.get('mobileNumberP')?.value;
+    // this.newPatientDetails.terapistId = this.newTerapist.id;
+    this.newPatientDetails.isStillTerapist = this.form.get('still')?.value;
+    if (this.newPatientDetails.id) {
+      this.patientDetailsService.UpdatePatientDetails(this.newPatientDetails.id, this.newPatientDetails).subscribe(idPatient => {
+        this.addTreatment();
+      },
+        err => { console.log("error") });
     }
-    else if (this.currentEmployees.job?.id == 3)
-      this.myRouter.navigate(['/navigateSecretary']);
-    else if (this.currentEmployees.job?.id == 4)
-      this.myRouter.navigate(['/inTakeNav']);
-    else if (this.currentEmployees.job?.id == 5)
-      this.myRouter.navigate(['/navigatePatient']);
-  },
-    err => { console.log("error") });
-}
+    else {
+      this.patientDetailsService.AddPatientDetails(this.newPatientDetails).subscribe(idPatient => {
+        this.addTreatment();
+      },
+        err => { console.log("error") });
+    }
+  }
+
+  //הוספת שלב ביצוע  לסיווג מנהל
+  addTreatment() {
+    this.newTreatmentDetails.applyId = this.numApply;
+    this.newTreatmentDetails.therapistId = this.currentEmployees.id;
+    this.newTreatmentDetails.dateNow = new Date();
+    this.newTreatmentDetails.taskId = 1012;
+    this.newTreatmentDetails.statusId = 2;
+    this.newTreatmentDetails.dateTask = new Date();
+    this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {
+      this.newTreatmentDetails.id=result;
+      this.currentApply.treatmentId=result;
+      this.applyService.UpdateApply(this.currentApply.id,this.currentApply).subscribe(result => {
+        
+      },
+        err => { console.log("error") });
+      const config = new MatSnackBarConfig();
+      config.duration = 2000;
+      config.direction = 'rtl'
+      this.snackBar.open(" פרטי פנייה מספר " + this.numApply + " נקלטו בהצלחה", 'הסר', config);
+      sessionStorage.removeItem("currentListCategory");
+      sessionStorage.removeItem("userPatientDetails");
+      sessionStorage.removeItem("currentPatientDetails");
+      sessionStorage.removeItem("currentAddress");
+      sessionStorage.removeItem("currentFamily");
+      if (this.currentEmployees.job?.id == 1) {
+        this.myRouter.navigate(['/manager']);
+      }
+      else if (this.currentEmployees.job?.id == 3)
+        this.myRouter.navigate(['/navigateSecretary']);
+      else if (this.currentEmployees.job?.id == 4)
+        this.myRouter.navigate(['/inTakeNav']);
+      else if (this.currentEmployees.job?.id == 5)
+        this.myRouter.navigate(['/navigatePatient']);
+    },
+      err => { console.log("error") });
+  }
 
 
   return() {

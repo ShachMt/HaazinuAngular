@@ -72,8 +72,7 @@ export class ShowDetailsApplyComponent implements OnInit {
     
   }
   updateIns(item: any){
-this.IsUpdate=!this.IsUpdate;
-
+this.IsUpdate=!this.IsUpdate
   }
   deleteTreatmentDetails(id:any,status:any) {
     this.sivoug=false;

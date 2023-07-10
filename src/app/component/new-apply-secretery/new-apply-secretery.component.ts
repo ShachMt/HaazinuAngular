@@ -128,6 +128,56 @@ export class NewApplySecreteryComponent implements OnInit {
     }
     return this.form.get('mobileNumber')?.hasError('pattern') ? '  מספר טלפון שגוי   ' : '';
   }
+  searchPhone() {
+    this.ApplyService.getAllAppliesByPhone(this.phoneAsker).subscribe(arrayApply => {
+      debugger
+      if (arrayApply.length > 0) {
+        this.ApplyService.GetAllApplies().subscribe(arrayApplies => {
+          for (let i = 0; i < arrayApplies.length; i++) {
+            this.arrayApply.push(this.currentA);
+            this.arrayApply[i].apply = arrayApplies[i];
+            if (this.arrayApply[i].apply) {
+              this.treatmentDetailsService.GetTreatmentDetailsByApplyState(arrayApplies[i].id).
+                subscribe(newTreatmentDetails => {
+                  this.arrayApply[i].treatment = newTreatmentDetails;
+                  if (newTreatmentDetails.dateNow != null && newTreatmentDetails.dateNow != undefined) {
+                    let d = newTreatmentDetails.dateNow;
+                    if (d != null && d != undefined) {
+                      let didi = this.datePipe.transform(d, 'dd/MM/yyyy')
+                      if (didi != null && didi != undefined)
+                        this.arrayApply[i].dateEndTreatment = "" + didi;
+                    }
+                  }
+                  this.patientDetailsService.getPatientDetailsByApplyId(arrayApplies[i].id).
+                    subscribe(patientDetails => {
+                      this.arrayApply[i].patientDetails = patientDetails;
+                      this.treatmentDetailsService.GetTreatmentDetailsByApplyState(this.arrayApply[i].apply.id).
+                        subscribe(newTreatmentDetails => {
+                          this.newApplyList[i].treatment = newTreatmentDetails;
+                          this.isOk = true;
+                        },
+                          err => { console.log("error") });
+                    },
+                      err => { console.log("error") });
+                  // }
+                },
+                  err => { console.log("error") });
+            }
+            this.currentA = new PatientApply();
+          }
+
+          this.newApplyListA = this.newApplyList
+
+        },
+          err => { console.log("error") });
+
+
+
+      }
+    },
+      err => { console.log("error") });
+
+  }
   onSelectedValueChangeR(value: any) {
     if (value == "") {
       return;
@@ -216,7 +266,7 @@ export class NewApplySecreteryComponent implements OnInit {
     this.newApply.employeesId = this.currentEmplo.id;
     this.newApply.askerId = this.idUserAsker;
     this.newApply.applyCausedId = this.currentCauseReferral.id;
-    this.newApply.isActive=true;
+    this.newApply.isActive = true;
     this.ApplyService.AddApply(this.newApply).subscribe(AddApply => {
       sessionStorage.setItem("applyId", JSON.stringify(AddApply));
       this.idApply = AddApply;
@@ -244,7 +294,7 @@ export class NewApplySecreteryComponent implements OnInit {
     else {
       this.newTreatmentDetails.taskId = 13;
       this.newTreatmentDetails.statusId = 6;
-      this.newTreatmentDetails.nextStepId=1012
+      this.newTreatmentDetails.nextStepId = 1012
     }
 
     this.treatmentDetailsService.AddTreatmentDetails(this.newTreatmentDetails).subscribe(result => {

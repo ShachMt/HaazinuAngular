@@ -136,6 +136,7 @@ export class EducationalInstitutionsApplicantComponent implements OnInit {
     let userP = sessionStorage.getItem('userPatientDetails');
     if (userP != null) {
       this.userP = JSON.parse(userP) as User;
+      if(this.userP.id)
       this.educationalInstitutionsApplicantService.getAllEducationalInstitutionByUserIdStatus(this.userP.id, "עבר      ").subscribe(arrIns => {
 
         this.currentEducation = arrIns;

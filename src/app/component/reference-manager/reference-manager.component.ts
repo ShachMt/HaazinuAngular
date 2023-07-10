@@ -53,6 +53,8 @@ export class ReferenceManagerComponent implements OnInit {
     return '';
   };
 
+   
+
   // displayedColumns: string[] = ['דחיפות הפניה', 'מספר פניה', 'סטטוס הפניה', 'תאריך טיפול אחרון',
   // 'שם מטפל אחרון','סיבת הפניה'];
   // @ViewChild(MatPaginator) paginator!: MatPaginator;

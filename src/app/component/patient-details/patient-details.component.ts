@@ -53,6 +53,7 @@ export class PatientDetailsComponent implements OnInit {
   currentDetailsAsker: DetailsAsker = new DetailsAsker();
   isClickAddTreatment: boolean = true;
   newTreatmentDedails: TreatmentDetails = new TreatmentDetails();
+  isClickShow:boolean=false;
   currentEmplorees: Employee = new Employee();
   arrEmployees: Employee[] = [];
   ageNow?: number;
@@ -71,6 +72,7 @@ export class PatientDetailsComponent implements OnInit {
   arrayTreatmentDetails: TreatmentDetails[] = [];
 
   ngOnInit(): void {
+    this.isClickShow=false;
     this.route.params.subscribe(params => {
       this.idApply = +params['id'];
       this.applyService.getApplyById(this.idApply).subscribe(apply => {

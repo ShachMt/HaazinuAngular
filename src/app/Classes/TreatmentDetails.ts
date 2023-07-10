@@ -15,6 +15,7 @@ export class TreatmentDetails {
     id?: number;
     nextEmployeesId?:number;
     nextDocumentation?:string;
+    state?:boolean;
     
     apply?: Apply;
     nextEmployees?:Employee

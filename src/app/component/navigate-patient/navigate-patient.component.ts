@@ -72,6 +72,63 @@ export class NavigatePatientComponent implements OnInit {
           this.detailsApply();
         },
           err => { console.log("error") });
+      // this.applyService.getAllAppliesEmployee(this.currentEmplo.id).subscribe(arrayApply => {
+      //   this.applyList = arrayApply;
+      //   //ממתין לביצוע
+      //   this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 3).subscribe(arrayApply => {
+      //     this.countApplyMam = Object.keys(arrayApply).length;
+      //     for (let index = 0; index < arrayApply.length; index++) {
+      //       this.isExist = false;
+      //       for (let i = 0; i < this.applyList.length; i++) {
+      //         if (this.applyList[i].id == arrayApply[index].id) {
+      //           this.isExist = true;
+      //           break;
+      //         }
+      //       }
+      //       if (!this.isExist)
+      //         this.applyList.push(arrayApply[index]);
+      //     }
+      //     //בטיפול
+      //     this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 4).subscribe(arrayApply => {
+      //       this.countApplyBeti = Object.keys(arrayApply).length;
+      //       for (let index = 0; index < arrayApply.length; index++) {
+      //         this.isExist = false;
+      //         for (let i = 0; i < this.applyList.length; i++) {
+      //           if (this.applyList[i].id == arrayApply[index].id) {
+      //             this.isExist = true;
+      //             break;
+      //           }
+      //         }
+      //         if (!this.isExist)
+      //           this.applyList.push(arrayApply[index]);
+      //       }
+      //       //פניות שהסתיימו
+      //       this.applyService.getAllAppliesByStatusEmailTerapist(this.currentEmplo.id, 5).subscribe(arrayApply => {
+      //         this.countApplyFinish = Object.keys(arrayApply).length;
+      //         for (let index = 0; index < arrayApply.length; index++) {
+      //           this.isExist = false;
+      //           for (let i = 0; i < this.applyList.length; i++) {
+      //             if (this.applyList[i].id == arrayApply[index].id) {
+      //               this.isExist = true;
+      //               break;
+      //             }
+      //           }
+      //           if (!this.isExist)
+      //             this.applyList.push(arrayApply[index]);
+      //         }
+      //         for (let index = 0; index < this.applyList.length; index++) {
+      //           this.newApplyList.push(this.currentA);
+      //           this.currentA = new PatientApply();
+      //         }
+      //         this.getTreatment();
+      //       },
+      //         err => { console.log("error") });
+      //     },
+      //       err => { console.log("error") });
+      //   },
+      //     err => { console.log("error") });
+      // },
+      //   err => { console.log("error") });
     },
       err => { console.log("error") });
 
@@ -124,7 +181,77 @@ export class NavigatePatientComponent implements OnInit {
       this.currentA = new PatientApply();
     }
   }
+  // getTreatment() {
+  //   for (let i = 0; i < this.applyList.length; i++) {
+  //     this.treatmentDetailsService.GetTreatmentDetailsByApplyState(this.applyList[i].id).subscribe(newTreatmentDetails => {
+  //       this.newApplyList[i].apply = this.applyList[i];
+  //       this.newApplyList[i].treatment = newTreatmentDetails;
+  //       let d = newTreatmentDetails.dateNow;
+  //       let didi = this.datePipe.transform(d, 'dd/MM/yyyy')
+  //       this.newApplyList[i].dateEndTreatment=""+didi;
+  //       this.newApplyList[i].nameEndTerapist=""+newTreatmentDetails.therapist?.idUserNavigation?.firstName;
+  //       if (this.newApplyList[i].treatment?.nextStepId == 2) {
+  //         let d = new Date();
+  //         let did = this.datePipe.transform(d, 'dd:MM:yyyy')
+
+  //         if (this.datePipe.transform(this.newApplyList[i]?.treatment?.dateTask, 'dd:MM:yyyy') == did) {
+  //           const config = new MatSnackBarConfig();
+  //           config.verticalPosition = 'top';
+  //           config.horizontalPosition = 'center';
+  //           config.duration = 2000;
+  //           config.direction = 'rtl';
+  //           // config.panelClass = "text-center";
+  //           config.horizontalPosition = 'center';
+  //           let d = this.datePipe.transform(this.newApplyList[i]?.treatment?.dateTask, 'HH:mm:ss') + "\n"
+  //           config.panelClass = 'center-snackbar';
+  //           this.snackBar.open(" קיימת להיום פגישה לשעה: " + d + "אנא עדכן האם בוצע ", 'הסר', config)
+  //           if (this.newApplyList[i]?.treatment?.statusId != 3) {
+  //             let currentT = this.newApplyList[i].treatment;
+  //             if (currentT) {
+  //               if (currentT?.statusId)
+  //                 currentT.statusId = 3
+  //               this.treatmentDetailsService.updateTreatmentDetails
+  //                 (this.newApplyList[i].apply?.id, currentT).subscribe(newTreatmentDetails => {
+  //                   if (newTreatmentDetails == true) {
+  //                     this.countApplyMam += 1
+  //                     this.newApplyList[i].treatment = currentT
+  //                   }
+  //                 },
+  //                   err => { console.log("error") });
+  //             }
+  //           }
+  //         }
+  //         else {
+  //           if (this.newApplyList[i]?.treatment?.statusId == 3) {
+  //             let currentT = this.newApplyList[i].treatment;
+  //             if (currentT) {
+  //               if (currentT?.statusId)
+  //                 currentT.statusId = 4
+  //               this.treatmentDetailsService.updateTreatmentDetails
+  //                 (this.newApplyList[i].apply?.id, currentT).subscribe(newTreatmentDetails => {
+  //                   if (newTreatmentDetails == true) {
+  //                     this.countApplyBeti += 1;
+  //                     this.newApplyList[i].treatment = currentT
+  //                   }
+  //                 },
+  //                   err => { console.log("error") });
+  //             }
+  //           }
+  //         }
+
+  //       }
+
+  //     },
+  //       err => { console.log("error") });
+  //   }
+  //   this.newApplyListA = this.newApplyList;
+  //   this.isOk=true;
+  // }
   hidden = false;
+
+  toggleBadgeVisibility() {
+    // this.hidden = !this.hidden;
+  }
   fillNewApply(item: any) {
     if (item != null) {
       this.myRouter.navigate(['/showDetailsApply/' + item.apply?.id]);

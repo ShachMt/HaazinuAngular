@@ -17,14 +17,20 @@ export class TreatmentDetailsService {
   GetAllTreatmentDetails(id:any): Observable<TreatmentDetails[]>{
     return this.Http.get<TreatmentDetails[]>(`${this.V_API}/${'GetAllTreatmentDetails'}/${id}`);
   }
-
+  AddTreatmentDetailsI(newTreatmentDetails:TreatmentDetails): Observable<any>{
+    return this.Http.post<any>(`${this.V_API}/${'AddTreatmentDetailsI'}` ,newTreatmentDetails);
+  }
 
   AddTreatmentDetails(newTreatmentDetails:TreatmentDetails): Observable<any>{
     return this.Http.post<any>(`${this.V_API}/${'AddTreatmentDetails'}` ,newTreatmentDetails);
   }
+  // getTreatmentDetailsByApplyStateId(id:any):Observable<TreatmentDetails>{
+    
+  //   return this.Http.get<TreatmentDetails>(`${this.V_API}/${'GetTreatmentDetailsByApplyStateId'}/${id}`);
 
+  // }
 
-  //החזרת שלב הטיפול האחרון
+  //החזרת שלבי הטיפול האחרון
   GetTreatmentDetailsByApplyState(id:any):Observable<TreatmentDetails>{
     
     return this.Http.get<TreatmentDetails>(`${this.V_API}/${'GetTreatmentDetailsByApplyState'}/${id}`);
@@ -32,6 +38,9 @@ export class TreatmentDetailsService {
   }
   updateTreatmentDetails(id:any,updateTreat:TreatmentDetails):Observable<any>{
     return this.Http.put<any>(`${this.V_API}/${'UpdateTreatmentDetails'}/${id}`,updateTreat)
+  }
+  UpdateTreatmentDetailsII(id:any,updateTreat:TreatmentDetails):Observable<any>{
+    return this.Http.put<any>(`${this.V_API}/${'UpdateTreatmentDetailsII'}/${id}`,updateTreat)
   }
   deleteTreatmentDetails(id:any,applyId:any):Observable<any>{
     return this.Http.delete<any>(`${this.V_API}/${'DeleatTreatmentDetails'}/${id}/${applyId}`);

@@ -26,15 +26,14 @@ children:[ ]},
 {path:"navigateSecretary",component:NavigateSecretaryComponent},
 {path:"inTakeNav",component:InTakeNavComponent},
 {path:"fillNewApply",component:FillNewApplyComponent},
-// {path:"detailsApplicants",component:DetailsApplicantsComponent},
 {path:"newApplySecretery",component:NewApplySecreteryComponent},
+
+// פתיחת לשונית חדשה
+// {path:"newApplySecretery",component:NewApplySecreteryComponent, data: { externalLink: true }},
 {path:"showDetailsApply",component:ShowDetailsApplyComponent},
 {path:"navigatePatient",component:NavigatePatientComponent},
 
 {path:"newPassword",component:NewPasswordComponent},
-// {path:"newTratmentDetailsManager/:id",component:NewTratmentDetailsManagerComponent},
-// 'myroute/:param1/:param2'
-
 {path:'educationalInstitutionsApplicant/:id/:indexCategory/:isTvach/:nowInstition',component:EducationalInstitutionsApplicantComponent},
 {path:"fillNewApply/:idApply",component:FillNewApplyComponent},
 {path:"fillNewApply/:idApply/:isPastEducation",component:FillNewApplyComponent},

@@ -101,12 +101,15 @@
                         <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId!=9">-{{item.documentation}}</span>
                         <span *ngIf="item.nextEmployees?.job?.id!=1 && item.taskId==9&&
                             item.nextEmployees?.id!=currentEmployees.id">- מידע חסוי</span><br>
+                        <!-- </div> -->
                         <span *ngIf="item.nextStep?.taskName" id="title"> לשלב הבא קבע כי
                             יתבצע: {{item.nextStep?.taskName}}
                                 <span *ngIf="item.nextEmployeesId!=item.therapistId">
                                     <span *ngIf="item.nextEmployees?.idUserNavigation?.firstName" id="title">ע"י
                                         :</span> <span>{{item.nextEmployees?.idUserNavigation?.firstName}}</span>
                                 </span>
+
+                            <!-- </span> -->
                         </span>
                         <span *ngIf="item.nextDocumentation" id="title"> -</span><span>{{item.nextDocumentation}}</span>
                         <span *ngIf="item.dateTask&&item.nextDocumentation" id="title"><br> יבוצע

@@ -1,6 +1,7 @@
 <div *ngIf="!sivoug&&!IsSec" class="container">
   <form [formGroup]="form" class="w3-container">
-    <p>הוספת שלב טיפול</p>
+    <p>משימות</p>
+    <button style="cursor: pointer;" >המשך משימה קודמת</button>    <button style="margin-right: 5px;cursor: pointer;">משימה חדשה </button><br>
     <span id="title">תאריך:</span> <span>{{dateNow|date:'dd/MM/yyyy'}}</span>
     <span id="title">שם הפעיל הממלא:</span><span>{{nameFill}}</span><br>
     <mat-form-field class="taskN" appearance="fill">
@@ -61,7 +62,7 @@
       <span *ngIf="isDetails" id="title">תוכן </span><br>
       <textarea *ngIf="isDetails" dir="rtl" style=" text-align: right;width: 50%;"
         formControlName="hebrewLettersDetailsTask" class="text-input" #textarea
-        (input)="resizeTextarea(textarea)"></textarea>
+        (input)="resizeTextarea(textarea)"  [(ngModel)]="newTreatmentDedails.nextDocumentation"></textarea>
       <mat-error *ngIf="isDetails&&form.get('hebrewLettersDetailsTask')?.invalid && 
         (form.get('hebrewLettersDetailsTask')?.dirty || form.get('hebrewLettersDetailsTask')?.touched)"
         style="color:red;">{{getErrorMessageHebrewLettersDetails(form)}}</mat-error>
@@ -89,7 +90,9 @@
     </div>
 <mat-form-field class="chooseE">
   <mat-label >דחיפות ביצוע המשימה</mat-label>
-  <mat-select name="chooseE" [(ngModel)]="shiyouchPnia"
+  <input matInput value="{{Dchi}}" readonly>
+
+  <mat-select name="chooseE" [(ngModel)]="currentApply.levelUrgency"
   (selectionChange)="changeD($event)">
   <mat-option class="chooseE" *ngFor="let item of arrayLevelUrgency"
    [value]="item.name"> {{item.name}}</mat-option>

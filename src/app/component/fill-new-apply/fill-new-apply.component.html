@@ -39,7 +39,7 @@
           [(ngModel)]="currentApply.detailsCausedRefferal" #textarea (input)="resizeTextarea(textarea)"
           (change)="saveAndUpdateDetailsCause()" matInput>
               </textarea>
-      </div>
+      </div><br><br>
     </div>
     <!-- כותרת -->
     <div class="col-md-auto">
@@ -268,7 +268,10 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <!-- *ngIf="isNotInstaition" -->
+        <tbody >ללא מוסד לימודים נוכחי</tbody>
+        <!-- *ngIf="!isNotInstaition" -->
+        <tbody >
           <td *ngIf="newEducationalInstitutionsApplicant.id==null">
             <mat-form-field style="text-align: right;width: auto;">
               <mat-label> סוג :</mat-label>
@@ -284,14 +287,9 @@
           <td *ngIf="newEducationalInstitutionsApplicant.id==null">
             <mat-form-field style="text-align: right;width: auto;">
               <mat-label> שם הישיבה :</mat-label>
-              <!-- <input type="text"
-              placeholder="Pick one"
-              aria-label="Number"
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto"> -->
+              
               <mat-select id="selectedValueNameIns" (ngModelChange)="onSelectedValueNameIns($event)"
-                name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns"> -->
+                name="selectedValueNameIns" [(ngModel)]="selectedValueNameIns"> 
                  <mat-option style="text-align: right;"></mat-option>
                 <mat-option [value]=" " style="text-align: right;">אחר</mat-option>
 
@@ -334,13 +332,14 @@
         </tbody>
       </table>
       <button *ngIf="newEducationalInstitutionsApplicant.id==null" style="background-color: white;"
-        (click)="next()">הוסף מקום לימוד נוכחי</button>
+        (click)="next()">שמירה </button>
       <button *ngIf="newEducationalInstitutionsApplicant.id!=null" style="background-color: white;"
-        (click)="opentLastEdu=!opentLastEdu">הוסף מקום לימוד קודם</button>
+        (click)="opentLastEdu=!opentLastEdu"> מקום לימוד קודם</button>
 
       <div *ngIf="opentLastEdu">
         <app-educational-institutions-applicant [category]="currentCategory"></app-educational-institutions-applicant>
       </div>
+
       <div *ngIf="isAnotherInstiton==true">
         <div class="row ">
           <div class="col-md-2">
@@ -436,7 +435,7 @@
             <mat-form-field>
               <mat-label>מטפל:</mat-label>
               <mat-select id="chooseTerapist" name="chooseTerapist" [(ngModel)]="newPatientDetails.terapistId"
-                (ngModelChange)="onSelectedValueChangeTerapist()" formControlName="chooseT">
+                (selectionChange)="onSelectedValueChangeTerapist($event)" formControlName="chooseT">
                 <mat-option style="text-align: right" [value]="0">אחר</mat-option>
                 <mat-option style="text-align: right" *ngFor="let t of arrayTerapists" [value]="t.id">{{
                   t.idUserNavigation?.firstName }}-{{ t.idUserNavigation?.lastName}}-{{t.city}}</mat-option>
